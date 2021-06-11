@@ -1,7 +1,7 @@
 # Customer Relationship Management Web Application
 
 # Environment setup
-
+OS: Ubuntu 18.04
 ## Install Node.js and Angular
 
 1. Install Node.js through nvm (Node Version Manager)
