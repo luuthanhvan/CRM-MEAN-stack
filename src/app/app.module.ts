@@ -15,6 +15,7 @@ import {
 
 import { ContactsComponent } from './contacts/contacts.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SalesOrderComponent } from './sales-order/sales-order.component';
 
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
@@ -27,7 +28,8 @@ const materials = [
   declarations: [
     AppComponent,
     ContactsComponent,
-    DashboardComponent
+    DashboardComponent,
+    SalesOrderComponent
   ],
   imports: [
     BrowserModule,

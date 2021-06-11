@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormControl } from '@angular/forms';
+import { Router, NavigationExtras } from '@angular/router';
 
 export interface ContactsInfo {
   no: number,
@@ -24,7 +26,7 @@ export interface ContactsInfo {
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent implements OnInit{
+export class ContactsComponent implements OnInit, OnChanges{
   
   SERVER_URL : string = 'http://localhost:4040/contacts';
 
@@ -33,12 +35,20 @@ export class ContactsComponent implements OnInit{
                                 'description', 'createdTime', 'updatedTime', 'modify', 'delete'];
   dataSource : ContactsInfo[];
 
-  constructor(private httpClient : HttpClient) { 
+  leadSources : String[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
+  leadSrc: FormControl;
+
+  constructor(private httpClient : HttpClient, private router: Router) { 
     
   }
 
   ngOnInit() {
+    this.leadSrc = new FormControl(this.leadSources);
     this.getData();
+  }
+
+  ngOnChanges(){
+    location.reload(); 
   }
 
   getData(){
@@ -76,7 +86,15 @@ export class ContactsComponent implements OnInit{
     );
   }
 
+  navigateToEdit(contactID: string){
+    let navigationExtras : NavigationExtras = {
+      queryParams: { id: contactID }
+    };
+    this.router.navigate(['/contacts/edit'], navigationExtras);
+  }
+
   onDelete(contactID: string){
     this.httpClient.post(this.SERVER_URL + '/delete', {id: contactID}).subscribe();
+    location.reload();
   }
 }

@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./contacts/add/add.module').then(m => m.AddContactModule),
   },
   {
+    path: 'contacts/edit',
+    loadChildren: () => import('./contacts/edit/edit.module').then(m => m.EditContactModule),
+  },
+  {
     path: '', redirectTo: 'dashboard', pathMatch: 'full',
   }
 ];

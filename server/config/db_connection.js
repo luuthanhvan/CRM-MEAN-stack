@@ -1,9 +1,5 @@
 const mg = require('mongoose');
-const dotenv = require('dotenv');
-
-dotenv.config({path: '../../.env'});
-
-const url = process.env.MONGO_HOST + process.env.DB_NAME;
+const url = 'mongodb://localhost:27017/CRM_DB';
 
 async function connect(){
     try {
