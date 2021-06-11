@@ -1,0 +1,102 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Could not find Angular Material core them. Most Material components may not work as expected */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css"; // <- import
+
+html, body { 
+    height: 100%; 
+}
+
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+.contentContainer{
+    margin: 16px;
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .filters, .listOfCustomers {
+        margin: 0 16px 16px 16px;
+    }
+
+    .listOfCustomers {
+        overflow: hidden;
+        background-color: white;
+
+        .head {
+            h2 { // align to left
+                position: absolute;
+                left: 16px;
+            }
+
+            .btnCreateCustomer {
+                button {
+                    // align to right
+                    position: absolute;
+                    right: 16px;
+
+                    // align both icon and text to center
+                    height: 80%;
+                    width: 200px;
+                    background-color: #107d47;
+                    color: white;
+                    margin: 5px 0;
+
+                    div {
+                        display: flex;
+                        height: 100%;
+
+                        mat-icon, span {
+                            margin: auto 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .info {
+            margin: 0 16px 16px;
+
+            table {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.formContainer {
+    font-size: 16px;
+
+    h3 { 
+        font-size: 20px;
+    }
+    
+    mat-form-field {
+        width: 300px;
+    }
+
+    .description, #address {
+        mat-form-field {
+            width: 80%;
+            // margin: 0 32px;
+        }
+    }
+}
+
+
+.button-row {
+    display: table;
+    margin: 0 auto;
+
+    button {
+        font-size: 16px;
+    }
+}

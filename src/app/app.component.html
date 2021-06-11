@@ -1,0 +1,24 @@
+<!-- Navigation bar -->
+<mat-toolbar class="navbar" >
+  <div>
+    <button mat-button routerLink="/signin">Sign-in</button>
+    <button mat-button routerLink="/signup">Sign-up</button>
+  </div>
+</mat-toolbar>
+
+<!-- Left sidebar menu -->
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened="true">
+    <button mat-button class="menu-button" routerLink="/dashboard">Dashboard</button>
+    <button mat-button class="menu-button" routerLink="/contacts">Contacts</button>
+    <button mat-button class="menu-button" routerLink="/sales_order">Sales Order</button>
+    <button mat-button class="menu-button" routerLink="/user_management">User Management</button>  
+  </mat-sidenav>
+
+  <!-- main content -->
+  <mat-sidenav-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

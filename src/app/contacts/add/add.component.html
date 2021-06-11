@@ -1,0 +1,94 @@
+<form [formGroup]="contactFormInfo" (ngSubmit)="onSubmit(contactFormInfo)">
+    <div class="formContainer">
+        <mat-grid-list cols="3" rowHeight="100px">
+            <mat-grid-tile [colspan]="3">
+                <h3>Create new contact infomation</h3>
+            </mat-grid-tile>
+            
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Contact name</mat-label>
+                    <input matInput formControlName="contactName">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Salutation</mat-label>
+                    <mat-select formControlName="salutation">
+                        <mat-option *ngFor="let s of salutations" [value]="s">{{s}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Mobile phone</mat-label>
+                    <input matInput formControlName="mobilePhone">
+                </mat-form-field>
+            </mat-grid-tile>
+            
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Organization</mat-label>
+                    <input matInput formControlName="organization">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Lead source</mat-label>
+                    <mat-select formControlName="leadSrc">
+                        <mat-option *ngFor="let src of leadSources" [value]="src">{{src}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Assigned</mat-label>
+                    <mat-select formControlName="assignedTo">
+                        <mat-option *ngFor="let user of assignedToUsers" [value]="user">{{user}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Date of birth</mat-label>
+                    <input matInput [matDatepicker]="dobPicker" formControlName="dob">
+                    <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dobPicker></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            
+            <mat-grid-tile [colspan]="3" class="textField">
+                <mat-form-field appearance="outline" formControlName="address" id="address">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="3" class="textField">
+                <mat-form-field appearance="outline" formControlName="description" class="description">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    
+    <section class="button-row">
+        <div>
+          <button mat-button type="submit">Create</button>
+          <button mat-button (click)="goBack()">Back</button>
+        </div>
+    </section>
+</form>
