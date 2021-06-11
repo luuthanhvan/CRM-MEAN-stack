@@ -1,0 +1,66 @@
+<form [formGroup]="saleOrderFormInfo" (ngSubmit)="onSubmit(saleOrderFormInfo)">
+    <div class="formContainer">
+        <mat-grid-list cols="3" rowHeight="100px">
+            <mat-grid-tile [colspan]="3">
+                <h3>Create new contact infomation</h3>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Contact name</mat-label>
+                    <mat-select formControlName="contactName">
+                        <mat-option *ngFor="let name of contactNames" [value]="name">{{name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Subject</mat-label>
+                    <input matInput formControlName="subject">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                        <mat-option *ngFor="let stt of statusNames" [value]="stt">{{stt}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Total</mat-label>
+                    <input matInput formControlName="total">
+                </mat-form-field>
+            </mat-grid-tile>
+            
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Assigned</mat-label>
+                    <mat-select formControlName="assignedTo">
+                        <mat-option *ngFor="let user of assignedToUsers" [value]="user">{{user}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile [colspan]="3" class="textField">
+                <mat-form-field appearance="outline" class="description">
+                    <mat-label>Desscription</mat-label>
+                    <textarea matInput formControlName="description"></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    
+    <section class="button-row">
+        <div>
+          <button mat-button type="submit">Update</button>
+          <button mat-button (click)="goBack()">Back</button>
+        </div>
+    </section>
+</form>
