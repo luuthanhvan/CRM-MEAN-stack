@@ -14,7 +14,6 @@ import { ContactsService } from '../../services/contacts/contacts.service';
     styleUrls: ["./contacts.component.scss"],
 })
 export class ContactsComponent implements OnInit {
-    SERVER_URL: string = "http://localhost:4040/contacts";
     displayedColumns: string[] = [
         "no",
         "contactName",
@@ -40,8 +39,10 @@ export class ContactsComponent implements OnInit {
                 private router: Router, 
                 protected contactsService: ContactsService,
                 private formBuilder: FormBuilder) {
+        
+        // get list of contacts
         this.httpClient
-            .get(this.SERVER_URL)
+            .get(this.contactsService.SERVER_URL)
             .pipe(map(res => res['data']['contacts']))
             .subscribe(res => {
                 this.dataSource = this.contactsService.getAllContactsInfo(res);
@@ -64,6 +65,7 @@ export class ContactsComponent implements OnInit {
         location.reload();
     }
 
+    // navigate to edit page
     navigateToEdit(contactID: string) {
         let navigationExtras: NavigationExtras = {
             queryParams: { id: contactID },
@@ -71,9 +73,10 @@ export class ContactsComponent implements OnInit {
         this.router.navigate(["/contacts/edit"], navigationExtras);
     }
 
+    // function to handle delete event
     onDelete(contactID: string) {
         this.httpClient
-            .post(`${this.SERVER_URL}/delete`, { id: contactID })
+            .delete(`${this.contactsService.SERVER_URL}/${contactID}?_method=DELETE`)
             .subscribe(
                 (res) => {
                     if(res['status'] == 1){

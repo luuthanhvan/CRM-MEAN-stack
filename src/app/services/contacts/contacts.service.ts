@@ -11,6 +11,8 @@ export class ContactsService {
     leadSources : String[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     assignedToUsers : String[] = ['User1', 'User2', 'User3'];
 
+	SERVER_URL: string = "http://localhost:4040/contacts";
+
 	constructor(private router: Router,
 				private formBuilder: FormBuilder) { }
 

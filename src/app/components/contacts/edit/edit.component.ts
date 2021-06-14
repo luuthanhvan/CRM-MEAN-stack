@@ -10,7 +10,6 @@ import { ContactsService } from '../../../services/contacts/contacts.service';
     templateUrl: './edit.component.html',
 })
 export class EditContactsComponent implements OnInit {
-    SERVER_URL : String = 'http://localhost:4040/contacts'; // typescript variable declaration
     contactFormInfo: FormGroup;
     contactId : string;
     createdTime: any;
@@ -28,25 +27,23 @@ export class EditContactsComponent implements OnInit {
 
     ngOnInit(){
         this.httpClient
-            .post(`${this.SERVER_URL}/edit`, { id: this.contactId })
+            .get(`${this.contactsService.SERVER_URL}/${this.contactId}`)
             .pipe(map(res => res['data']['contact']))
             .subscribe(
                 (res) => {
+                    // console.log(res);
                     this.contactsService.setContactInfo(this.contactFormInfo, res);
                     this.createdTime = res.createdTime; // to keep the created time when update a contact
                 }
         );
     }
 
+    // function to handle update a contact information
     onSubmit(form: FormGroup){
-        let body = {
-            contactId: this.contactId,
-            contactInfo: this.contactsService.prepareDataToSubmit(form, this.createdTime),
-        }
-
-        console.log(body);
-
-        this.httpClient.post(`${this.SERVER_URL}/update`, body)
+        let contactInfo = this.contactsService.prepareDataToSubmit(form, this.createdTime);
+        
+        this.httpClient
+            .put(`${this.contactsService.SERVER_URL}/${this.contactId}?_method=PUT`, contactInfo)
             .subscribe(
                 (res) => {
                     if(res['status'] == 1){ // status = 1 => OK

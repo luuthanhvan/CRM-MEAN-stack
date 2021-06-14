@@ -2,9 +2,29 @@ const Contacts = require('../models/Contacts');
 const  { mutipleMongooseToObject } = require('../helpers/mongoose');
 const apiResponse = require('../helpers/apiResponse');
 
+/* 
+ContactsController contains function handlers to handle request from Contacts page.
+It will recieve the data from client, send to its model and vice versa. 
+This model will interact with database to store or update data.
+*/
 class ContactsController {
-    // [GET] /contacts
-    index(req, res){
+    // [POST] /contacts - function to store a contact information
+    contactsStore(req, res){
+        try{
+            const contacts = new Contacts(req.body);
+            contacts
+                .save()
+                .then(() => {
+                    return apiResponse.successResponse(res, 'Add contact successfully');
+                });
+
+        }catch(err){
+            return apiResponse.ErrorResponse(res, err);
+        }
+    }
+    
+    // [GET] /contacts - function to get a list of contacts information
+    contactsList(req, res){
         try{
             Contacts
                 .find({})
@@ -20,26 +40,12 @@ class ContactsController {
         }
     }
 
-    // [POST] /contacts/store
-    store(req, res){
-        try{
-            const contacts = new Contacts(req.body);
-            contacts
-                .save()
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Add contact successfully');
-                });
-
-        }catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
-    }
-
-    // [POST] /contacts/edit
-    edit(req, res){
+    // [GET] /contacts/:id - function to get a contact information by contact ID
+    contactsDetail(req, res){
+        let contactId = req.params.id;
         try{
             Contacts
-                .findOne({ _id: req.body.id })
+                .findOne({ _id: contactId })
                 .then((contact) => {
                     return apiResponse.successResponseWithData(res, 'Success', { contact: contact });
                 });
@@ -48,11 +54,13 @@ class ContactsController {
         }
     }
 
-    // [PUT] /contacts/update
-    update(req, res){
+    // [PUT] /contacts/:id - function to update a contact information by contact ID
+    contactsUpdate(req, res){
+        let contactId = req.params.id;
+        let contactInfo = req.body;
         try{
             Contacts
-                .updateOne({ _id: req.body.contactId }, req.body.contactInfo)
+                .updateOne({ _id: contactId }, contactInfo)
                 .then(() => {
                     return apiResponse.successResponse(res, 'Update contact successfully');
                 });
@@ -61,11 +69,12 @@ class ContactsController {
         }
     }
 
-    // [DELETE] /contacts/delete
-    destroy(req, res){
+    // [DELETE] /contacts/:id - function to delete a contact information by contact ID
+    contactsDelete(req, res){
+        let contactId = req.params.id;
         try{
             Contacts
-                .remove({ _id: req.body.id })
+                .remove({ _id: contactId })
                 .then(() => {
                     return apiResponse.successResponse(res, 'Delete contact successfully');
                 });

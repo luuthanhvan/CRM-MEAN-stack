@@ -9,7 +9,6 @@ import { ContactsService } from '../../../services/contacts/contacts.service';
 })
 export class AddContactComponent implements OnInit{
     contactFormInfo: FormGroup; // typescript variable declaration
-    SERVER_URL : String = 'http://localhost:4040/contacts';
 
     constructor(private httpClient : HttpClient,
                 protected contactsService: ContactsService){}
@@ -20,7 +19,7 @@ export class AddContactComponent implements OnInit{
 
     onSubmit(form: FormGroup){
         this.httpClient
-            .post(`${this.SERVER_URL}/store`, this.contactsService.prepareDataToSubmit(form))
+            .post(this.contactsService.SERVER_URL, this.contactsService.prepareDataToSubmit(form))
             .subscribe(
                 (res) => {
                     if(res['status'] == 1){ // status = 1 => OK

@@ -13,7 +13,6 @@ import { SalesOrderService } from '../../services/sales_order/sales-order.servic
   styleUrls: ["./sales-order.component.scss"],
 })
 export class SalesOrderComponent implements OnInit {
-	SERVER_URL: string = "http://localhost:4040/sales_order";
 	displayedColumns: string[] = [
 		"no",
 		"subject",
@@ -36,7 +35,7 @@ export class SalesOrderComponent implements OnInit {
 				protected salesOrderService: SalesOrderService,
 				private formBuilder: FormBuilder){
 		this.httpClient
-			.get(this.SERVER_URL)
+			.get(this.salesOrderService.SERVER_URL)
 			.pipe(map((res) => res["data"]["salesOrder"]))
 			.subscribe((res) => {
 				this.dataSource = this.salesOrderService.getAllSaleOrderInfo(res);
@@ -68,7 +67,7 @@ export class SalesOrderComponent implements OnInit {
 
 	onDelete(saleOrderID: string) {
 		this.httpClient
-			.post(`${this.SERVER_URL}/delete`, { id: saleOrderID })
+			.delete(`${this.salesOrderService.SERVER_URL}/${saleOrderID}`)
 			.subscribe(
 				res => {
 					if(res['status'] == 1)

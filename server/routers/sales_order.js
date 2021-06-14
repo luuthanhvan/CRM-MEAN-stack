@@ -3,10 +3,10 @@ const router = express.Router();
 
 const salesOrderController = require('../controllers/SalesOrderController');
 
-router.post('/store', salesOrderController.store);
-router.post('/delete', salesOrderController.destroy);
-router.post('/edit', salesOrderController.edit);
-router.post('/update', salesOrderController.update);
-router.get('/', salesOrderController.index);
+router.post('/', salesOrderController.salesOrderStore); // store a sale order
+router.get('/', salesOrderController.salesOrderList); // get list of sales order
+router.get('/:id', salesOrderController.salesOrderDetail); // get a sale order
+router.put('/:id', salesOrderController.salesOrderUpdate); // update a sale order
+router.delete('/:id', salesOrderController.salesOrderDelete); // delete a sale order
 
 module.exports = router;
