@@ -52,7 +52,7 @@ class SalesOrderController {
     update(req, res){
         try{
             SalesOrder
-                .updateOne({ _id: req.body.saleOrderId }, res.body.saleOrderInfo)
+                .updateOne({ _id: req.body.saleOrderId }, req.body.saleOrderInfo)
                 .then(() => {
                     return apiResponse.successResponse(res, 'Update sale order successfully');
                 });
@@ -70,7 +70,7 @@ class SalesOrderController {
                     return apiResponse.successResponse(res, 'Delete sale order successfully');
                 });
 
-        }catch(err){
+        } catch(err){
             return apiResponse.ErrorResponse(res, err);
         }
     }

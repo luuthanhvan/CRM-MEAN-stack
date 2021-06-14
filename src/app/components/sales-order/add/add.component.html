@@ -2,14 +2,14 @@
     <div class="formContainer">
         <mat-grid-list cols="3" rowHeight="100px">
             <mat-grid-tile [colspan]="3">
-                <h3>Create new contact infomation</h3>
+                <h3>Create new sale order infomation</h3>
             </mat-grid-tile>
 
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Contact name</mat-label>
                     <mat-select formControlName="contactName">
-                        <mat-option *ngFor="let name of contactNames" [value]="name">{{name}}</mat-option>
+                        <mat-option *ngFor="let name of salesOrderService.contactNames" [value]="name">{{name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -25,7 +25,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Status</mat-label>
                     <mat-select formControlName="status">
-                        <mat-option *ngFor="let stt of statusNames" [value]="stt">{{stt}}</mat-option>
+                        <mat-option *ngFor="let stt of salesOrderService.statusNames" [value]="stt">{{stt}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -42,13 +42,13 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Assigned</mat-label>
                     <mat-select formControlName="assignedTo">
-                        <mat-option *ngFor="let user of assignedToUsers" [value]="user">{{user}}</mat-option>
+                        <mat-option *ngFor="let user of salesOrderService.assignedToUsers" [value]="user">{{user}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
 
 
-            <mat-grid-tile [colspan]="3" class="textField">
+            <mat-grid-tile [colspan]="3" class="description">
                 <mat-form-field appearance="outline" class="description">
                     <mat-label>Description</mat-label>
                     <textarea matInput formControlName="description"></textarea>
@@ -60,7 +60,7 @@
     <section class="button-row">
         <div>
           <button mat-button type="submit">Create</button>
-          <button mat-button (click)="goBack()">Back</button>
+          <button mat-button (click)="salesOrderService.gotoPage('/sales_order')">Back</button>
         </div>
     </section>
 </form>

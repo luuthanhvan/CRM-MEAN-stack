@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Contact } from '../../interfaces/contact';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -103,6 +103,10 @@ export class ContactsService {
 			address: data.address,
 			description: data.description,
 		});
+	}
+
+	public filterByLeadSrc(data, value){
+		return data.filter((val, index, arr) => val.leadSrc == value);
 	}
 
 	public gotoPage(namePage){

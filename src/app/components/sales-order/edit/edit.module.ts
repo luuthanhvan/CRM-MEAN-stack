@@ -26,5 +26,5 @@ const materials = [
     ],
     declarations: [ EditSalesOrderComponent ],
 })
-export class EditContactModule {
+export class EditSaleOrderModule {
 }

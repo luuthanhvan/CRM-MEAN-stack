@@ -19,7 +19,8 @@ export class AddContactComponent implements OnInit{
     }
 
     onSubmit(form: FormGroup){
-        this.httpClient.post<any>(`${this.SERVER_URL}/store`, this.contactsService.prepareDataToSubmit(form))
+        this.httpClient
+            .post(`${this.SERVER_URL}/store`, this.contactsService.prepareDataToSubmit(form))
             .subscribe(
                 (res) => {
                     if(res['status'] == 1){ // status = 1 => OK

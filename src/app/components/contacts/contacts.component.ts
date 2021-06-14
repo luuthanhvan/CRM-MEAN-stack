@@ -1,7 +1,8 @@
-import { Component, OnInit, OnChanges } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras } from "@angular/router";
+import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Contact } from '../../interfaces/contact';
@@ -12,9 +13,8 @@ import { ContactsService } from '../../services/contacts/contacts.service';
     templateUrl: "./contacts.component.html",
     styleUrls: ["./contacts.component.scss"],
 })
-export class ContactsComponent implements OnInit, OnChanges {
+export class ContactsComponent implements OnInit {
     SERVER_URL: string = "http://localhost:4040/contacts";
-
     displayedColumns: string[] = [
         "no",
         "contactName",
@@ -33,19 +33,8 @@ export class ContactsComponent implements OnInit, OnChanges {
         "modify",
         "delete",
     ];
-    
     dataSource: Contact[] = [];
-
-    leadSources: String[] = [
-        "Existing Customer",
-        "Partner",
-        "Conference",
-        "Website",
-        "Word of mouth",
-        "Other",
-    ];
-    
-    filters : FormGroup;
+    filtersForm : FormGroup;
 
     constructor(private httpClient: HttpClient, 
                 private router: Router, 
@@ -60,14 +49,19 @@ export class ContactsComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.filters = this.formBuilder.group({
-            leadSrc: new FormControl(this.leadSources),
+        this.filtersForm = this.formBuilder.group({
+            leadSrc: new FormControl(this.contactsService.leadSources),
             createdTime: new FormControl(''),
             updatedTime: new FormControl(''),
         });
     }
 
-    ngOnChanges() {
+    onSubmitFiltersForm(form: FormGroup){
+        this.dataSource = this.contactsService.filterByLeadSrc(this.dataSource, form.value.leadSrc);
+    }
+
+    onCancel(){
+        location.reload();
     }
 
     navigateToEdit(contactID: string) {
@@ -78,9 +72,8 @@ export class ContactsComponent implements OnInit, OnChanges {
     }
 
     onDelete(contactID: string) {
-        const url = this.SERVER_URL + "/delete"
         this.httpClient
-            .post(url, { id: contactID })
+            .post(`${this.SERVER_URL}/delete`, { id: contactID })
             .subscribe(
                 (res) => {
                     if(res['status'] == 1){
