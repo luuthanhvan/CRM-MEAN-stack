@@ -12,7 +12,7 @@ class ContactsController {
                     if(contacts.length > 0)
                         return apiResponse.successResponseWithData(res, 'Success', {contacts: mutipleMongooseToObject(contacts)});
                     else
-                        return apiResponses.successResponseWithData(res, 'Success', []);
+                        return apiResponse.successResponseWithData(res, 'Success', {contacts:[]});
                 });
 
         }catch(err){
@@ -52,7 +52,7 @@ class ContactsController {
     update(req, res){
         try{
             Contacts
-                .updateOne({ _id: req.body.contactId }, res.body.contactInfo)
+                .updateOne({ _id: req.body.contactId }, req.body.contactInfo)
                 .then(() => {
                     return apiResponse.successResponse(res, 'Update contact successfully');
                 });
@@ -64,7 +64,7 @@ class ContactsController {
     // [DELETE] /contacts/delete
     destroy(req, res){
         try{
-            contacts
+            Contacts
                 .remove({ _id: req.body.id })
                 .then(() => {
                     return apiResponse.successResponse(res, 'Delete contact successfully');

@@ -6,21 +6,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /* ERROR: NullInjectorError: No provider for HttpClient when using HttpClient */
 import { HttpClientModule } from '@angular/common/http'; // FIX: import HttpClientModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { 
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule,
-  MatDividerModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
-  MatTableModule, MatIconModule, MatGridListModule,
+  MatDividerModule, MatFormFieldModule, MatDatepickerModule,
+  MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
+  MatInputModule,
 } from '@angular/material';
 
-import { ContactsComponent } from './contacts/contacts.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { SalesOrderComponent } from './sales-order/sales-order.component';
+import { MatNativeDateModule } from '@angular/material/core';
+
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SalesOrderComponent } from './components/sales-order/sales-order.component';
 
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
-  MatGridListModule,
+  MatGridListModule, MatSelectModule, MatInputModule,
 ];
 
 
@@ -36,6 +40,7 @@ const materials = [
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule, ReactiveFormsModule,
     materials,
   ],
   providers: [],

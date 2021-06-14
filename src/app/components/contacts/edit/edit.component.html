@@ -2,7 +2,7 @@
     <div class="formContainer">
         <mat-grid-list cols="3" rowHeight="100px">
             <mat-grid-tile [colspan]="3">
-                <h3>Create new contact infomation</h3>
+                <h3>Edit contact infomation</h3>
             </mat-grid-tile>
             
             <mat-grid-tile>
@@ -16,7 +16,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Salutation</mat-label>
                     <mat-select formControlName="salutation">
-                        <mat-option *ngFor="let s of salutations" [value]="s">{{s}}</mat-option>
+                        <mat-option *ngFor="let s of contactsService.salutations" [value]="s">{{s}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -46,7 +46,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Lead source</mat-label>
                     <mat-select formControlName="leadSrc">
-                        <mat-option *ngFor="let src of leadSources" [value]="src">{{src}}</mat-option>
+                        <mat-option *ngFor="let src of contactsService.leadSources" [value]="src">{{src}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -55,7 +55,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Assigned</mat-label>
                     <mat-select formControlName="assignedTo">
-                        <mat-option *ngFor="let user of assignedToUsers" [value]="user">{{user}}</mat-option>
+                        <mat-option *ngFor="let user of contactsService.assignedToUsers" [value]="user">{{user}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -69,14 +69,14 @@
                 </mat-form-field>
             </mat-grid-tile>
             
-            <mat-grid-tile [colspan]="3" class="textField">
+            <mat-grid-tile [colspan]="3" class="address">
                 <mat-form-field appearance="outline" id="address">
                     <mat-label>Address</mat-label>
                     <textarea formControlName="address" matInput></textarea>
                 </mat-form-field>
             </mat-grid-tile>
 
-            <mat-grid-tile [colspan]="3" class="textField">
+            <mat-grid-tile [colspan]="3" class="description">
                 <mat-form-field appearance="outline" class="description">
                     <mat-label>Description</mat-label>
                     <textarea matInput formControlName="description"></textarea>
@@ -88,7 +88,7 @@
     <section class="button-row">
         <div>
           <button mat-button type="submit">Update</button>
-          <button mat-button (click)="goBack()">Back</button>
+          <button mat-button (click)="contactsService.gotoPage('/contacts')">Back</button>
         </div>
     </section>
 </form>

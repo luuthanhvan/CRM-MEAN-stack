@@ -1,6 +1,6 @@
 exports.successResponse = function (res, msg) {
 	var data = {
-		status: 1,
+		status: 1, // OK
 		message: msg
 	};
 	return res.status(200).json(data);
@@ -25,7 +25,7 @@ exports.ErrorResponse = function (res, msg) {
 
 exports.notFoundResponse = function (res, msg) {
 	var data = {
-		status: 0,
+		status: 0, // ERROR
 		message: msg,
 	};
 	return res.status(404).json(data);

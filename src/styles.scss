@@ -21,49 +21,69 @@ body {
 
     h2 {
         font-size: 24px;
+        
+        // align to left
+        position: absolute;
+        left: 16px;
     }
 
-    .filters, .listOfCustomers {
+    .searchContainer {
+        // border: 1px solid red;
+        h1 {
+            position: absolute;
+            left: 16px;
+        }
+        margin-bottom: 16px;
+
+        mat-form-field {
+            font-size: 14px;
+            width: 330px;
+        }
+    }
+
+    .filtersContainter, .list {
         margin: 0 16px 16px 16px;
+    }
+
+    .filtersContainter {
+        font-size: 14px;
+        background-color: white;
+
+        mat-form-field {
+            width: 80%;
+        }
     }
 
     .list {
         overflow: hidden;
         background-color: white;
 
-        .head {
-            h2 { // align to left
+        .btnCreateCustomer {
+            button {
+                // align to right
                 position: absolute;
-                left: 16px;
-            }
+                right: 16px;
 
-            .btnCreateCustomer {
-                button {
-                    // align to right
-                    position: absolute;
-                    right: 16px;
+                // align both icon and text to center
+                height: 80%;
+                width: 200px;
+                background-color: #107d47;
+                color: white;
+                margin: 5px 0;
 
-                    // align both icon and text to center
-                    height: 80%;
-                    width: 200px;
-                    background-color: #107d47;
-                    color: white;
-                    margin: 5px 0;
+                div {
+                    display: flex;
+                    height: 100%;
 
-                    div {
-                        display: flex;
-                        height: 100%;
-
-                        mat-icon, span {
-                            margin: auto 0;
-                        }
+                    mat-icon, span {
+                        margin: auto 0;
                     }
                 }
             }
         }
 
         .info {
-            margin: 0 16px 16px;
+            margin: 16px;
 
             table {
                 width: 100%;
@@ -83,14 +103,13 @@ body {
         width: 300px;
     }
 
-    .description, #address {
+    .description, .address {
         mat-form-field {
             width: 80%;
-            // margin: 0 32px;
+            margin-top: 16px;
         }
     }
 }
-
 
 .button-row {
     display: table;
