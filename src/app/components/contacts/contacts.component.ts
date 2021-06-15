@@ -1,12 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras } from "@angular/router";
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { Contact } from '../../interfaces/contact';
-import { ContactsService } from '../../services/contacts/contacts.service';
+import { Contact } from '../../interfaces/contact'; // import contact interface
+import { ContactsService } from '../../services/contacts/contacts.service'; // inport contacts service
 
 @Component({
     selector: "app-contacts",
@@ -35,21 +32,19 @@ export class ContactsComponent implements OnInit {
     dataSource: Contact[] = [];
     filtersForm : FormGroup;
 
-    constructor(private httpClient: HttpClient, 
-                private router: Router, 
+    constructor(private router: Router, 
                 protected contactsService: ContactsService,
-                private formBuilder: FormBuilder) {
-        
-        // get list of contacts
-        this.httpClient
-            .get(this.contactsService.SERVER_URL)
-            .pipe(map(res => res['data']['contacts']))
-            .subscribe(res => {
-                this.dataSource = this.contactsService.getAllContactsInfo(res);
-            });
-    }
+                private formBuilder: FormBuilder) {}
 
     ngOnInit() {
+        // get list of contacts
+        this.contactsService.getContacts().subscribe((data) => {
+            this.dataSource = data.map((value, index) => {
+                value.no = index+1;
+                return value;
+            });
+        });
+
         this.filtersForm = this.formBuilder.group({
             leadSrc: new FormControl(this.contactsService.leadSources),
             createdTime: new FormControl(''),
@@ -57,32 +52,27 @@ export class ContactsComponent implements OnInit {
         });
     }
 
-    onSubmitFiltersForm(form: FormGroup){
-        this.dataSource = this.contactsService.filterByLeadSrc(this.dataSource, form.value.leadSrc);
-    }
-
+    // function to cancel filters
     onCancel(){
         location.reload();
     }
 
     // navigate to edit page
-    navigateToEdit(contactID: string) {
+    navigateToEdit(contactId: string) {
         let navigationExtras: NavigationExtras = {
-            queryParams: { id: contactID },
+            queryParams: { id: contactId },
         };
         this.router.navigate(["/contacts/edit"], navigationExtras);
     }
 
     // function to handle delete event
-    onDelete(contactID: string) {
-        this.httpClient
-            .delete(`${this.contactsService.SERVER_URL}/${contactID}?_method=DELETE`)
-            .subscribe(
-                (res) => {
-                    if(res['status'] == 1){
-                        location.reload();
-                    }
+    onDelete(contactId: string) {
+        this.contactsService
+            .deleteContact(contactId)
+            .subscribe((res) => {
+                if(res['status'] == 1){
+                    location.reload();
                 }
-            );
+            });
     }
 }

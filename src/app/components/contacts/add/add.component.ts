@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ContactsService } from '../../../services/contacts/contacts.service';
 
 @Component({
@@ -10,22 +10,25 @@ import { ContactsService } from '../../../services/contacts/contacts.service';
 export class AddContactComponent implements OnInit{
     contactFormInfo: FormGroup; // typescript variable declaration
 
-    constructor(private httpClient : HttpClient,
-                protected contactsService: ContactsService){}
+    constructor(protected contactsService: ContactsService,
+                private router: Router){}
 
     ngOnInit(){
-        this.contactFormInfo = this.contactsService.prepareFormData();
+        this.contactFormInfo = this.contactsService.initContact();
     }
 
+    // function to handle upload contact information to server
     onSubmit(form: FormGroup){
-        this.httpClient
-            .post(this.contactsService.SERVER_URL, this.contactsService.prepareDataToSubmit(form))
-            .subscribe(
-                (res) => {
-                    if(res['status'] == 1){ // status = 1 => OK
-                        this.contactsService.gotoPage('/contacts')
-                    }
+        let contactInfo = form.value;
+        contactInfo.createdTime = new Date(Date.now()).toLocaleString();
+        contactInfo.updatedTime = new Date(Date.now()).toLocaleString();
+
+        this.contactsService
+            .addContact(contactInfo)
+            .subscribe((res) => {
+                if(res['status'] == 1){ // status = 1 => OK
+                    this.router.navigate(['/contacts']); // go back to the contact page
                 }
-            );
+            });
     }
 }

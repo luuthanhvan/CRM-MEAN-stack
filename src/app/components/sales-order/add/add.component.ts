@@ -21,6 +21,7 @@ export class AddSaleOrderComponent implements OnInit{
         this.saleOrderFormInfo = this.salesOrderService.prepareFormData();
     }
 
+    // function to handle upload data from Sale order form to server
     onSubmit(form: FormGroup){
         let saleOrderInfo = this.salesOrderService.prepareDataToSubmit(form);
         

@@ -1,6 +1,6 @@
 export interface Contact {
-    no: number;
-    contactID: string;
+    _id: string;
+    no: Number;
     contactName: string;
     salutation: string;
     mobilePhone: string;
@@ -9,7 +9,6 @@ export interface Contact {
     dob: string;
     leadSrc: string;
     assignedTo: string;
-    creator: string;
     address: string;
     description: string;
     createdTime: string;

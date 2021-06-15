@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '../../../services/contacts/contacts.service';
 
 @Component({
@@ -14,42 +12,51 @@ export class EditContactsComponent implements OnInit {
     contactId : string;
     createdTime: any;
 
-    constructor(private httpClient : HttpClient, 
+    constructor(protected router: Router, 
                 private route: ActivatedRoute,
                 protected contactsService : ContactsService){
         
+        // get contact id from contact page
         this.route.queryParams.subscribe((params) => {
             this.contactId = params['id'];
         });
 
-        this.contactFormInfo = this.contactsService.prepareFormData();
+        this.contactFormInfo = this.contactsService.initContact();
     }
 
     ngOnInit(){
-        this.httpClient
-            .get(`${this.contactsService.SERVER_URL}/${this.contactId}`)
-            .pipe(map(res => res['data']['contact']))
-            .subscribe(
-                (res) => {
-                    // console.log(res);
-                    this.contactsService.setContactInfo(this.contactFormInfo, res);
-                    this.createdTime = res.createdTime; // to keep the created time when update a contact
-                }
-        );
+        // load contact information to the contact form
+        this.contactsService
+            .getContact(this.contactId)
+            .subscribe((data) => {
+                this.contactFormInfo.setValue({
+                    contactName: data.contactName,
+                    salutation: data.salutation,
+                    mobilePhone: data.mobilePhone,
+                    email: data.email,
+                    organization: data.organization,
+                    dob: data.dob,
+                    leadSrc: data.leadSrc,
+                    assignedTo: data.assignedTo,
+                    address: data.address,
+                    description: data.description,
+                });
+                this.createdTime = data.createdTime; // to keep the created time when update a contact information
+            });
     }
 
     // function to handle update a contact information
-    onSubmit(form: FormGroup){
-        let contactInfo = this.contactsService.prepareDataToSubmit(form, this.createdTime);
+    onUpdate(form: FormGroup){
+        let contactInfo = form.value;
+        contactInfo.createdTime = this.createdTime;
+        contactInfo.updatedTime = new Date(Date.now()).toLocaleString();
         
-        this.httpClient
-            .put(`${this.contactsService.SERVER_URL}/${this.contactId}?_method=PUT`, contactInfo)
-            .subscribe(
-                (res) => {
-                    if(res['status'] == 1){ // status = 1 => OK
-                        this.contactsService.gotoPage('/contacts');
-                    }
+        this.contactsService
+            .updateContact(this.contactId, contactInfo)
+            .subscribe((res) => {
+                if(res['status'] == 1){ // status = 1 => OK
+                    this.router.navigate(['/contacts']);
                 }
-            );
+            });
     }
 }
