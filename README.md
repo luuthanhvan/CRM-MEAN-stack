@@ -2,6 +2,7 @@
 
 # Environment setup
 OS: Ubuntu 18.04
+
 ## Install Node.js and Angular
 
 1. Install Node.js through nvm (Node Version Manager)
@@ -22,22 +23,6 @@ npm --version # or npm -v
 ## Install MongoDB Server
 - Download here: https://www.mongodb.com/try/download/community
 - Check the installation: open your terminal and run `mongo`
-
-## Install XamPP for Apache server and MySQL (Optional)
-
-Download here https://www.apachefriends.org/index.html
-```
-cd Downloads # the directory store all download files
-ls 
-chmod 755 xampp-linux-x64-7.4.10-0-installer.run
-ls -al
-sudo ./xampp-linux-x64-7.4.10-0-installer.run # run it to install
-sudo /opt/lampp/manager-linux-x64.run # open xampp
-```
-* Note: if the Apache server cannot started, fix
-- Stop the apache service: `sudo /etc/init.d/apache2 stop`
-- Start again: `sudo /opt/lampp/lampp start`
-- Stop: `sudo /opt/lampp/lampp stop`
 
 # Create the workspace
 
