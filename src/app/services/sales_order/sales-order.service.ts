@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SaleOrder } from '../../interfaces/sale-order';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { SaleOrder } from '../../interfaces/sale-order'; // import sale order interface
 
 @Injectable({
   providedIn: 'root'
@@ -13,59 +16,9 @@ export class SalesOrderService {
 	SERVER_URL: string = "http://localhost:4040/sales_order";
 	
 	constructor(private formBuilder : FormBuilder,
-				private router: Router) { }
-
-	public getAllSaleOrderInfo(res){
-		let salesOrderInfo : SaleOrder[] = [];
-
-		if(res.length > 0){
-			for(let i = 0; i < res.length; i++){
-				let createdTime = new Date(res[i].createdTime).toLocaleString();
-				let updatedTime = new Date(res[i].updatedTime).toLocaleString();
+				private httpClient : HttpClient) { }
 	
-				let obj = {
-					no: i+1,
-					saleOrderID: res[i]._id,
-					subject: res[i].subject,
-					contactName: res[i].contactName,
-					status: res[i].status,
-					total: res[i].total,
-					assignedTo: res[i].assignedTo,
-					description: res[i].description,
-					createdTime: createdTime,
-					updatedTime: updatedTime,
-				};
-
-				salesOrderInfo.push(obj);
-			}
-		}
-
-		return salesOrderInfo;
-	}
-
-	public prepareDataToSubmit(formData, time = undefined){
-		let createdTime = new Date(Date.now()).toLocaleString();
-		let updatedTime = new Date(Date.now()).toLocaleString();
-
-		if(time != undefined){
-			createdTime = new Date(time).toLocaleString();
-		}
-		
-		const data : any = {
-            contactName: formData.value.contactName,
-            subject: formData.value.subject,
-            status: formData.value.status,
-            total: formData.value.total,
-            assignedTo: formData.value.assignedTo,
-            description: formData.value.description,
-			createdTime: createdTime,
-            updatedTime: updatedTime,
-        }
-
-		return data;
-	}
-
-	public prepareFormData(){
+	initSaleOrder(){
 		return this.formBuilder.group({
 			contactName: new FormControl(this.contactNames),
             subject: new FormControl(),
@@ -76,22 +29,35 @@ export class SalesOrderService {
 		});
 	}
 
-	public setSaleOrderInfo(form, data){
-		form.setValue({
-			contactName: data.contactName,
-			subject: data.subject,
-			status: data.status,
-			total: data.total,
-			assignedTo: data.assignedTo,
-			description: data.description,
-		});
+	// add a sale order
+	addSaleOrder(saleOrder: SaleOrder):Observable<void>{
+		return this.httpClient
+					.post<void>(this.SERVER_URL, saleOrder);
+	}
+  
+	// get list of sales order
+	getSalesOrder():Observable<SaleOrder[]>{
+		return this.httpClient
+					.get<SaleOrder[]>(this.SERVER_URL)
+					.pipe(map(res => res['data']['salesOrder']));
 	}
 
-	public filterByStatus(data, value){
-		return data.filter((val, index, arr) => val.status == value);
+	// get a sale order by sale order ID
+	getSaleOrder(saleOrderId: string):Observable<SaleOrder>{
+		return this.httpClient
+					.get<SaleOrder>(`${this.SERVER_URL}/${saleOrderId}`)
+					.pipe(map(res => res['data']['saleOrder']));
 	}
 
-	public gotoPage(namePage){
-		this.router.navigate([namePage]);
+	// update a sale order by sale order ID
+	updateSaleOrder(saleOrderId: string, saleOrder: SaleOrder):Observable<void>{
+		return this.httpClient
+					.put<void>(`${this.SERVER_URL}/${saleOrderId}?_method=PUT`, saleOrder);
+	}
+
+	// delete a sale order by sale order ID
+	deleteSaleOrder(saleOrderId : string):Observable<void>{
+		return this.httpClient
+					.delete<void>(`${this.SERVER_URL}/${saleOrderId}?_method=DELETE`);
 	}
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ContactsService } from '../../../services/contacts/contacts.service';
+import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 
 @Component({
     selector: 'app-add-contact',

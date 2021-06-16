@@ -9,8 +9,8 @@ const SalesOrder = new Schema({
     total: { type: String, required: true },
     assignedTo: { type: String, required: true },
     description: { type: String, required: false },
-    createdTime: { type: String, default: Date.now },
-    updatedTime: { type: String, default: Date.now },
+    createdTime: { type: Date, default: Date.now().toLocaleString() },
+    updatedTime: { type: Date, default: Date.now().toLocaleString() },
 });
 
 module.exports = mg.model('SalesOrder', SalesOrder);

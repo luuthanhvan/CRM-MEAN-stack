@@ -33,33 +33,33 @@ export class ContactsService {
 		});
 	}
 
-	// add a contact information
-	addContact(contact: Contact):Observable<Contact>{
+	// add a contact
+	addContact(contact: Contact):Observable<void>{
 		return this.httpClient
-					.post<Contact>(this.SERVER_URL, contact);
+					.post<void>(this.SERVER_URL, contact);
 	}
 
-	// get list of contacts information
+	// get list of contacts
 	getContacts():Observable<Contact[]>{
 		return this.httpClient
 					.get<Contact[]>(this.SERVER_URL)
 					.pipe(map(res => res['data']['contacts']));
 	}
 
-	// get a contact information by contact ID
+	// get a contact by contact ID
 	getContact(contactId : string):Observable<Contact>{
 		return this.httpClient
 					.get<Contact>(`${this.SERVER_URL}/${contactId}`)
 					.pipe(map(res => res['data']['contact']));
 	}
 
-	// update a contact information by contact ID
+	// update a contact by contact ID
 	updateContact(contactId: string, contact: Contact):Observable<void>{
 		return this.httpClient
 					.put<void>(`${this.SERVER_URL}/${contactId}?_method=PUT`, contact);
 	}
 
-	// delete a contact information by contact ID
+	// delete a contact by contact ID
 	deleteContact(contactId : string):Observable<void>{
 		return this.httpClient
 					.delete<void>(`${this.SERVER_URL}/${contactId}?_method=DELETE`);

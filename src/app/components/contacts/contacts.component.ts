@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras } from "@angular/router";
-
-import { Contact } from '../../interfaces/contact'; // import contact interface
-import { ContactsService } from '../../services/contacts/contacts.service'; // inport contacts service
+import { Contact } from '../../interfaces/contact'; // use contact interface
+import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 
 @Component({
     selector: "app-contacts",
@@ -52,12 +51,12 @@ export class ContactsComponent implements OnInit {
         });
     }
 
-    // function to cancel filters
+    // function to cancel filter contacts
     onCancel(){
         location.reload();
     }
 
-    // navigate to edit page
+    // navigate to edit contact page
     navigateToEdit(contactId: string) {
         let navigationExtras: NavigationExtras = {
             queryParams: { id: contactId },
@@ -65,13 +64,13 @@ export class ContactsComponent implements OnInit {
         this.router.navigate(["/contacts/edit"], navigationExtras);
     }
 
-    // function to handle delete event
+    // function to handle delete a contact
     onDelete(contactId: string) {
         this.contactsService
             .deleteContact(contactId)
             .subscribe((res) => {
-                if(res['status'] == 1){
-                    location.reload();
+                if(res['status'] == 1){ // status = 1 => OK
+                    location.reload(); // reload contacts page
                 }
             });
     }

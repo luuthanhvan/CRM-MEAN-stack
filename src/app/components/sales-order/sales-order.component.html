@@ -15,7 +15,7 @@
 		<mat-grid-list cols="3" rowHeight="75px">
 			<mat-grid-tile [colspan]="3"><h2>Filters</h2></mat-grid-tile>
 
-			<form [formGroup]="filtersForm" (ngSubmit)="onSubmitFiltersForm(filtersForm)">
+			<form [formGroup]="filtersForm">
 				<mat-grid-tile>
 					<mat-form-field appearance="outline">
 						<mat-label>Status</mat-label>
@@ -124,13 +124,13 @@
 			<!-- Modify contact infomation column -->
 			<ng-container matColumnDef="modify">
 				<th mat-header-cell *matHeaderCellDef> Modify </th>
-				<td mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element.saleOrderID)"><mat-icon>edit</mat-icon></button></td>
+				<td mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
 			</ng-container>
 	
 			<!-- Delete contact infomation column -->
 			<ng-container matColumnDef="delete">
 				<th mat-header-cell *matHeaderCellDef> Delete </th>
-				<td mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element.saleOrderID)"><mat-icon>delete</mat-icon></button></td>
+				<td mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id)"><mat-icon>delete</mat-icon></button></td>
 			</ng-container>
 	
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

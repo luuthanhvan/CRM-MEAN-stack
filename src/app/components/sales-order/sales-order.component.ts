@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
-import { map } from 'rxjs/operators';
 import { Router, NavigationExtras } from '@angular/router';
-
-import { SaleOrder } from '../../interfaces/sale-order';
-import { SalesOrderService } from '../../services/sales_order/sales-order.service';
+import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
+import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
 
 @Component({
   selector: "app-sales-order",
@@ -30,15 +27,18 @@ export class SalesOrderComponent implements OnInit {
 
 	filtersForm : FormGroup;
 
-	constructor(private httpClient: HttpClient,
-				private router: Router,
+	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
 				private formBuilder: FormBuilder){
-		this.httpClient
-			.get(this.salesOrderService.SERVER_URL)
-			.pipe(map((res) => res["data"]["salesOrder"]))
-			.subscribe((res) => {
-				this.dataSource = this.salesOrderService.getAllSaleOrderInfo(res);
+
+		// get list of sales order
+		this.salesOrderService
+			.getSalesOrder()
+			.subscribe((data) => {
+				this.dataSource = data.map((value, index) => {
+					value.no = index+1;
+					return value;
+				});
 			});
   	}
 
@@ -50,29 +50,26 @@ export class SalesOrderComponent implements OnInit {
 		});
 	}
 
-	onSubmitFiltersForm(form: FormGroup){
-		this.dataSource = this.salesOrderService.filterByStatus(this.dataSource, form.value.status);
-	}
-
+	// function to handle cancel filter sales order event
 	onCancel(){
         location.reload();
     }
 
-	navigateToEdit(saleOrderID: string) {
+	// navigate to the edit sale order page
+	navigateToEdit(saleOrderId: string) {
 		let navigationExtras: NavigationExtras = {
-			queryParams: { id: saleOrderID },
+			queryParams: { id: saleOrderId },
 		};
 		this.router.navigate(["/sales_order/edit"], navigationExtras);
 	}
 
-	onDelete(saleOrderID: string) {
-		this.httpClient
-			.delete(`${this.salesOrderService.SERVER_URL}/${saleOrderID}`)
-			.subscribe(
-				res => {
-					if(res['status'] == 1)
-						location.reload();
-				}
-			);
+	// function to handle delete a sale order
+	onDelete(saleOrderId: string) {
+		this.salesOrderService
+			.deleteSaleOrder(saleOrderId)
+			.subscribe((res) => {
+				if(res['status'] == 1) // status = 1 => OK
+					location.reload(); // reload the sales order page
+			});
 	}
 }

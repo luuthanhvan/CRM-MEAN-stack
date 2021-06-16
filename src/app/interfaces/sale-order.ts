@@ -1,6 +1,6 @@
 export interface SaleOrder {
+    _id: string,
     no: number,
-    saleOrderID: string,
     subject: string,
     contactName: string,
     status: string,

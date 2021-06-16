@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ContactsService } from '../../../services/contacts/contacts.service';
+import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 
 @Component({
     selector: 'app-edit-contact',
@@ -16,7 +16,7 @@ export class EditContactsComponent implements OnInit {
                 private route: ActivatedRoute,
                 protected contactsService : ContactsService){
         
-        // get contact id from contact page
+        // get contact ID from contact page
         this.route.queryParams.subscribe((params) => {
             this.contactId = params['id'];
         });
@@ -45,7 +45,7 @@ export class EditContactsComponent implements OnInit {
             });
     }
 
-    // function to handle update a contact information
+    // function to handle update a contact
     onUpdate(form: FormGroup){
         let contactInfo = form.value;
         contactInfo.createdTime = this.createdTime;
@@ -55,7 +55,7 @@ export class EditContactsComponent implements OnInit {
             .updateContact(this.contactId, contactInfo)
             .subscribe((res) => {
                 if(res['status'] == 1){ // status = 1 => OK
-                    this.router.navigate(['/contacts']);
+                    this.router.navigate(['/contacts']); // go back to the contacts page
                 }
             });
     }
