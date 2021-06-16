@@ -38,7 +38,7 @@ export class ContactsService {
 		return this.httpClient
 					.post<void>(this.SERVER_URL, contact);
 	}
-
+	
 	// get list of contacts
 	getContacts():Observable<Contact[]>{
 		return this.httpClient

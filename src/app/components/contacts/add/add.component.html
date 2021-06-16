@@ -88,7 +88,7 @@
     <section class="button-row">
         <div>
           <button mat-button type="submit">Create</button>
-          <button mat-button (click)="contactsService.gotoPage('/contacts')">Back</button>
+          <button mat-button (click)="router.navigate(['/contacts'])">Back</button>
         </div>
     </section>
 </form>

@@ -11,7 +11,7 @@ export class AddContactComponent implements OnInit{
     contactFormInfo: FormGroup; // typescript variable declaration
 
     constructor(protected contactsService: ContactsService,
-                private router: Router){}
+                protected router: Router){}
 
     ngOnInit(){
         this.contactFormInfo = this.contactsService.initContact();

@@ -1,0 +1,51 @@
+<form [formGroup]="userFormInfo" (ngSubmit)="onSubmit(userFormInfo)">
+    <div class="formContainer">
+        <mat-grid-list cols="3" rowHeight="100px">
+            <mat-grid-tile [colspan]="3">
+                <h3>Create new user</h3>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Username</mat-label>
+                    <input matInput formControlName="username">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="phone">
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-checkbox>Admin</mat-checkbox>
+                <mat-checkbox>Active</mat-checkbox>
+            </mat-grid-tile>
+
+           ]
+        </mat-grid-list>
+    </div>
+    
+    <section class="button-row">
+        <div>
+          <button mat-button type="submit">Create</button>
+          <button mat-button (click)="router.navigate(['/user_management'])">Back</button>
+        </div>
+    </section>
+</form>

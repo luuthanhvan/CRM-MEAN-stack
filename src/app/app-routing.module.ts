@@ -4,6 +4,7 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SalesOrderComponent } from './components/sales-order/sales-order.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
 
 const routes: Routes = [
 	{
@@ -13,6 +14,14 @@ const routes: Routes = [
 	{
 		path: 'contacts', 
 		component: ContactsComponent,
+	},
+	{
+		path: 'sales_order',
+		component: SalesOrderComponent,    
+	},
+	{
+		path: 'user_management',
+		component: UserManagementComponent,
 	},
 	{
 		path: 'contacts/add',
@@ -25,16 +34,16 @@ const routes: Routes = [
 		loadChildren: './components/contacts/edit/edit.module#EditContactModule',
 	},
 	{
-		path: 'sales_order',
-		component: SalesOrderComponent,    
-	},
-	{
 		path: 'sales_order/add',
 		loadChildren: './components/sales-order/add/add.module#AddSaleOrderModule',
 	},
 	{
 		path: 'sales_order/edit',
 		loadChildren: './components/sales-order/edit/edit.module#EditSaleOrderModule',
+	},
+	{
+		path: 'user_management/add',
+		loadChildren: './components/user-management/add/add.module#AddUserModule',
 	},
 	{
 		path: '', redirectTo: 'dashboard', pathMatch: 'full',

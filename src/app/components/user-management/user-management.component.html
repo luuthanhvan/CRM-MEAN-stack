@@ -1,0 +1,60 @@
+<div class="contentContainer">
+    <div>
+        <button mat-button routerLink="['/user_management/add']">
+            <mat-icon>add</mat-icon>
+            <span>Add user</span>
+        </button>
+    </div>
+    
+    <div class="contactContainer">
+        <p>Contact information</p>
+        <table mat-table [dataSource]="contactDataSrc" class="mat-elevation-z8">
+            <!-- contact name column -->
+            <ng-container matColumnDef="contactName">
+                <th mat-header-cell *matHeaderCellDef> Contact name </th>
+                <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+            </ng-container>
+
+            <!-- assigned column -->
+            <ng-container matColumnDef="assignedTo">
+                <th mat-header-cell *matHeaderCellDef> Assigned </th>
+                <td mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
+            </ng-container>
+
+            <!-- created time column -->
+            <ng-container matColumnDef="createdTime">
+                <th mat-header-cell *matHeaderCellDef> Created time </th>
+                <td mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
+            <tr mat-row *matRowDef="let row; columns: contactDisplayedCols;"></tr>
+        </table>
+    </div>
+    
+    <div class="saleOrderContainer">
+        <p>Sale order information</p>
+        <table mat-table [dataSource]="saleOrderDataSrc" class="mat-elevation-z8">
+            <!-- subject column -->
+            <ng-container matColumnDef="subject">
+                <th mat-header-cell *matHeaderCellDef> Subject </th>
+                <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
+            </ng-container>
+
+            <!-- total column -->
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+            </ng-container>
+
+            <!-- created time column -->
+            <ng-container matColumnDef="createdTime">
+                <th mat-header-cell *matHeaderCellDef> Created time </th>
+                <td mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
+            <tr mat-row *matRowDef="let row; columns: saleOrderDisplayedCols;"></tr>
+        </table>
+    </div>
+</div>

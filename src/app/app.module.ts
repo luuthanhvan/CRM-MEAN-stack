@@ -20,6 +20,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SalesOrderComponent } from './components/sales-order/sales-order.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
 
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
@@ -33,7 +34,8 @@ const materials = [
     AppComponent,
     ContactsComponent,
     DashboardComponent,
-    SalesOrderComponent
+    SalesOrderComponent,
+    UserManagementComponent
   ],
   imports: [
     BrowserModule,

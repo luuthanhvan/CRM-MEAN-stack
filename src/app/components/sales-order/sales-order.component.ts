@@ -35,6 +35,7 @@ export class SalesOrderComponent implements OnInit {
 		this.salesOrderService
 			.getSalesOrder()
 			.subscribe((data) => {
+				console.log(data);
 				this.dataSource = data.map((value, index) => {
 					value.no = index+1;
 					return value;

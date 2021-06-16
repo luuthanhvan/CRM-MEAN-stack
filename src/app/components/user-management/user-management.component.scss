@@ -1,0 +1,22 @@
+.contentContainer {
+    // display: flex;
+    // border: 1px solid yellow;
+    .contactContainer, .saleOrderContainer{
+        width: 50%;
+        overflow: hidden;
+        background-color: white;
+        table {
+            width: 95%;
+            margin: 16px auto;
+        }
+    }
+
+    .contactContainer {
+        float: left;
+        // border-right: 1px solid gray;
+    }
+
+    .saleOrderContainer {
+        float: right;
+    }
+}

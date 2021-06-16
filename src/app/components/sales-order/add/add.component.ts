@@ -11,7 +11,7 @@ export class AddSaleOrderComponent implements OnInit{
     
     saleOrderFormInfo: FormGroup; // typescript variable declaration
 
-    constructor(private router : Router,
+    constructor(protected router : Router,
                 protected salesOrderService: SalesOrderService){}
 
     ngOnInit(){
