@@ -1,60 +1,80 @@
 <div class="contentContainer">
-    <div>
-        <button mat-button routerLink="['/user_management/add']">
-            <mat-icon>add</mat-icon>
-            <span>Add user</span>
-        </button>
-    </div>
-    
-    <div class="contactContainer">
-        <p>Contact information</p>
-        <table mat-table [dataSource]="contactDataSrc" class="mat-elevation-z8">
-            <!-- contact name column -->
-            <ng-container matColumnDef="contactName">
-                <th mat-header-cell *matHeaderCellDef> Contact name </th>
-                <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
-            </ng-container>
+    <!-- List of contacts -->
+    <div class="list">
+		<div class="head">
+			<mat-grid-list cols="3" rowHeight="50px">
+			<mat-grid-tile><h2>User information</h2></mat-grid-tile>
+			<mat-grid-tile [colspan]="2" class="btnCreateCustomer">
+				<button mat-button [routerLink]="['/user_management/add']">
+				<mat-icon>add</mat-icon>
+				<span>Create new user</span>
+				</button>
+			</mat-grid-tile>
+			</mat-grid-list>
+		</div>
+      
+		<div class="info">
+			<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+				<!-- no column -->
+				<ng-container matColumnDef="no">
+					<th mat-header-cell *matHeaderCellDef> No. </th>
+					<td mat-cell *matCellDef="let element"> {{element.no}} </td>
+				</ng-container>
+				
+				<!-- name column -->
+				<ng-container matColumnDef="name">
+					<th mat-header-cell *matHeaderCellDef> Name </th>
+					<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+				</ng-container>
 
-            <!-- assigned column -->
-            <ng-container matColumnDef="assignedTo">
-                <th mat-header-cell *matHeaderCellDef> Assigned </th>
-                <td mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
-            </ng-container>
+				<!-- username column -->
+				<ng-container matColumnDef="username">
+					<th mat-header-cell *matHeaderCellDef> Username </th>
+					<td mat-cell *matCellDef="let element"> {{element.username}} </td>
+				</ng-container>
+				
+				<!-- email column -->
+				<ng-container matColumnDef="email">
+					<th mat-header-cell *matHeaderCellDef> Email </th>
+					<td mat-cell *matCellDef="let element"> {{element.email}} </td>
+				</ng-container>
+				
+				<!-- Phone column -->
+				<ng-container matColumnDef="phone">
+					<th mat-header-cell *matHeaderCellDef> Phone </th>
+					<td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+				</ng-container>
 
-            <!-- created time column -->
-            <ng-container matColumnDef="createdTime">
-                <th mat-header-cell *matHeaderCellDef> Created time </th>
-                <td mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
-            </ng-container>
+				<!-- admin column -->
+				<ng-container matColumnDef="isAdmin">
+					<th mat-header-cell *matHeaderCellDef> Admin </th>
+					<td mat-cell *matCellDef="let element"> {{element.isAdmin}} </td>
+				</ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
-            <tr mat-row *matRowDef="let row; columns: contactDisplayedCols;"></tr>
-        </table>
-    </div>
-    
-    <div class="saleOrderContainer">
-        <p>Sale order information</p>
-        <table mat-table [dataSource]="saleOrderDataSrc" class="mat-elevation-z8">
-            <!-- subject column -->
-            <ng-container matColumnDef="subject">
-                <th mat-header-cell *matHeaderCellDef> Subject </th>
-                <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
-            </ng-container>
+				<!-- active olumn -->
+				<ng-container matColumnDef="isActive">
+					<th mat-header-cell *matHeaderCellDef> Active/Deactive </th>
+					<td mat-cell *matCellDef="let element"> {{element.isActive}} </td>
+					<!-- <td mat-cell *matCellDef="let element">
+						<mat-slide-toggle></mat-slide-toggle>
+					</td> -->
+				</ng-container>
+			
+				<!-- Created time Column -->
+				<ng-container matColumnDef="createdTime">
+					<th mat-header-cell *matHeaderCellDef> Ceated time </th>
+					<td mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
+				</ng-container>
+				
+				<!-- Modify contact infomation column -->
+				<ng-container matColumnDef="modify">
+					<th mat-header-cell *matHeaderCellDef> Modify </th>
+					<td mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
+				</ng-container>
 
-            <!-- total column -->
-            <ng-container matColumnDef="total">
-                <th mat-header-cell *matHeaderCellDef> Total </th>
-                <td mat-cell *matCellDef="let element"> {{element.total}} </td>
-            </ng-container>
-
-            <!-- created time column -->
-            <ng-container matColumnDef="createdTime">
-                <th mat-header-cell *matHeaderCellDef> Created time </th>
-                <td mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
-            <tr mat-row *matRowDef="let row; columns: saleOrderDisplayedCols;"></tr>
-        </table>
-    </div>
+				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+			</table>
+      	</div>
+    </div> <!-- End div list of contacts -->
 </div>

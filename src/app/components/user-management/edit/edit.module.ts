@@ -9,8 +9,8 @@ import {
 import { MatInputModule } from '@angular/material/input'; // import this to render form exactly
 import { MatNativeDateModule } from '@angular/material/core'; // require when using MatDatepickerModule
 
-import { AddUserComponent } from './add.component';
-import { AddUserRoutingModule } from './add-routing.module';
+import { EditUserComponent } from './edit.component';
+import { EditUserRoutingModule } from './edit-routing.module';
 
 const materials = [
     MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
@@ -22,10 +22,10 @@ const materials = [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        AddUserRoutingModule,
+        EditUserRoutingModule,
         materials,
     ],
-    declarations: [ AddUserComponent ],
+    declarations: [ EditUserComponent ],
 })
-export class AddUserModule {
+export class EditUserModule {
 }

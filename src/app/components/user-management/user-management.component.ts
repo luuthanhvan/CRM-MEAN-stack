@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Contact } from '../../interfaces/contact';
-import { SaleOrder } from '../../interfaces/sale-order';
-import { ContactsService } from '../../services/contacts/contacts.service';
-import { SalesOrderService } from '../../services/sales_order/sales-order.service';
+import { Router, NavigationExtras } from '@angular/router';
+import { User } from '../../interfaces/user';
+import { UserManagementService } from '../../services/user_management/user-management.service';
 
 @Component({
 	selector: 'app-user-management',
@@ -10,37 +9,40 @@ import { SalesOrderService } from '../../services/sales_order/sales-order.servic
 	styleUrls: ['./user-management.component.scss']
 })
 export class UserManagementComponent implements OnInit {
-	contactDataSrc : Contact[] = [];
-	saleOrderDataSrc : SaleOrder[] = [];
+	displayedColumns: string[] = [
+		"no",
+		"name",
+		"username",
+		"email",
+		"isAdmin",
+		"isActive",
+		"createdTime",
+		"modify",
+	];
+	dataSource : User[] = [];
 
-	contactDisplayedCols: string[] = ['contactName', 'assignedTo', 'createdTime'];
-	saleOrderDisplayedCols: string[] = ['subject', 'total', 'createdTime'];
-
-	constructor(private contactsService : ContactsService,
-				private salesOrderService : SalesOrderService) {
-		// get list of contacts
-		this.contactsService
-			.getContacts()
-			.subscribe((data) => {
-				this.contactDataSrc = data.map((value, index) => {
-					// if(index < 7)
-						return value;
-				});
-			});
+	constructor(private router: Router,
+				private userService: UserManagementService) {
 		
-		// get list of sales order
-		this.salesOrderService
-			.getSalesOrder()
-			.subscribe((data) => {
-				this.saleOrderDataSrc = data.map((value, index) => {
-					// while(index < 7)
-						return value;
-				});
+		// get list of users
+		this.userService.getUsers().subscribe((data) => {
+			this.dataSource = data.map((value, index) => {
+				value.no = index+1;
+				value.createdTime = new Date(value.createdTime).toLocaleString(); // format datetime
+				return value;
 			});
+		});
 	}
 
 	ngOnInit() {
 
 	}
 
+	// navigate to the edit sale order page
+	navigateToEdit(userId: string) {
+		let navigationExtras: NavigationExtras = {
+			queryParams: { id: userId },
+		};
+		this.router.navigate(["/user_management/edit"], navigationExtras);
+	}
 }
