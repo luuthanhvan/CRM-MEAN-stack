@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ContactsService {
-	salutations : String[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
-    leadSources : String[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
+	salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
+    leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     assignedToUsers : String[] = ['User1', 'User2', 'User3'];
 
 	SERVER_URL: string = "http://localhost:4040/contacts";

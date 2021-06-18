@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -21,7 +20,7 @@ export class SalesOrderService {
 	initSaleOrder(){
 		return this.formBuilder.group({
 			contactName: new FormControl(this.contactNames),
-            subject: new FormControl(),
+            subject: new FormControl(''),
             status: new FormControl(this.statusNames),
             total: new FormControl(''),
             assignedTo: new FormControl(this.assignedToUsers),

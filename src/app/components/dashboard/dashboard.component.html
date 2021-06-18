@@ -1,1 +1,75 @@
-<p>dashboard works!</p>
+<div class="contentContainer">
+    <!-- Widget 1: Number of contacts by lead source -->
+    <div class="contactChart">
+        <div style="display: block">
+            <canvas baseChart 
+                [data]="contactPieChartData" 
+                [labels]="contactPieChartLabels" 
+                [chartType]="contactPieChartType"
+                (chartHover)="chartHovered($event)" 
+                (chartClick)="chartClicked($event)">
+            </canvas>
+        </div>
+    </div>
+
+    <!-- Widget 2: Number of sales orders by status -->
+    <div class="saleOrderChart">
+        <div style="display: block">
+            <canvas baseChart 
+                [data]="saleOrderPieChartData" 
+                [labels]="saleOrderPieChartLabels" 
+                [chartType]="saleOrderPieChartType"
+                (chartHover)="chartHovered($event)" 
+                (chartClick)="chartClicked($event)">
+            </canvas>
+        </div>
+    </div>
+    
+    <!-- Widget 3:  Contact information -->
+    <div class="contactContainer">
+        <p>Contact information</p>
+        <table mat-table [dataSource]="contactDataSrc" class="mat-elevation-z8">
+            <ng-container matColumnDef="contactName">
+                <th mat-header-cell *matHeaderCellDef> Contact name </th>
+                <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="assignedTo">
+                <th mat-header-cell *matHeaderCellDef> Assigned </th>
+                <td mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="updatedTime">
+                <th mat-header-cell *matHeaderCellDef> Updated time </th>
+                <td mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
+            <tr mat-row *matRowDef="let row; columns: contactDisplayedCols;"></tr>
+        </table>
+    </div>
+    
+    <!-- Widget 4:  -->
+    <div class="saleOrderContainer">
+        <p>Sale order information</p>
+        <table mat-table [dataSource]="saleOrderDataSrc" class="mat-elevation-z8">
+            <ng-container matColumnDef="subject">
+                <th mat-header-cell *matHeaderCellDef> Subject </th>
+                <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="updatedTime">
+                <th mat-header-cell *matHeaderCellDef> Updated time </th>
+                <td mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
+            <tr mat-row *matRowDef="let row; columns: saleOrderDisplayedCols;"></tr>
+        </table>
+    </div>
+</div>

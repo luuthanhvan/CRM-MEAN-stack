@@ -12,10 +12,15 @@ import {
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule,
   MatDividerModule, MatFormFieldModule, MatDatepickerModule,
   MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
-  MatInputModule,
+  MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
 } from '@angular/material';
-
 import { MatNativeDateModule } from '@angular/material/core';
+
+/* ERROR NullInjectorError: StaticInjectorError(AppModule)[BaseChartDirective -> ThemeService]: 
+      StaticInjectorError(Platform: core)[BaseChartDirective -> ThemeService]: 
+      NullInjectorError: No provider for ThemeService! */
+/* import ThemeService and put it in providers of NgModule */
+import { ChartsModule, ThemeService } from 'ng2-charts';
 
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -25,7 +30,7 @@ import { UserManagementComponent } from './components/user-management/user-manag
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
-  MatGridListModule, MatSelectModule, MatInputModule,
+  MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule
 ];
 
 
@@ -43,9 +48,10 @@ const materials = [
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule, ReactiveFormsModule,
+    ChartsModule,
     materials,
   ],
-  providers: [],
+  providers: [ThemeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

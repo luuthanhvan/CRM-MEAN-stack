@@ -46,6 +46,10 @@ const routes: Routes = [
 		loadChildren: './components/user-management/add/add.module#AddUserModule',
 	},
 	{
+		path: 'user_management/edit',
+		loadChildren: './components/user-management/edit/edit.module#EditUserModule',
+	},
+	{
 		path: '', redirectTo: 'dashboard', pathMatch: 'full',
 	}
 ];
