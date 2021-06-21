@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
+import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
 
 @Component({
     selector: 'app-edit-contact',
@@ -11,10 +12,12 @@ export class EditContactsComponent implements OnInit {
     contactFormInfo: FormGroup;
     contactId : string;
     createdTime: any;
+    users : any;
 
     constructor(protected router: Router, 
                 private route: ActivatedRoute,
-                protected contactsService : ContactsService){
+                protected contactsService : ContactsService,
+                private userService : UserManagementService){
         
         // get contact ID from contact page
         this.route.queryParams.subscribe((params) => {
@@ -22,6 +25,15 @@ export class EditContactsComponent implements OnInit {
         });
 
         this.contactFormInfo = this.contactsService.initContact();
+        // get list of users from database and display them to the Assigned field in the contactFormInfo
+        this.userService
+            .getUsers()
+            .subscribe((data) => {
+                this.users = data.map((value) => {
+                    return {userId: value._id,
+                            name: value.name};
+                });      
+            });
     }
 
     ngOnInit(){

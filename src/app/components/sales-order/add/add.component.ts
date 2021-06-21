@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
+import { ContactsService } from '../../../services/contacts/contacts.service';
+import { UserManagementService } from '../../../services/user_management/user-management.service';
 
 @Component({
     selector: 'app-add-sales-order',
@@ -9,13 +11,38 @@ import { SalesOrderService } from '../../../services/sales_order/sales-order.ser
 })
 export class AddSaleOrderComponent implements OnInit{
     
-    saleOrderFormInfo: FormGroup; // typescript variable declaration
+    saleOrderFormInfo : FormGroup; // typescript variable declaration
+    contacts : any;
+    users : any;
+
+    test : any;
 
     constructor(protected router : Router,
-                protected salesOrderService: SalesOrderService){}
+                protected salesOrderService: SalesOrderService,
+                private contactService : ContactsService,
+                private userService : UserManagementService){}
 
     ngOnInit(){
         this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();
+        // get list of contacts name from database and display them to the Contact name field in saleOrderForm
+        this.contactService
+            .getContacts()
+            .subscribe((data) => {
+                this.contacts = data.map((value) => {
+                    return {contactId : value._id,
+                            contactName: value.contactName};
+                });
+            });
+        
+        // get list of users from database and display them to the Assigned field in saleOrderForm
+        this.userService
+            .getUsers()
+            .subscribe((data) => {
+                this.users = data.map((value) => {
+                    return {userId: value._id,
+                            name: value.name};
+                });
+            });
     }
 
     // function to handle upload data from Sale order form to server
@@ -23,6 +50,8 @@ export class AddSaleOrderComponent implements OnInit{
         let saleOrderInfo = form.value;
         saleOrderInfo.createdTime = new Date(Date.now()).toLocaleString();
         saleOrderInfo.updatedTime = new Date(Date.now()).toLocaleString();
+
+        // console.log(saleOrderInfo);
 
         this.salesOrderService
             .addSaleOrder(saleOrderInfo)

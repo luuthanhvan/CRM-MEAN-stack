@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
+import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
 
 @Component({
     selector: 'app-add-contact',
@@ -9,12 +10,23 @@ import { ContactsService } from '../../../services/contacts/contacts.service'; /
 })
 export class AddContactComponent implements OnInit{
     contactFormInfo: FormGroup; // typescript variable declaration
+    users : any;
 
-    constructor(protected contactsService: ContactsService,
-                protected router: Router){}
+    constructor(protected contactsService : ContactsService,
+                private userService : UserManagementService,
+                protected router : Router){}
 
     ngOnInit(){
         this.contactFormInfo = this.contactsService.initContact();
+        // get list of users from database and display them to the Assigned field in the contactFormInfo
+        this.userService
+            .getUsers()
+            .subscribe((data) => {
+                this.users = data.map((value) => {
+                    return {userId: value._id,
+                            name: value.name};
+                });      
+            });
     }
 
     // function to handle upload contact information to server

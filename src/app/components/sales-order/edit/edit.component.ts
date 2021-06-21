@@ -2,25 +2,50 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
+import { ContactsService } from '../../../services/contacts/contacts.service';
+import { UserManagementService } from '../../../services/user_management/user-management.service';
 
 @Component({
     selector: 'app-edit-sales-order',
     templateUrl: './edit.component.html',
 })
 export class EditSalesOrderComponent implements OnInit {
-    saleOrderFormInfo: FormGroup; // typescript variable declaration
-    saleOrderId: string;
-    createdTime: any;
+    saleOrderFormInfo : FormGroup; // typescript variable declaration
+    contacts : any;
+    saleOrderId : string;
+    createdTime : any;
+    users : any;
 
     constructor(private route: ActivatedRoute,
                 protected router: Router,
-                protected salesOrderService : SalesOrderService){
+                protected salesOrderService : SalesOrderService,
+                private contactService : ContactsService,
+                private userService : UserManagementService){
         
         this.route.queryParams.subscribe((params) => {
             this.saleOrderId = params['id'];
         });
 
         this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();
+        // get list of contacts name from database and display them to the Contact name field in saleOrderForm
+        this.contactService
+            .getContacts()
+            .subscribe((data) => {
+                this.contacts = data.map((value) => {
+                    return {contactId : value._id,
+                            contactName: value.contactName};
+                });
+            });
+        
+        // get list of users from database and display them to the Assigned field in saleOrderForm
+        this.userService
+            .getUsers()
+            .subscribe((data) => {
+                this.users = data.map((value) => {
+                    return {userId: value._id,
+                            name: value.name};
+                });
+            });
     }
 
     ngOnInit(){
