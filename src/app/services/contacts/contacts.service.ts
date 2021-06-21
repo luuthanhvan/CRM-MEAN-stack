@@ -11,7 +11,6 @@ import { map } from 'rxjs/operators';
 export class ContactsService {
 	salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
-    assignedToUsers : String[] = ['User1', 'User2', 'User3'];
 
 	SERVER_URL: string = "http://localhost:4040/contacts";
 
@@ -27,7 +26,7 @@ export class ContactsService {
             organization: new FormControl(''),
             dob: new FormControl(''),
             leadSrc: new FormControl(this.leadSources),
-            assignedTo: new FormControl(this.assignedToUsers),
+            assignedTo: new FormControl([]),
             address: new FormControl(''),
             description: new FormControl(''),
 		});

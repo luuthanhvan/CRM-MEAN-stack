@@ -9,7 +9,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Contact name</mat-label>
                     <mat-select formControlName="contactName">
-                        <mat-option *ngFor="let contact of contacts" [value]="contact['contactId']">{{contact['contactName']}}</mat-option>
+                        <mat-option *ngFor="let contact of contacts" [value]="contact['contactName']">{{contact['contactName']}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -42,7 +42,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Assigned</mat-label>
                     <mat-select formControlName="assignedTo">
-                        <mat-option *ngFor="let user of users" [value]="user['userId']">{{user['name']}}</mat-option>
+                        <mat-option *ngFor="let user of users" [value]="user['name']">{{user['name']}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>

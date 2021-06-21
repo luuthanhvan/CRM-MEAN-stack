@@ -8,8 +8,8 @@ const User = new Schema({
     password: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
-    isAdmin: { type: Boolean, required: true },
-    isActive: { type: Boolean, required: true },
+    isAdmin: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: false },
     createdTime: { type: Date, default: Date.now().toLocaleString() },
 });
 

@@ -40,6 +40,8 @@ export class ContactsComponent implements OnInit {
         this.contactsService.getContacts().subscribe((data) => {
             this.dataSource = data.map((value, index) => {
                 value.no = index+1;
+                value.createdTime = new Date(value.createdTime).toLocaleString();
+                value.updatedTime = new Date(value.updatedTime).toLocaleString();
                 return value;
             });
         });

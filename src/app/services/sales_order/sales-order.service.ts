@@ -9,9 +9,7 @@ import { SaleOrder } from '../../interfaces/sale-order'; // import sale order in
   providedIn: 'root'
 })
 export class SalesOrderService {
-	// contactNames : String[] =  ['A', 'B', 'C', 'D', 'E', 'F'];
     statusNames: any[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
-    // assignedToUsers : String[] = ['User1', 'User2', 'User3'];
 	SERVER_URL: string = "http://localhost:4040/sales_order";
 	
 	constructor(private formBuilder : FormBuilder,

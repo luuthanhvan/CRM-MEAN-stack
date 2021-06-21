@@ -21,8 +21,8 @@ export class UserManagementService {
 			password: new FormControl(''),
 			email: new FormControl(''),
 			phone: new FormControl(''),
-			isAdmin: new FormControl(''),
-			isActive: new FormControl(''),
+			isAdmin: new FormControl(false),
+			isActive: new FormControl(false),
 		});
 	}
 

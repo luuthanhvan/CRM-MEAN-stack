@@ -22,6 +22,7 @@ export class AddUserComponent implements OnInit{
         let userInfo = form.value;
         userInfo.createdTime = new Date(Date.now()).toLocaleString();
         
+        // console.log(userInfo);
         this.userService
             .addUser(userInfo)
             .subscribe((res) => {

@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
 			.getContacts()
 			.subscribe((data) => {
 				this.contactDataSrc = data.map((value, index) => {
+					value.updatedTime = new Date(value.updatedTime).toLocaleString();
 					return value;
 				});
 			});
@@ -44,6 +45,7 @@ export class DashboardComponent implements OnInit {
 			.getSalesOrder()
 			.subscribe((data) => {
 				this.saleOrderDataSrc = data.map((value, index) => {
+					value.updatedTime = new Date(value.updatedTime).toLocaleString();
 					return value;
 				});
 			});

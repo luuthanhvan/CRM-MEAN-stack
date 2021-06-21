@@ -38,6 +38,8 @@ export class SalesOrderComponent implements OnInit {
 				console.log(data);
 				this.dataSource = data.map((value, index) => {
 					value.no = index+1;
+					value.createdTime = new Date(value.createdTime).toLocaleString();
+					value.updatedTime = new Date(value.updatedTime).toLocaleString();
 					return value;
 				});
 			});
