@@ -11,10 +11,12 @@ import { UserManagementService } from '../../../services/user_management/user-ma
 })
 export class EditSalesOrderComponent implements OnInit {
     saleOrderFormInfo : FormGroup; // typescript variable declaration
+    statusNames: any[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
     contacts : any;
     saleOrderId : string;
     createdTime : any;
     users : any;
+    submitted = false;
 
     constructor(private route: ActivatedRoute,
                 protected router: Router,
@@ -63,6 +65,10 @@ export class EditSalesOrderComponent implements OnInit {
                 });
                 this.createdTime = data.createdTime; // to keep the created time when update new sale order info
             });
+    }
+
+    get saleOrderFormControl(){
+        return this.saleOrderFormInfo.controls;
     }
 
     // function to handle update a sale order

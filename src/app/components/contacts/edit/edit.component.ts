@@ -10,10 +10,13 @@ import { UserManagementService } from '../../../services/user_management/user-ma
 })
 export class EditContactsComponent implements OnInit {
     contactFormInfo: FormGroup;
+    salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
+    leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     contactId : string;
     createdTime: any;
     users : any;
-
+    submitted = false;
+    
     constructor(protected router: Router, 
                 private route: ActivatedRoute,
                 protected contactsService : ContactsService,
@@ -57,8 +60,13 @@ export class EditContactsComponent implements OnInit {
             });
     }
 
+    get contactFormControl(){
+        return this.contactFormInfo.controls;
+    }
+
     // function to handle update a contact
     onUpdate(form: FormGroup){
+        this.submitted = true;
         let contactInfo = form.value;
         contactInfo.createdTime = this.createdTime;
         contactInfo.updatedTime = new Date(Date.now()).toLocaleString();

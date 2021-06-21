@@ -10,6 +10,7 @@ import { UserManagementService } from '../../../services/user_management/user-ma
 export class AddUserComponent implements OnInit{
     
     userFormInfo: FormGroup; // typescript variable declaration
+    submitted = false;
 
     constructor(protected router: Router,
                 private userService : UserManagementService){}
@@ -18,7 +19,12 @@ export class AddUserComponent implements OnInit{
         this.userFormInfo = this.userService.initUser();
     }
 
+    get contactFormControl(){
+        return this.userFormInfo.controls;
+    }
+
     onSubmit(form: FormGroup){
+        this.submitted = true;
         let userInfo = form.value;
         userInfo.createdTime = new Date(Date.now()).toLocaleString();
         

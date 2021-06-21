@@ -47,7 +47,7 @@ export class SalesOrderComponent implements OnInit {
 
 	ngOnInit() {
 		this.filtersForm = this.formBuilder.group({
-			status: new FormControl(this.salesOrderService.statusNames),
+			// status: new FormControl(statusNames),
             createdTime: new FormControl(''),
             updatedTime: new FormControl(''),
 		});

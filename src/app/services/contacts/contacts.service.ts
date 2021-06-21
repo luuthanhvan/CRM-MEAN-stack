@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Contact } from '../../interfaces/contact';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,9 +9,6 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ContactsService {
-	salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
-    leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
-
 	SERVER_URL: string = "http://localhost:4040/contacts";
 
 	constructor(private httpClient: HttpClient,
@@ -19,14 +16,14 @@ export class ContactsService {
 	
 	initContact(){
 		return this.formBuilder.group({
-			contactName: new FormControl(''),
-            salutation: new FormControl(this.salutations),
-            mobilePhone: new FormControl(''),
-            email: new FormControl(''),
+			contactName: new FormControl('', [Validators.required]),
+            salutation: new FormControl([], [Validators.required]),
+            mobilePhone: new FormControl('', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
+            email: new FormControl('', [Validators.email]),
             organization: new FormControl(''),
             dob: new FormControl(''),
-            leadSrc: new FormControl(this.leadSources),
-            assignedTo: new FormControl([]),
+            leadSrc: new FormControl([], [Validators.required]),
+            assignedTo: new FormControl([], [Validators.required]),
             address: new FormControl(''),
             description: new FormControl(''),
 		});

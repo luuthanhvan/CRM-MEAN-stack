@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +9,6 @@ import { SaleOrder } from '../../interfaces/sale-order'; // import sale order in
   providedIn: 'root'
 })
 export class SalesOrderService {
-    statusNames: any[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
 	SERVER_URL: string = "http://localhost:4040/sales_order";
 	
 	constructor(private formBuilder : FormBuilder,
@@ -17,11 +16,11 @@ export class SalesOrderService {
 	
 	initSaleOrder(){
 		return this.formBuilder.group({
-			contactName: new FormControl([]),
-            subject: new FormControl(''),
-            status: new FormControl(this.statusNames),
-            total: new FormControl(''),
-            assignedTo: new FormControl([]),
+			contactName: new FormControl([], [Validators.required]),
+            subject: new FormControl('', [Validators.required]),
+            status: new FormControl([], [Validators.required]),
+            total: new FormControl('', [Validators.required]),
+            assignedTo: new FormControl([], [Validators.required]),
             description: new FormControl(''),
 		});
 	}

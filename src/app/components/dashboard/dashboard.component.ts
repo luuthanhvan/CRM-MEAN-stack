@@ -18,12 +18,12 @@ export class DashboardComponent implements OnInit {
 	saleOrderDisplayedCols : string[] = ['subject', 'total', 'updatedTime'];
 	
 	// Pie chard for contact
-	contactPieChartLabels : string[] = this.contactsService.leadSources;
+	contactPieChartLabels : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];;
 	contactPieChartData : number[] = [40, 20, 15 , 10, 10, 5];
 	contactPieChartType : string = 'pie';
 	
 	// Pie chard for sale order
-	saleOrderPieChartLabels : string[] = this.salesOrderService.statusNames;
+	saleOrderPieChartLabels : string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
 	saleOrderPieChartData : number[] = [40, 20, 30, 10];
 	saleOrderPieChartType : string = 'pie';
 	

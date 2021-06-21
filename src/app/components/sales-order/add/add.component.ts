@@ -10,12 +10,11 @@ import { UserManagementService } from '../../../services/user_management/user-ma
     templateUrl: './add.component.html',
 })
 export class AddSaleOrderComponent implements OnInit{
-    
+    statusNames: any[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
     saleOrderFormInfo : FormGroup; // typescript variable declaration
     contacts : any;
     users : any;
-
-    test : any;
+    submitted = false;
 
     constructor(protected router : Router,
                 protected salesOrderService: SalesOrderService,
@@ -43,6 +42,10 @@ export class AddSaleOrderComponent implements OnInit{
                             name: value.name};
                 });
             });
+    }
+
+    get saleOrderFormControl(){
+        return this.saleOrderFormInfo.controls;
     }
 
     // function to handle upload data from Sale order form to server

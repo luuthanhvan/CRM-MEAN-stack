@@ -10,7 +10,10 @@ import { UserManagementService } from '../../../services/user_management/user-ma
 })
 export class AddContactComponent implements OnInit{
     contactFormInfo: FormGroup; // typescript variable declaration
+    salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
+    leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     users : any;
+    submitted = false;
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,
@@ -29,8 +32,13 @@ export class AddContactComponent implements OnInit{
             });
     }
 
+    get contactFormControl(){
+        return this.contactFormInfo.controls;
+    }
+
     // function to handle upload contact information to server
     onSubmit(form: FormGroup){
+        this.submitted = true;
         let contactInfo = form.value;
         contactInfo.createdTime = new Date(Date.now()).toLocaleString();
         contactInfo.updatedTime = new Date(Date.now()).toLocaleString();

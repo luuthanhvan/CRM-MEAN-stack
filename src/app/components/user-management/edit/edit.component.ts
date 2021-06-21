@@ -11,6 +11,7 @@ export class EditUserComponent implements OnInit{
     userFormInfo: FormGroup;
     userId : string;
     createdTime : any;
+    submitted = false;
 
     constructor(protected router: Router,
                 private route : ActivatedRoute,
@@ -33,6 +34,7 @@ export class EditUserComponent implements OnInit{
                     name: data.name,
                     username: data.username,
                     password: data.password,
+                    confirmPassword: data.password,
                     email: data.email,
                     phone: data.phone,
                     isAdmin: data.isAdmin,
@@ -42,7 +44,12 @@ export class EditUserComponent implements OnInit{
             });
     }
 
+    get contactFormControl(){
+        return this.userFormInfo.controls;
+    }
+
     onUpdate(form: FormControl){
+        this.submitted = true;
         let userInfo = form.value;
         userInfo.createdTime = this.createdTime;
         

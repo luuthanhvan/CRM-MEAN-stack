@@ -9,15 +9,29 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Contact name</mat-label>
                     <input matInput formControlName="contactName">
+
+                    <!-- contact name validation error -->
+                    <div *ngIf="contactFormControl.contactName.touched || submitted">
+                        <span *ngIf="contactFormControl.contactName.errors?.required">
+                            Contact name is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
-
+            
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Salutation</mat-label>
                     <mat-select formControlName="salutation">
-                        <mat-option *ngFor="let s of contactsService.salutations" [value]="s">{{s}}</mat-option>
+                        <mat-option *ngFor="let s of salutations" [value]="s">{{s}}</mat-option>
                     </mat-select>
+                    
+                    <!-- salutation validation error -->
+                    <div *ngIf="contactFormControl.salutation.touched || submitted">
+                        <span *ngIf="contactFormControl.salutation.errors?.required">
+                            Salutation is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -25,6 +39,16 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Mobile phone</mat-label>
                     <input matInput formControlName="mobilePhone">
+
+                    <!-- mobile phone validation error -->
+                    <div *ngIf="contactFormControl.mobilePhone.touched || submitted">
+                        <span *ngIf="contactFormControl.mobilePhone.errors?.required">
+                            Mobile phone is required
+                        </span>
+                        <span *ngIf="contactFormControl.mobilePhone.errors?.pattern">
+                            Invalid mobile phone number
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
             
@@ -32,6 +56,13 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email">
+                    
+                    <!-- email validation error -->
+                    <div *ngIf="contactFormControl.email.touched || submitted">
+                        <span *ngIf="contactFormControl.email.errors.email">
+                            Invalid email address
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -46,8 +77,15 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Lead source</mat-label>
                     <mat-select formControlName="leadSrc">
-                        <mat-option *ngFor="let src of contactsService.leadSources" [value]="src">{{src}}</mat-option>
+                        <mat-option *ngFor="let src of leadSources" [value]="src">{{src}}</mat-option>
                     </mat-select>
+
+                    <!-- lead source validation error -->
+                    <div *ngIf="contactFormControl.leadSrc.touched || submitted">
+                        <span *ngIf="contactFormControl.leadSrc.errors?.required">
+                            Lead source is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -57,6 +95,13 @@
                     <mat-select formControlName="assignedTo">
                         <mat-option *ngFor="let user of users" [value]="user['name']">{{user['name']}}</mat-option>
                     </mat-select>
+
+                    <!-- assigned validation error -->
+                    <div *ngIf="contactFormControl.assignedTo.touched || submitted">
+                        <span *ngIf="contactFormControl.assignedTo.errors?.required">
+                            Assigned is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -87,8 +132,9 @@
     
     <section class="button-row">
         <div>
-          <button mat-button type="submit">Create</button>
-          <button mat-button (click)="router.navigate(['/contacts'])">Back</button>
+            <!-- disable submit button when form invalid -->
+            <button mat-button type="submit" [disabled]="contactFormInfo.invalid">Create</button>
+            <button mat-button (click)="router.navigate(['/contacts'])">Back</button>
         </div>
     </section>
 </form>

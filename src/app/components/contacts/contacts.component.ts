@@ -47,7 +47,7 @@ export class ContactsComponent implements OnInit {
         });
 
         this.filtersForm = this.formBuilder.group({
-            leadSrc: new FormControl(this.contactsService.leadSources),
+            // leadSrc: new FormControl(this.contactsService.leadSources),
             createdTime: new FormControl(''),
             updatedTime: new FormControl(''),
         });

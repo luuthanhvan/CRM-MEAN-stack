@@ -11,6 +11,13 @@
                     <mat-select formControlName="contactName">
                         <mat-option *ngFor="let contact of contacts" [value]="contact['contactName']">{{contact['contactName']}}</mat-option>
                     </mat-select>
+
+                    <!-- contact name validation error -->
+                    <div *ngIf="saleOrderFormControl.contactName.touched || submitted">
+                        <span *ngIf="saleOrderFormControl.contactName.errors?.required">
+                            Contact name is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -18,6 +25,13 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Subject</mat-label>
                     <input matInput formControlName="subject">
+
+                    <!-- subject validation error -->
+                    <div *ngIf="saleOrderFormControl.subject.touched || submitted">
+                        <span *ngIf="saleOrderFormControl.subject.errors?.required">
+                            Subject is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -25,8 +39,15 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Status</mat-label>
                     <mat-select formControlName="status">
-                        <mat-option *ngFor="let stt of salesOrderService.statusNames" [value]="stt">{{stt}}</mat-option>
+                        <mat-option *ngFor="let stt of statusNames" [value]="stt">{{stt}}</mat-option>
                     </mat-select>
+
+                    <!-- status validation error -->
+                    <div *ngIf="saleOrderFormControl.status.touched || submitted">
+                        <span *ngIf="saleOrderFormControl.status.errors?.required">
+                            Status is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -34,6 +55,13 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Total</mat-label>
                     <input matInput formControlName="total">
+
+                    <!-- total validation error -->
+                    <div *ngIf="saleOrderFormControl.total.touched || submitted">
+                        <span *ngIf="saleOrderFormControl.total.errors?.required">
+                            Total is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
             
@@ -44,6 +72,13 @@
                     <mat-select formControlName="assignedTo">
                         <mat-option *ngFor="let user of users" [value]="user['name']">{{user['name']}}</mat-option>
                     </mat-select>
+
+                    <!-- assigned validation error -->
+                    <div *ngIf="saleOrderFormControl.assignedTo.touched || submitted">
+                        <span *ngIf="saleOrderFormControl.assignedTo.errors?.required">
+                            Assigned is required
+                        </span>
+                    </div>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -59,7 +94,7 @@
     
     <section class="button-row">
         <div>
-          <button mat-button type="submit">Create</button>
+          <button mat-button type="submit" [disabled]="saleOrderFormInfo.invalid">Create</button>
           <button mat-button (click)="router.navigate(['/sales_order'])">Back</button>
         </div>
     </section>
