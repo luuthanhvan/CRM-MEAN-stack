@@ -1,22 +1,41 @@
 .contentContainer {
-    // display: flex;
-    // border: 1px solid yellow;
-    .contactContainer, .saleOrderContainer{
-        width: 50%;
-        overflow: hidden;
+    margin: 0;
+    overflow: hidden;
+
+    .contactChart, .saleOrderChart, .contact, .saleOrder {
+        width: 47%;
         background-color: white;
-        table {
-            width: 95%;
-            margin: 16px auto;
-        }
+        margin: 17px;
+        
     }
 
-    .contactContainer {
+    .contactChart, .saleOrderChart {
+        height: 300px;
+    }
+
+    .contact, .saleOrder {
+        height: 500px;
+        margin-top:0;
+    }
+
+    .contactChart, .contact{
         float: left;
-        // border-right: 1px solid gray;
     }
 
-    .saleOrderContainer {
+    .saleOrderChart, .saleOrder {
         float: right;
     }
+
+    .contact, .saleOrder {
+        table, mat-paginator, p {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        p, mat-paginator {
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+    }
+    
 }

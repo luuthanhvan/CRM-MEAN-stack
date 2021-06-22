@@ -13,6 +13,7 @@ import {
   MatDividerModule, MatFormFieldModule, MatDatepickerModule,
   MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
   MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
+  MatPaginatorModule, MatSortModule, MatTabsModule,
 } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -30,7 +31,8 @@ import { UserManagementComponent } from './components/user-management/user-manag
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
-  MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule
+  MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
+  MatPaginatorModule, MatSortModule, MatTabsModule,
 ];
 
 
