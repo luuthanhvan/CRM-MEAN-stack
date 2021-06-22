@@ -10,10 +10,10 @@ import { UserManagementService } from '../../../services/user_management/user-ma
     templateUrl: './add.component.html',
 })
 export class AddSaleOrderComponent implements OnInit{
-    statusNames: any[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
+    statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
     saleOrderFormInfo : FormGroup; // typescript variable declaration
-    contacts : any;
-    users : any;
+    contacts : Object;
+    users : Object;
     submitted = false;
 
     constructor(protected router : Router,

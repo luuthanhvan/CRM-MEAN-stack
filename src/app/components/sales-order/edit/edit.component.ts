@@ -11,11 +11,11 @@ import { UserManagementService } from '../../../services/user_management/user-ma
 })
 export class EditSalesOrderComponent implements OnInit {
     saleOrderFormInfo : FormGroup; // typescript variable declaration
-    statusNames: any[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
-    contacts : any;
+    statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
+    contacts : Object;
     saleOrderId : string;
-    createdTime : any;
-    users : any;
+    createdTime : string;
+    users : Object;
     submitted = false;
 
     constructor(private route: ActivatedRoute,

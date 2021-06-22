@@ -12,7 +12,7 @@ export class AddContactComponent implements OnInit{
     contactFormInfo: FormGroup; // typescript variable declaration
     salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
-    users : any;
+    users : Object;
     submitted = false;
 
     constructor(protected contactsService : ContactsService,

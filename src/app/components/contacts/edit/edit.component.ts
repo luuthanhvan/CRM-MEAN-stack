@@ -13,8 +13,8 @@ export class EditContactsComponent implements OnInit {
     salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     contactId : string;
-    createdTime: any;
-    users : any;
+    createdTime: string;
+    users : Object;
     submitted = false;
     
     constructor(protected router: Router, 

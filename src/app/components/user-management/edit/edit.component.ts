@@ -10,7 +10,7 @@ import { UserManagementService } from '../../../services/user_management/user-ma
 export class EditUserComponent implements OnInit{
     userFormInfo: FormGroup;
     userId : string;
-    createdTime : any;
+    createdTime : string;
     submitted = false;
 
     constructor(protected router: Router,
