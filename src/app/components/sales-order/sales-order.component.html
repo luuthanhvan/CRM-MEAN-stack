@@ -19,8 +19,8 @@
 				<mat-grid-tile>
 					<mat-form-field appearance="outline">
 						<mat-label>Status</mat-label>
-						<mat-select formControlName="status">
-							<mat-option *ngFor="let stt of salesOrderService.statusNames" [value]="stt">{{stt}}</mat-option>
+						<mat-select> <!-- formControlName="status"> -->
+							<!-- <mat-option *ngFor="let stt of salesOrderService.statusNames" [value]="stt">{{stt}}</mat-option> -->
 						</mat-select>
 					</mat-form-field>
 				</mat-grid-tile>

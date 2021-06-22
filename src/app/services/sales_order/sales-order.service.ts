@@ -19,7 +19,7 @@ export class SalesOrderService {
 			contactName: new FormControl([], [Validators.required]),
             subject: new FormControl('', [Validators.required]),
             status: new FormControl([], [Validators.required]),
-            total: new FormControl('', [Validators.required]),
+            total: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+$")]),
             assignedTo: new FormControl([], [Validators.required]),
             description: new FormControl(''),
 		});

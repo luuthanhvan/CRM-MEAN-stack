@@ -59,7 +59,7 @@
                     
                     <!-- email validation error -->
                     <div *ngIf="contactFormControl.email.touched || submitted">
-                        <span *ngIf="contactFormControl.email.errors.email">
+                        <span *ngIf="contactFormControl.email.errors?.email">
                             Invalid email address
                         </span>
                     </div>

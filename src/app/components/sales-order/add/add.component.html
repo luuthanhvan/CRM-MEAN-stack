@@ -61,6 +61,9 @@
                         <span *ngIf="saleOrderFormControl.total.errors?.required">
                             Total is required
                         </span>
+                        <span *ngIf="saleOrderFormControl.total.errors?.pattern">
+                            Total must be a number
+                        </span>
                     </div>
                 </mat-form-field>
             </mat-grid-tile>

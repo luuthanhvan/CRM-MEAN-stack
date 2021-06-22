@@ -20,8 +20,8 @@
 				<mat-grid-tile>
 					<mat-form-field appearance="outline">
 						<mat-label>Lead source</mat-label>
-						<mat-select formControlName="leadSrc">
-							<mat-option *ngFor="let src of contactsService.leadSources" [value]="src">{{src}}</mat-option>
+						<mat-select> <!-- formControlName="leadSrc"> -->
+							<!-- <mat-option *ngFor="let src of contactsService.leadSources" [value]="src">{{src}}</mat-option> -->
 						</mat-select>
 					</mat-form-field>
 				</mat-grid-tile>

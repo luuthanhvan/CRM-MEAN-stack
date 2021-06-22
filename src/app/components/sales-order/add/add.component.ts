@@ -50,6 +50,7 @@ export class AddSaleOrderComponent implements OnInit{
 
     // function to handle upload data from Sale order form to server
     onSubmit(form: FormGroup){
+        this.submitted = true;
         let saleOrderInfo = form.value;
         saleOrderInfo.createdTime = new Date(Date.now()).toLocaleString();
         saleOrderInfo.updatedTime = new Date(Date.now()).toLocaleString();
