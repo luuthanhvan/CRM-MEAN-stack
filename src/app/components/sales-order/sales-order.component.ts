@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router, NavigationExtras } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
 import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
 
@@ -24,18 +25,19 @@ export class SalesOrderComponent implements OnInit {
 		"delete",
 	];
  	dataSource: SaleOrder[] = [];
+	statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
 
-	filtersForm : FormGroup;
+	statusForm : FormGroup;
 
 	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
-				private formBuilder: FormBuilder){
+				private formBuilder: FormBuilder,
+				public dialog: MatDialog,){
 
 		// get list of sales order
 		this.salesOrderService
 			.getSalesOrder()
 			.subscribe((data) => {
-				console.log(data);
 				this.dataSource = data.map((value, index) => {
 					value.no = index+1;
 					value.createdTime = new Date(value.createdTime).toLocaleString();
@@ -46,10 +48,8 @@ export class SalesOrderComponent implements OnInit {
   	}
 
 	ngOnInit() {
-		this.filtersForm = this.formBuilder.group({
-			// status: new FormControl(statusNames),
-            createdTime: new FormControl(''),
-            updatedTime: new FormControl(''),
+		this.statusForm = this.formBuilder.group({
+			status: new FormControl(''),
 		});
 	}
 
@@ -75,4 +75,59 @@ export class SalesOrderComponent implements OnInit {
 					location.reload(); // reload the sales order page
 			});
 	}
+
+	openDialog(dialogName : string){
+        if(dialogName === 'createdTime'){
+            let dialogRef = this.dialog.open(SalesOrderCreatedTimeDialogComponent);
+            dialogRef.afterClosed().subscribe(result => {
+                // console.log(`Dialog result: ${result}`);
+            });
+        }
+
+        else if(dialogName === 'updatedTime'){
+            let dialogRef = this.dialog.open(SalesOrderUpdatedTimeDialogComponent);
+            dialogRef.afterClosed().subscribe(result => {
+                // console.log(`Dialog result: ${result}`);
+            });
+        }
+    }
+}
+
+@Component({
+    selector: 'sales-order-created-time-dialog',
+    templateUrl: 'sales-order-created-time-dialog.component.html'
+})
+export class SalesOrderCreatedTimeDialogComponent implements OnInit {
+    createdTimeForm : FormGroup;
+
+    constructor(private formBuilder: FormBuilder){
+
+    }
+
+    ngOnInit() {
+        this.createdTimeForm = this.formBuilder.group({
+            createdTimeFrom : new FormControl(''),
+            createdTimeTo : new FormControl(''),
+        });
+    }
+}
+
+@Component({
+    selector: 'sales-order-updated-time-dialog',
+    templateUrl: 'sales-order-updated-time-dialog.component.html'
+})
+export class SalesOrderUpdatedTimeDialogComponent implements OnInit{
+    
+    updatedTimeForm : FormGroup;
+
+    constructor(private formBuilder: FormBuilder){
+
+    }
+
+    ngOnInit() {
+        this.updatedTimeForm = this.formBuilder.group({
+            updatedTimeFrom : new FormControl(''),
+            updatedTimeTo : new FormControl(''),
+        });
+    }
 }

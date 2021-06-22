@@ -1,0 +1,15 @@
+<form [formGroup]="updatedTimeForm">
+    <mat-form-field appearance="outline">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="updatedTimeFromPicker" formControlName="updatedTimeFrom">
+        <mat-datepicker-toggle matSuffix [for]="updatedTimeFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #updatedTimeFromPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="updatedTimeToPicker" formControlName="updatedTimeTo">
+        <mat-datepicker-toggle matSuffix [for]="updatedTimeToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #updatedTimeToPicker></mat-datepicker>
+    </mat-form-field>
+</form>

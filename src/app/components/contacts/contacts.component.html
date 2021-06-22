@@ -16,39 +16,28 @@
 		<mat-grid-list cols="3" rowHeight="75px">
 			<mat-grid-tile [colspan]="3"><h2>Filters</h2></mat-grid-tile>
 
-			<form [formGroup]="filtersForm">
+			<form [formGroup]="leadSource">
 				<mat-grid-tile>
 					<mat-form-field appearance="outline">
 						<mat-label>Lead source</mat-label>
-						<mat-select> <!-- formControlName="leadSrc"> -->
-							<!-- <mat-option *ngFor="let src of contactsService.leadSources" [value]="src">{{src}}</mat-option> -->
+						<mat-select formControlName="leadSrc">
+							<mat-option *ngFor="let src of leadSources" [value]="src">{{src}}</mat-option>
 						</mat-select>
 					</mat-form-field>
 				</mat-grid-tile>
-	
-				<mat-grid-tile>
-					<mat-form-field appearance="outline">
-						<mat-label>Created time</mat-label>
-						<input matInput [matDatepicker]="createdTimePicker" formControlName="createdTime">
-						<mat-datepicker-toggle matSuffix [for]="createdTimePicker"></mat-datepicker-toggle>
-						<mat-datepicker #createdTimePicker></mat-datepicker>
-					</mat-form-field>
-				</mat-grid-tile>
-	
-				<mat-grid-tile>
-					<mat-form-field appearance="outline">
-						<mat-label>Updated time</mat-label>
-						<input matInput [matDatepicker]="updatedTimePicker" formControlName="updatedTime">
-						<mat-datepicker-toggle matSuffix [for]="updatedTimePicker"></mat-datepicker-toggle>
-						<mat-datepicker #updatedTimePicker></mat-datepicker>
-					</mat-form-field>
-				</mat-grid-tile>
+			</form>
+			<mat-grid-tile>
+				<button mat-button (click)="openDialog('createdTime')">Choose created time</button>
+			</mat-grid-tile>
 
-			  	<mat-grid-tile [colspan]="3">
-					<button mat-button type="submit">Apply</button>
-					<button mat-button (click)="onCancel()">Cancel</button>
-				</mat-grid-tile>
-      		</form>
+			<mat-grid-tile>
+				<button mat-button (click)="openDialog('updatedTime')">Choose updated time</button>
+			</mat-grid-tile>
+
+			<mat-grid-tile [colspan]="3">
+				<button mat-button type="submit">Apply</button>
+				<button mat-button (click)="onCancel()">Cancel</button>
+			</mat-grid-tile>
 		</mat-grid-list>
 	</div> <!-- End div filters -->
 
