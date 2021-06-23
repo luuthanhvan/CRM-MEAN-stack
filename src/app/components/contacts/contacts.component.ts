@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { datetimeFormat } from '../../helpers/datetime_format';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
     selector: "app-contacts",
@@ -22,7 +23,6 @@ export class ContactsComponent implements OnInit {
         "dob",
         "leadSrc",
         "assignedTo",
-        "creator",
         "address",
         "description",
         "createdTime",
@@ -31,6 +31,7 @@ export class ContactsComponent implements OnInit {
         "delete",
     ];
     dataSource: Contact[] = [];
+    data = new MatTableDataSource();
 
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     leadSource : FormGroup;
@@ -49,10 +50,12 @@ export class ContactsComponent implements OnInit {
                 value.updatedTime = datetimeFormat(value.updatedTime);
                 return value;
             });
+
+            this.data = new MatTableDataSource(this.dataSource);
         });
 
         this.leadSource = this.formBuilder.group({
-            leadSrc: new FormControl(''),
+            leadSrc: new FormControl(),
         });
     }
 
@@ -94,6 +97,13 @@ export class ContactsComponent implements OnInit {
                 // console.log(`Dialog result: ${result}`);
             });
         }
+    }
+
+    applyFilter(form: FormGroup) {
+        let filterValue = form.value.leadSrc;
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        this.data.filter = filterValue;
     }
 }
 

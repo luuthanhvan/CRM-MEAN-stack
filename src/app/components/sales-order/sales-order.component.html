@@ -15,7 +15,7 @@
 		<mat-grid-list cols="3" rowHeight="75px">
 			<mat-grid-tile [colspan]="3"><h2>Filters</h2></mat-grid-tile>
 
-			<form [formGroup]="statusForm">
+			<form [formGroup]="statusForm" (ngSubmit)="applyFilter(statusForm)">
 				<mat-grid-tile>
 					<mat-form-field appearance="outline">
 						<mat-label>Status</mat-label>
@@ -24,20 +24,20 @@
 						</mat-select>
 					</mat-form-field>
 				</mat-grid-tile>
-			</form>
-			<mat-grid-tile>
-				<button mat-button (click)="openDialog('createdTime')">Choose created time</button>
-			</mat-grid-tile>
-
-			<mat-grid-tile>
-				<button mat-button (click)="openDialog('updatedTime')">Choose updated time</button>
-			</mat-grid-tile>
-		
-			<mat-grid-tile [colspan]="3">
-				<button mat-button type="submit">Apply</button>
-				<button mat-button (click)="onCancel()">Cancel</button>
-			</mat-grid-tile>
 			
+				<mat-grid-tile>
+					<button mat-button (click)="openDialog('createdTime')">Choose created time</button>
+				</mat-grid-tile>
+
+				<mat-grid-tile>
+					<button mat-button (click)="openDialog('updatedTime')">Choose updated time</button>
+				</mat-grid-tile>
+			
+				<mat-grid-tile [colspan]="3">
+					<button mat-button type="submit">Apply</button>
+					<button mat-button (click)="onCancel()">Cancel</button>
+				</mat-grid-tile>
+			</form>
 		</mat-grid-list>
 	</div> <!-- End div filters -->
   
@@ -56,7 +56,7 @@
 		</div>
       
 		<div class="info">
-			<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+			<table mat-table [dataSource]="data" class="mat-elevation-z8">
 				<!-- No Column -->
 				<ng-container matColumnDef="no">
 					<th mat-header-cell *matHeaderCellDef> No. </th>

@@ -12,4 +12,9 @@
         <mat-datepicker-toggle matSuffix [for]="createdTimeToPicker"></mat-datepicker-toggle>
         <mat-datepicker #createdTimeToPicker></mat-datepicker>
     </mat-form-field>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button [mat-dialog-close]="true" cdkFocusInitial>OK</button>
+    </mat-dialog-actions>
 </form>

@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
 import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
 import { datetimeFormat } from '../../helpers/datetime_format';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: "app-sales-order",
@@ -26,6 +27,8 @@ export class SalesOrderComponent implements OnInit {
 		"delete",
 	];
  	dataSource: SaleOrder[] = [];
+	data = new MatTableDataSource();
+
 	statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
 
 	statusForm : FormGroup;
@@ -34,7 +37,9 @@ export class SalesOrderComponent implements OnInit {
 				protected salesOrderService: SalesOrderService,
 				private formBuilder: FormBuilder,
 				public dialog: MatDialog,){
+  	}
 
+	ngOnInit() {
 		// get list of sales order
 		this.salesOrderService
 			.getSalesOrder()
@@ -45,12 +50,12 @@ export class SalesOrderComponent implements OnInit {
 					value.updatedTime = datetimeFormat(value.updatedTime);
 					return value;
 				});
-			});
-  	}
 
-	ngOnInit() {
+				this.data = new MatTableDataSource(this.dataSource);
+			});
+
 		this.statusForm = this.formBuilder.group({
-			status: new FormControl(''),
+			status: new FormControl(),
 		});
 	}
 
@@ -91,6 +96,14 @@ export class SalesOrderComponent implements OnInit {
                 // console.log(`Dialog result: ${result}`);
             });
         }
+    }
+
+	applyFilter(form: FormGroup) {
+        let filterValue = form.value.status;
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        this.data.filter = filterValue;
+        
     }
 }
 
