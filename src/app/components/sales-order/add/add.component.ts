@@ -52,8 +52,8 @@ export class AddSaleOrderComponent implements OnInit{
     onSubmit(form: FormGroup){
         this.submitted = true;
         let saleOrderInfo = form.value;
-        saleOrderInfo.createdTime = new Date(Date.now()).toLocaleString();
-        saleOrderInfo.updatedTime = new Date(Date.now()).toLocaleString();
+        saleOrderInfo.createdTime = new Date();
+        saleOrderInfo.updatedTime = new Date();
 
         // console.log(saleOrderInfo);
 

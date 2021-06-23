@@ -4,6 +4,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
 import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
+import { datetimeFormat } from '../../helpers/datetime_format';
 
 @Component({
   selector: "app-sales-order",
@@ -40,8 +41,8 @@ export class SalesOrderComponent implements OnInit {
 			.subscribe((data) => {
 				this.dataSource = data.map((value, index) => {
 					value.no = index+1;
-					value.createdTime = new Date(value.createdTime).toLocaleString();
-					value.updatedTime = new Date(value.updatedTime).toLocaleString();
+					value.createdTime = datetimeFormat(value.createdTime);
+					value.updatedTime = datetimeFormat(value.updatedTime);
 					return value;
 				});
 			});

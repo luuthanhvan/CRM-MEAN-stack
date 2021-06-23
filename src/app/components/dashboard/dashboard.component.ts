@@ -7,8 +7,7 @@ import { ContactsService } from '../../services/contacts/contacts.service';
 
 import { SaleOrder } from '../../interfaces/sale-order';
 import { SalesOrderService } from '../../services/sales_order/sales-order.service';
-import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { datetimeFormat } from '../../helpers/datetime_format';
 
 @Component({
 	selector: 'app-dashboard',
@@ -65,9 +64,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 				
 				// data source to display on the contact information table
 				this.contactDataSrc = data.map((value) => {
-					value.updatedTime = new Date(value.updatedTime).toLocaleString();
-
-
+					value.updatedTime = datetimeFormat(value.updatedTime);
 					return value;
 				});
 			});
@@ -94,7 +91,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
 				// data source to display on the sale order information table
 				this.saleOrderDataSrc = data.map((value) => {
-					value.updatedTime = new Date(value.updatedTime).toLocaleString();
+					value.updatedTime = datetimeFormat(value.updatedTime);
 					return value;
 				});
 			});

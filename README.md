@@ -1,9 +1,10 @@
 # Customer Relationship Management Web Application
 
 # Environment setup
-OS: Ubuntu 18.04
 
-## Install Node.js and Angular
+## Ubuntu 18.04
+
+### Install Node.js and Angular
 
 1. Install Node.js through nvm (Node Version Manager)
 - Access the nvm repository: https://github.com/nvm-sh/nvm
@@ -17,51 +18,65 @@ npm --version # or npm -v
 ```
 
 2. Install angular-cli through npm (Node Package Manager)
-```npm install -g @angular/cli```
+```npm install -g @angular/cli@8.1.0```
 
-
-## Install MongoDB Server
-- Download here: https://www.mongodb.com/try/download/community
+### Install MongoDB Server
+- Download here (choose Platform Ubuntu 18.04): https://www.mongodb.com/try/download/community
 - Check the installation: open your terminal and run `mongo`
 
-# Create the workspace
+## Windows
 
-## Create a new project
+### Install Node.js and Angular
 
+1. Node.js
+- Download Node.js here (choose Windows Installer): https://nodejs.org/en/download/
+- Check the installation
 ```
-cd your-dir
-ng new your-project-name
-```
-
-## Install dependencies
-
-1. Dependencies for Node.js
-
-```
-npm install express
-npm install mongoose
-npm install dotenv
-npm install cors
-npm install morgan
-npm install -g nodemon
+node --version # or node -v
+npm --version # or npm -v
 ```
 
-2. Dependencies for Angular
+2. Angular
+- Install angular-cli: `npm install -g @angular/cli@8.1.0`
+- Check the installation: `ng --version`
 
+### Install MongoDB Server
+- Download here (choose Platform Windows): https://www.mongodb.com/try/download/community
+- Add Mongo’s bin folder to the Path Environment Variable: https://dangphongvanthanh.wordpress.com/2017/06/12/add-mongos-bin-folder-to-the-path-environment-variable/
+- Check the installation: open your terminal and run `mongo`
+
+# Run the project
+
+## Preparing
+
+### Ubuntu 18.04
+- Open the terminal and run: `npm install`
+- Create a new file named '.env' in the root directory of this project. Add environment-specific variables on new lines in the form of NAME=VALUE. Example:
 ```
-    ng add @angular/material
-    npm install chart.js@2.9.4 ng2-charts@2.4.2
+SERVER_PORT=4040
+HOSTNAME=localhost
+NODE_ENV=development
 ```
 
-# Running
+### Windows
+- Open the terminal and run: `npm install`
+- Create a new file named '.env' in the root directory of this project. Add environment-specific variables on new lines in the form of NAME=VALUE. Example:
+```
+SERVER_PORT=4040
+HOSTNAME=localhost
+NODE_ENV=development
+```
+- Create a new folder named "data" in server directory for MongoDB data store directory. Then, run the command in your terminal: `mongod --dbpath [your_absolute_path_to_project/server/data]`. Example: `mongod --dbpath "D:\MEAN-stack\server\data"`
 
-## Server side
+## Running
+
+### Server side
 ```
 cd server
 nodemon index.js
 ```
 
-## Client side
+### Client side
 1. Development server
 
 Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. 
@@ -88,3 +103,31 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 6. Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+# Create a new workspace
+
+## Create a new project
+```
+cd your-dir
+ng new your-project-name
+```
+
+## Install dependencies
+
+1. Dependencies for Node.js
+
+```
+npm install express
+npm install mongoose
+npm install dotenv
+npm install cors
+npm install morgan
+npm install -g nodemon
+```
+
+2. Dependencies for Angular
+
+```
+    ng add @angular/material
+    npm install chart.js@2.9.4 ng2-charts@2.4.2
+```

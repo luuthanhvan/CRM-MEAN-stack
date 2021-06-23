@@ -40,8 +40,8 @@ export class AddContactComponent implements OnInit{
     onSubmit(form: FormGroup){
         this.submitted = true;
         let contactInfo = form.value;
-        contactInfo.createdTime = new Date(Date.now()).toLocaleString();
-        contactInfo.updatedTime = new Date(Date.now()).toLocaleString();
+        contactInfo.createdTime = new Date();
+        contactInfo.updatedTime = new Date();
 
         this.contactsService
             .addContact(contactInfo)

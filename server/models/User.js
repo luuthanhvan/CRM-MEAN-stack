@@ -10,7 +10,7 @@ const User = new Schema({
     phone: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
     isActive: { type: Boolean, default: false },
-    createdTime: { type: Date, default: Date.now().toLocaleString() },
+    createdTime: { type: Date, default: new Date() },
 });
 
 module.exports = mg.model('User', User);

@@ -14,8 +14,8 @@ const Contacts = new Schema({
     creator: { type: String, default: 'admin' },
     address: { type: String, required: false },
     description: { type: String, required: false },
-    createdTime: { type: Date, default: Date.now().toLocaleString() },
-    updatedTime: { type: Date, default: Date.now().toLocaleString() },
+    createdTime: { type: Date, default: new Date() },
+    updatedTime: { type: Date, default: new Date() },
 });
 
 module.exports = mg.model('Contacts', Contacts);

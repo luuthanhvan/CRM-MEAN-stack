@@ -69,7 +69,7 @@ export class EditContactsComponent implements OnInit {
         this.submitted = true;
         let contactInfo = form.value;
         contactInfo.createdTime = this.createdTime;
-        contactInfo.updatedTime = new Date(Date.now()).toLocaleString();
+        contactInfo.updatedTime = new Date();
         
         this.contactsService
             .updateContact(this.contactId, contactInfo)

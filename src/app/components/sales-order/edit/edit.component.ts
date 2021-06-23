@@ -75,7 +75,7 @@ export class EditSalesOrderComponent implements OnInit {
     onUpdate(form: FormGroup){
         let saleOrderInfo = form.value;
         saleOrderInfo.createdTime = this.createdTime;
-        saleOrderInfo.updatedTime = new Date(Date.now()).toLocaleString();
+        saleOrderInfo.updatedTime = new Date();
 
         this.salesOrderService
             .updateSaleOrder(this.saleOrderId, saleOrderInfo)

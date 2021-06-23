@@ -4,6 +4,7 @@ import { Router, NavigationExtras } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
+import { datetimeFormat } from '../../helpers/datetime_format';
 
 @Component({
     selector: "app-contacts",
@@ -44,8 +45,8 @@ export class ContactsComponent implements OnInit {
         this.contactsService.getContacts().subscribe((data) => {
             this.dataSource = data.map((value, index) => {
                 value.no = index+1;
-                value.createdTime = new Date(value.createdTime).toLocaleString();
-                value.updatedTime = new Date(value.updatedTime).toLocaleString();
+                value.createdTime = datetimeFormat(value.createdTime);
+                value.updatedTime = datetimeFormat(value.updatedTime);
                 return value;
             });
         });

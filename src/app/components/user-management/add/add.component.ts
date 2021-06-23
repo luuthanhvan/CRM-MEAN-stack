@@ -26,9 +26,8 @@ export class AddUserComponent implements OnInit{
     onSubmit(form: FormGroup){
         this.submitted = true;
         let userInfo = form.value;
-        userInfo.createdTime = new Date(Date.now()).toLocaleString();
+        userInfo.createdTime = new Date();
         
-        // console.log(userInfo);
         this.userService
             .addUser(userInfo)
             .subscribe((res) => {
