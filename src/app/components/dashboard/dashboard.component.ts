@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
+import { AfterViewInit, Component, OnInit, ViewChild, QueryList} from '@angular/core';
+import { MatPaginator, MatTableDataSource } from "@angular/material";
 
 import { Contact } from '../../interfaces/contact';
 import { ContactsService } from '../../services/contacts/contacts.service';
@@ -26,17 +25,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 	saleOrderPieChartType : string = 'pie';
 
 	contactDataSrc : Contact[] = [];
+	contactData = new MatTableDataSource();
 	contactDisplayedCols : string[] = ['contactName', 'assignedTo', 'updatedTime'];
 	contactLength : number;
 
 	saleOrderDataSrc : SaleOrder[] = [];
+	saleOrderData = new MatTableDataSource();
 	saleOrderDisplayedCols : string[] = ['subject', 'total', 'updatedTime'];
 	saleOrderLength : number;
 
-	@ViewChild(MatPaginator, {static: false}) paginator : MatPaginator;
-	@ViewChild(MatSort, {static: false}) sort: MatSort;
-    @ViewChild('input', {static: false}) input: ElementRef;
-
+	@ViewChild('contactPaginator', {static: false}) contactPaginator : MatPaginator;
+	@ViewChild('saleOrderPaginator', {static: false}) saleOrderPaginator : MatPaginator;
+	
 	constructor(private contactsService : ContactsService,
 				private salesOrderService : SalesOrderService) {
 	}
@@ -67,6 +67,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 					value.updatedTime = datetimeFormat(value.updatedTime);
 					return value;
 				});
+				this.contactData = new MatTableDataSource(this.contactDataSrc);
+				this.contactData.paginator = this.contactPaginator;
 			});
 
 		// get list of sales order
@@ -94,6 +96,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 					value.updatedTime = datetimeFormat(value.updatedTime);
 					return value;
 				});
+
+				this.saleOrderData = new MatTableDataSource(this.saleOrderDataSrc);
+				this.saleOrderData.paginator = this.saleOrderPaginator;
 			});
 	}
 
