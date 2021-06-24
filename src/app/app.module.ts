@@ -23,9 +23,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 /* import ThemeService and put it in providers of NgModule */
 import { ChartsModule, ThemeService } from 'ng2-charts';
 
-import { ContactsComponent, ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent } from './components/contacts/contacts.component';
+import { ContactsComponent, /* ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent, */ } from './components/contacts/contacts.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SalesOrderComponent, SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent } from './components/sales-order/sales-order.component';
+import { SalesOrderComponent, /*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/sales-order/sales-order.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 
 const materials = [
@@ -39,17 +39,17 @@ const materials = [
 @NgModule({
   declarations: [
     AppComponent,
-    ContactsComponent, ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
+    ContactsComponent, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
+    SalesOrderComponent, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
     UserManagementComponent,
     
   ],
   entryComponents : [
     AppComponent,
-    ContactsComponent, ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
+    ContactsComponent, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
+    SalesOrderComponent, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
     UserManagementComponent,
   ],
   imports: [

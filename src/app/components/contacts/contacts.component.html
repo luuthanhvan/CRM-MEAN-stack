@@ -2,18 +2,71 @@
 	<div class="searchContainer">
 		<mat-grid-list cols="3" rowHeight="75px">
 			<mat-grid-tile [colspan]="2"><h1>Contacts</h1></mat-grid-tile>
-			<mat-grid-tile>
-				<button mat-button><mat-icon>search</mat-icon></button>
-				<mat-form-field>
-					<input matInput>
-				</mat-form-field>
-			</mat-grid-tile>
+			<form>
+				<mat-grid-tile>
+					<button mat-button (click)="applySearch(searchControl)"><mat-icon>search</mat-icon></button>
+					<mat-form-field>
+						<input matInput placeholder="Enter contact name" [formControl]="searchControl">
+					</mat-form-field>
+					<button mat-button (click)="clearSearch()"><mat-icon>clear</mat-icon></button>
+				</mat-grid-tile>
+			</form>
 		</mat-grid-list>
 	</div>
 	
 	<!-- Filters -->
 	<div class="filtersContainter">
-		<mat-grid-list cols="3" rowHeight="75px">
+		<h2>Filters</h2>
+		<div class="filters">
+			<mat-form-field appearance="outline" class="selectFilter">
+				<mat-label>Lead source</mat-label>
+				<mat-select (selectionChange)="applySelectFilter($event.value)">
+					<mat-option *ngFor="let src of leadSources" [value]="src"> {{src}} </mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<div class="dateFilter">
+				<p>Created time</p>
+				<form [formGroup]="createdTimeForm" (ngSubmit)="applyDateFilter(createdTimeForm, 'createdTime')">
+					<mat-form-field appearance="outline">
+						<mat-label>From</mat-label>
+						<input matInput [matDatepicker]="createdTimeFromPicker" formControlName="createdTimeFrom">
+						<mat-datepicker-toggle matSuffix [for]="createdTimeFromPicker"></mat-datepicker-toggle>
+						<mat-datepicker #createdTimeFromPicker></mat-datepicker>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline">
+						<mat-label>To</mat-label>
+						<input matInput [matDatepicker]="createdTimeToPicker" formControlName="createdTimeTo">
+						<mat-datepicker-toggle matSuffix [for]="createdTimeToPicker"></mat-datepicker-toggle>
+						<mat-datepicker #createdTimeToPicker></mat-datepicker>
+					</mat-form-field>
+					<button mat-button type="submit">Apply</button>
+				</form>
+			</div>
+
+			<div class="dateFilter">
+				<p>Updated time</p>
+				<form [formGroup]="updatedTimeForm" (ngSubmit)="applyDateFilter(updatedTimeForm, 'updatedTime')">
+					<mat-form-field appearance="outline">
+						<mat-label>From</mat-label>
+						<input matInput [matDatepicker]="updatedTimeFromPicker" formControlName="updatedTimeFrom">
+						<mat-datepicker-toggle matSuffix [for]="updatedTimeFromPicker"></mat-datepicker-toggle>
+						<mat-datepicker #updatedTimeFromPicker></mat-datepicker>
+					</mat-form-field>
+	
+					<mat-form-field appearance="outline">
+						<mat-label>To</mat-label>
+						<input matInput [matDatepicker]="updatedTimeToPicker" formControlName="updatedTimeTo">
+						<mat-datepicker-toggle matSuffix [for]="updatedTimeToPicker"></mat-datepicker-toggle>
+						<mat-datepicker #updatedTimeToPicker></mat-datepicker>
+					</mat-form-field>
+					<button mat-button type="submit">Apply</button>
+				</form>
+			</div>
+		</div>
+		<div class="btnCancel"><button mat-button (click)="onCancel()">Cancel</button></div>
+		<!-- <mat-grid-list cols="3" rowHeight="75px">
 			<mat-grid-tile [colspan]="3"><h2>Filters</h2></mat-grid-tile>
 
 			<form [formGroup]="leadSource" (ngSubmit)="applyFilter(leadSource)">
@@ -39,7 +92,7 @@
 					<button mat-button (click)="onCancel()">Cancel</button>
 				</mat-grid-tile>
 			</form>
-		</mat-grid-list>
+		</mat-grid-list> -->
 	</div> <!-- End div filters -->
 
   <!-- List of contacts -->
@@ -126,7 +179,7 @@
 		
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
-					<th mat-header-cell *matHeaderCellDef> Ceated time </th>
+					<th mat-header-cell *matHeaderCellDef> Created time </th>
 					<td mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
 				</ng-container>
 		

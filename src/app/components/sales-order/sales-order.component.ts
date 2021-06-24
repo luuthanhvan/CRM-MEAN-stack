@@ -4,7 +4,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
 import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
-import { datetimeFormat } from '../../helpers/datetime_format';
+import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
 import { MatTableDataSource } from '@angular/material';
 
 @Component({
@@ -27,11 +27,15 @@ export class SalesOrderComponent implements OnInit {
 		"delete",
 	];
  	dataSource: SaleOrder[] = [];
+	dataArray : SaleOrder[] = []; // duplicate datasource, purpose: save the original datasource for filter
+
 	data = new MatTableDataSource();
 
 	statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
 
-	statusForm : FormGroup;
+	createdTimeForm : FormGroup;
+    updatedTimeForm : FormGroup;
+    searchControl : FormControl = new FormControl();
 
 	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
@@ -52,10 +56,17 @@ export class SalesOrderComponent implements OnInit {
 				});
 
 				this.data = new MatTableDataSource(this.dataSource);
+				this.dataArray = this.dataSource;
 			});
+		
+		this.createdTimeForm = this.formBuilder.group({
+			createdTimeFrom : new FormControl(),
+			createdTimeTo : new FormControl(),
+		});
 
-		this.statusForm = this.formBuilder.group({
-			status: new FormControl(),
+		this.updatedTimeForm = this.formBuilder.group({
+			updatedTimeFrom : new FormControl(),
+			updatedTimeTo : new FormControl(),
 		});
 	}
 
@@ -82,6 +93,58 @@ export class SalesOrderComponent implements OnInit {
 			});
 	}
 
+	applySelectFilter(filterValue: string){
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        this.data.filter = filterValue;
+    }
+
+	applyDateFilter(form: FormGroup, filter: string){
+
+        if(filter === 'createdTime'){
+            // format date and convert it to date object
+            let fromDate = new Date(dateFormat(form.value.createdTimeFrom)),
+            toDate = new Date(dateFormat(form.value.createdTimeTo));
+
+            this.dataSource = this.dataSource.filter((value) => { 
+                // get date from createdTime and convert it to date object
+                let createdTime = new Date(value.createdTime.substring(0, value.createdTime.indexOf(', ')));
+                return createdTime >= fromDate && createdTime <= toDate;
+            });
+        }
+
+        if(filter === 'updatedTime'){
+            let fromDate = new Date(dateFormat(form.value.updatedTimeFrom)),
+            toDate = new Date(dateFormat(form.value.updatedTimeTo));
+
+            this.dataSource = this.dataSource.filter((value) => { 
+                let updatedTime = new Date(value.updatedTime.substring(0, value.updatedTime.indexOf(', ')));
+                return updatedTime >= fromDate && updatedTime <= toDate;
+            });
+        }
+
+        this.data = new MatTableDataSource(this.dataSource);
+        this.dataSource = this.dataArray;
+    }
+
+	applySearch(form: FormControl){
+        let contactName = form.value;
+        let result : SaleOrder[] = [];
+        for(let i = 0; i < this.dataSource.length; i++){
+            if(this.dataSource[i].contactName === contactName){
+                result.push(this.dataSource[i]);
+            }
+        }
+
+        this.data = new MatTableDataSource(result);
+    }
+
+	clearSearch(){
+        this.data = new MatTableDataSource(this.dataArray);
+        this.searchControl = new FormControl('');
+    }
+
+	/*
 	openDialog(dialogName : string){
         if(dialogName === 'createdTime'){
             let dialogRef = this.dialog.open(SalesOrderCreatedTimeDialogComponent);
@@ -96,17 +159,10 @@ export class SalesOrderComponent implements OnInit {
                 // console.log(`Dialog result: ${result}`);
             });
         }
-    }
-
-	applyFilter(form: FormGroup) {
-        let filterValue = form.value.status;
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-        this.data.filter = filterValue;
-        
-    }
+    } */
 }
 
+/*
 @Component({
     selector: 'sales-order-created-time-dialog',
     templateUrl: 'sales-order-created-time-dialog.component.html'
@@ -144,4 +200,4 @@ export class SalesOrderUpdatedTimeDialogComponent implements OnInit{
             updatedTimeTo : new FormControl(''),
         });
     }
-}
+} */

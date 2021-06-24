@@ -1,20 +1,20 @@
-<form [formGroup]="createdTimeForm">
+<form [formGroup]="createdTimeForm" (ngSubmit)="applyFilter(createdTimeForm)">
     <mat-form-field appearance="outline">
         <mat-label>From</mat-label>
-        <input matInput [matDatepicker]="createdTimeFromPicker" formControlName="createdTimeFrom">
-        <mat-datepicker-toggle matSuffix [for]="createdTimeFromPicker"></mat-datepicker-toggle>
-        <mat-datepicker #createdTimeFromPicker></mat-datepicker>
+        <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate">
+        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromDatePicker></mat-datepicker>
     </mat-form-field>
     
     <mat-form-field appearance="outline">
         <mat-label>To</mat-label>
-        <input matInput [matDatepicker]="createdTimeToPicker" formControlName="createdTimeTo">
-        <mat-datepicker-toggle matSuffix [for]="createdTimeToPicker"></mat-datepicker-toggle>
-        <mat-datepicker #createdTimeToPicker></mat-datepicker>
+        <input matInput [matDatepicker]="toDatePicker" formControlName="toDate">
+        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #toDatePicker></mat-datepicker>
     </mat-form-field>
 
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cancel</button>
-        <button mat-button [mat-dialog-close]="true" cdkFocusInitial>OK</button>
+        <button mat-button [mat-dialog-close]="true" cdkFocusInitial type="submit">OK</button>
     </mat-dialog-actions>
 </form>

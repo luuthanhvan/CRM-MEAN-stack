@@ -48,16 +48,38 @@ body {
     .filtersContainter {
         font-size: 12px;
         background-color: white;
+        overflow: hidden;
 
-        mat-form-field {
-            width: 80%;
+        h2 {
+            // border: 1px solid red;
+            margin-left: 32px;
+        }   
+
+        .filters {
+            // border: 1px solid red;
+            width: 50%;
+            margin: 0 auto;
+
+            .selectFilter {
+                width: 100%;
+                margin-top: 16px;
+            }
+        }
+
+        .btnCancel {
+            width: 100px;
+            margin: 0 auto;
+
+            button {
+                width: 100%;
+            }
         }
     }
 
     .list {
         overflow: hidden;
         background-color: white;
-
+        clear: both;
         .btnCreateCustomer {
             button {
                 // align to right

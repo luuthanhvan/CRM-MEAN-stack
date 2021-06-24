@@ -1,9 +1,21 @@
-export function datetimeFormat(datetime: string){
+export function dateFormat(datetime: string){
+    let dt = new Date(datetime);
+
+    let dateFormatted = (dt.getMonth()+1) + '/' + dt.getDate()  + '/' + dt.getFullYear();
+
+    return dateFormatted;
+}
+
+export function timeFormat(datetime: string){
     let dt = new Date(datetime);
 
     let amOrPm = (dt.getHours() < 12) ? "AM" : "PM";
-    let dateFormatted = dt.getDate() + '/' + dt.getMonth() + '/' + dt.getFullYear();
+
     let timeFormatted = dt.getHours() + ':' + dt.getMinutes() + ' ' + amOrPm;
 
-    return dateFormatted + ', ' + timeFormatted;
+    return timeFormatted;
+}
+
+export function datetimeFormat(datetime: string){
+    return dateFormat(datetime) + ', ' + timeFormat(datetime);
 }
