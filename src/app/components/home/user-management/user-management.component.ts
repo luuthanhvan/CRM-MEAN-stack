@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
-import { User } from '../../interfaces/user';
-import { UserManagementService } from '../../services/user_management/user-management.service';
-import { datetimeFormat } from '../../helpers/datetime_format';
+import { User } from '../../../interfaces/user';
+import { UserManagementService } from '../../../services/user_management/user-management.service';
+import { datetimeFormat } from '../../../helpers/datetime_format';
 
 @Component({
 	selector: 'app-user-management',

@@ -1,0 +1,25 @@
+<div id="container">
+    <div class="signinContainter">
+        <form [formGroup]="signinForm" (ngSubmit)="onSubmit(signinForm)">
+            <div class="inputFieldContainer">
+                <div class="icon"><mat-icon>person</mat-icon></div>
+                <div class="inputField">
+                    <mat-form-field>
+                        <input matInput placeholder="Username" formControlName="username">
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="inputFieldContainer">
+                <div class="icon"><mat-icon>lock</mat-icon></div>
+                <div class="inputField">
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="Password" formControlName="password">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div id="btnSignin"><button mat-button type="submit">Sign-in</button></div>
+        </form>
+    </div>
+</div>

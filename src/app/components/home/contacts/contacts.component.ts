@@ -2,9 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
-import { Contact } from '../../interfaces/contact'; // use contact interface
-import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
-import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
+import { Contact } from '../../../interfaces/contact'; // use contact interface
+import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
+import { dateFormat, datetimeFormat } from '../../../helpers/datetime_format';
 import { MatTableDataSource } from '@angular/material';
 
 @Component({

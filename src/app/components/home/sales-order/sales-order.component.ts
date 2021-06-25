@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router, NavigationExtras } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
-import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
-import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
+import { SaleOrder } from '../../../interfaces/sale-order'; // use sale order interface
+import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sale order service
+import { dateFormat, datetimeFormat } from '../../../helpers/datetime_format';
 import { MatTableDataSource } from '@angular/material';
 
 @Component({

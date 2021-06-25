@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild, QueryList} from '@angular/core';
 import { MatPaginator, MatTableDataSource } from "@angular/material";
 
-import { Contact } from '../../interfaces/contact';
-import { ContactsService } from '../../services/contacts/contacts.service';
+import { Contact } from '../../../interfaces/contact';
+import { ContactsService } from '../../../services/contacts/contacts.service';
 
-import { SaleOrder } from '../../interfaces/sale-order';
-import { SalesOrderService } from '../../services/sales_order/sales-order.service';
-import { datetimeFormat } from '../../helpers/datetime_format';
+import { SaleOrder } from '../../../interfaces/sale-order';
+import { SalesOrderService } from '../../../services/sales_order/sales-order.service';
+import { datetimeFormat } from '../../../helpers/datetime_format';
 
 @Component({
 	selector: 'app-dashboard',
