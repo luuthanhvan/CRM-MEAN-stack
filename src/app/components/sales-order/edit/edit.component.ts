@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SalesOrderService } from '../../../../services/sales_order/sales-order.service'; // use sales order service
-import { ContactsService } from '../../../../services/contacts/contacts.service';
-import { UserManagementService } from '../../../../services/user_management/user-management.service';
+import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
+import { ContactsService } from '../../../services/contacts/contacts.service';
+import { UserManagementService } from '../../../services/user_management/user-management.service';
 
 @Component({
     selector: 'app-edit-sales-order',

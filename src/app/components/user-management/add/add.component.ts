@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router'
-import { UserManagementService } from '../../../../services/user_management/user-management.service';
+import { UserManagementService } from '../../../services/user_management/user-management.service';
 
 @Component({
     selector: 'app-add-user',

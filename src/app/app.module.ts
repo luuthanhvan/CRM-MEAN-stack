@@ -23,10 +23,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 /* import ThemeService and put it in providers of NgModule */
 import { ChartsModule, ThemeService } from 'ng2-charts';
 
-import { ContactsComponent, /* ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent, */ } from './components/home/contacts/contacts.component';
-import { DashboardComponent } from './components/home/dashboard/dashboard.component';
-import { SalesOrderComponent, /*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/home/sales-order/sales-order.component';
-import { UserManagementComponent } from './components/home/user-management/user-management.component';
+import { ContactsComponent, /* ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent, */ } from './components/contacts/contacts.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SalesOrderComponent, /*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/sales-order/sales-order.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 const materials = [

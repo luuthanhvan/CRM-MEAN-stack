@@ -1,22 +1,22 @@
 const User = require('../models/User');
-const  { mutipleMongooseToObject } = require('../helpers/mongoose');
 const apiResponse = require('../helpers/apiResponse');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config({path: '../../.env'});
 
 class AuthController {
     getUser(req, res){
         let userInfo = req.body;
 
+        // generate token
+        const payload = JSON.stringify(userInfo);
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+
         try {
             User
-                .find({username: userInfo.username, password: userInfo.password})
+                .findOne({username: userInfo.username, password: userInfo.password})
                 .then((user) => {
-                    console.log(user);
-                    if(user.length > 0){
-                        return apiResponse.successResponseWithData(res, 'Success', {userId: user[0]._id});
-                    }
-                    else {
-                        return apiResponse.successResponseWithData(res, 'Success', {userId: ''});
-                    }
+                    return apiResponse.successResponseWithData(res, 'Success', {user: user, token: token});
                 });
         } catch(err){
             return apiResponse.ErrorResponse(res, err);
