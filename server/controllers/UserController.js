@@ -71,6 +71,23 @@ class UserController {
             return apiResponse.ErrorResponse(res, err);
         }
     }
+
+    // [POST] /user_management/:id - function to change user's password
+    changePassword(req, res){
+        try{
+            let userId = req.params.id,
+                newPass = req.body.newPass;
+
+            User
+                .findByIdAndUpdate({_id : userId}, {password : newPass})
+                .then(() => {
+                    return apiResponse.successResponse(res, 'Change password successfully');
+                });
+
+        } catch(err){
+            return apiResponse.ErrorResponse(res, err);
+        }
+    }
 }
 
 module.exports = new UserController();

@@ -28,7 +28,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SalesOrderComponent, /*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/sales-order/sales-order.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
@@ -44,7 +44,8 @@ const materials = [
     DashboardComponent,
     SalesOrderComponent, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
     UserManagementComponent, 
-    LoginComponent, HomeComponent,
+    LoginComponent, 
+    HomeComponent, HomeChangePasswordComponent,
     
   ],
   entryComponents : [
@@ -53,6 +54,8 @@ const materials = [
     DashboardComponent,
     SalesOrderComponent, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
     UserManagementComponent,
+    LoginComponent, 
+    HomeComponent, HomeChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

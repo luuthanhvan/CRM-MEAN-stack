@@ -3,49 +3,58 @@
     height: 100%;
     background-image: linear-gradient(to bottom left, #4bb4f1, #10659e);
 	background-attachment: fixed;
-}
 
-.signinContainter {
-    background-color: white;    
-    border-radius: 10px;
-
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    .signinContainter {
+        background-color: white;    
+        border-radius: 10px;
     
-    height: fit-content;
-    
-    // horizontal align
-    width: 25%;
-    margin: 0 auto;
-
-    // vertical align
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    form {
-        padding-top: 16px;
+        box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
         
-        .inputFieldContainer {
-            margin: 0 auto;
-            width: 80%;
-            display: flex;
-            .icon {
-                width: fit-content;
-                height: fit-content;
-                margin-top: 16px;
-                margin-bottom: 16px;
-                margin-right: 16px;
-            }
-
-            .inputField {
-                width: fit-content;
-            }
-        }
-    }
-    #btnSignin {
+        height: fit-content;
+        
+        // horizontal align
         width: 25%;
         margin: 0 auto;
-        margin-bottom: 10px;
+    
+        // vertical align
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    
+        form {
+            padding-top: 16px;
+            
+            .inputFieldContainer {
+                margin: 0 auto;
+                width: 80%;
+                display: flex;
+                .icon {
+                    width: fit-content;
+                    height: fit-content;
+                    margin-top: 16px;
+                    margin-bottom: 16px;
+                    margin-right: 16px;
+                }
+    
+                .inputField {
+                    width: fit-content;
+                }
+            }
+        }
+        #btnSignin {
+            width: 25%;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+    
+        #errorMessage {
+            width: 70%;
+            margin: 0 auto;
+            p {
+                font-style: italic;
+                color: red;
+            }
+        }
     }
 }

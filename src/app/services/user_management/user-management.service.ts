@@ -57,4 +57,9 @@ export class UserManagementService {
 		return this.httpClient
 					.put<void>(`${this.SERVER_URL}/${userId}`, userInfo);
 	}
+
+	changePassword(userId: string, newPass: string) : Observable<void>{
+		return this.httpClient
+					.post<void>(`${this.SERVER_URL}/${userId}`, {newPass: newPass});
+	}
 }

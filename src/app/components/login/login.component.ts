@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 	signinForm : FormGroup;
-	isLoggedIn : boolean = false;
 	submitted : boolean = false;
+	isLoggingFailed : boolean = false;
+	errorMessage : string;
 
 	constructor(private formBuilder : FormBuilder,
 				private authService : AuthService,
@@ -36,12 +37,14 @@ export class LoginComponent implements OnInit {
 			.signin(userInfo.username, userInfo.password)
 			.subscribe(
 				(data) => {
-					this.isLoggedIn = true;
-					this.router.navigate(['/dashboard'])
+					if(data['isActive']){
+						this.router.navigate(['/dashboard']);
+					}
+					else {
+						this.isLoggingFailed = true;
+						this.errorMessage = "* You account has been disabled";
+					}
 				},
-				(err) => {
-					this.isLoggedIn = false;
-				}
 			);
 	}
 }

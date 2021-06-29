@@ -35,8 +35,13 @@
                     </mat-form-field>
                 </div>
             </div>
+            
+            <div *ngIf="isLoggingFailed" id="errorMessage">
+                <p> {{ errorMessage }}</p>
+            </div>
 
-            <div id="btnSignin"><button mat-button type="submit" [disabled]="signinForm.invalid">Sign-in</button></div>
+            <div id="btnSignin"><button mat-button type="submit" [disabled]="signinForm.invalid || isLoggingFailed">Sign-in</button></div>
         </form>
+
     </div>
 </div>

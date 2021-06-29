@@ -25,16 +25,17 @@ export class AuthService {
 					.post<AuthResponse>(`${this.SERVER_URL}/signin`, { username: username, password: password})
 					.pipe(map(res => {
 						let user = res['data'].user, 
-							token = res['data'].idToken,
-							expiresIn = res['data'].expiresIn;
+						token = res['data'].idToken,
+						expiresIn = res['data'].expiresIn;
 
 						const expiresAt = moment().add(expiresIn, 'hour');
 						// local storage token
-						window.localStorage.setItem('id_token', token.id);
+						window.localStorage.setItem('id_token', token);
 						window.localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
 
 						this.user$.next(user);
 						return user;
+					
 					}));
 	}
 
@@ -59,7 +60,7 @@ export class AuthService {
 	getExpiration(){
 		const expiration = window.localStorage.getItem('expires_at');
 		const expiresAt = JSON.parse(expiration);
-
+		
 		return moment(expiresAt);
 	}
 }
