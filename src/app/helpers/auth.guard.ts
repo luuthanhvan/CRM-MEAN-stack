@@ -9,9 +9,10 @@ export class AuthGuard implements CanActivate {
         private authService: AuthService) { }
 
     canActivate(){
-        const currentUser = this.authService.getUser;
+        let currentUser = this.authService.getUser,
+            isLoggedIn = this.authService.isLoggedIn();
 
-        if(currentUser){
+        if(isLoggedIn){
             return true;
         }
         

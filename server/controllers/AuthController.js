@@ -7,21 +7,14 @@ dotenv.config({path: '../../.env'});
 class AuthController {
     getUser(req, res){
         let userInfo = req.body;
-
-        // generate token
-        const payload = JSON.stringify(userInfo);
-        const token = jwt.sign({id: payload}, process.env.JWT_SECRET, 
-                            { expiresIn: '10h'} // it will be expired after 10 hours
-                            // { expiresIn: '22d'} // it will be expired after 22 days
-                            // { expiresIn: '120'} // it will be expired after 120ms
-                            // { expiresIn: '120s'} // it will be expired after 120s
-        );
-
         try {
             User
                 .findOne({username: userInfo.username, password: userInfo.password})
                 .then((user) => {
-                    return apiResponse.successResponseWithData(res, 'Success', {user: user, token: token});
+                    // generate token
+                    const token = jwt.sign(JSON.stringify(user._id), process.env.JWT_SECRET);
+
+                    return apiResponse.successResponseWithData(res, 'Success', {user: user, idToken: token, expiresIn: 120});
                 });
         } catch(err){
             return apiResponse.ErrorResponse(res, err);
