@@ -56,6 +56,7 @@ npm --version # or npm -v
 SERVER_PORT=4040
 HOSTNAME=localhost
 NODE_ENV=development
+JWT_SECRET=abc123
 ```
 
 ### Windows
@@ -64,7 +65,8 @@ NODE_ENV=development
 ```
 SERVER_PORT=4040
 HOSTNAME=localhost
-NODE_ENV=development
+NODE_ENV=development'
+JWT_SECRET=abc123
 ```
 - Create a new folder named "data" in server directory for MongoDB data store directory. Then, run the command in your terminal: `mongod --dbpath [your_absolute_path_to_project/server/data]`. Example: `mongod --dbpath "D:\MEAN-stack\server\data"`
 
