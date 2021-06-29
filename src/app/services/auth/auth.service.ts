@@ -21,7 +21,7 @@ export class AuthService {
   	constructor(private httpClient: HttpClient,
 				private tokenStorage: TokenStorage) { }
 	
-	login(username: string, password: string): Observable<AuthResponse>{
+	signin(username: string, password: string): Observable<AuthResponse>{
 		return this.httpClient
 					.post<AuthResponse>(`${this.SERVER_URL}/signin`, { username: username, password: password})
 					.pipe(map(res => {
@@ -33,6 +33,11 @@ export class AuthService {
 						
 						return user;
 					}));
+	}
+
+	signout(){
+		this.tokenStorage.signOut();
+		this.user$.next(null);
 	}
 
 	public get getUser(): User{

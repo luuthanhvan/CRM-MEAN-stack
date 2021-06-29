@@ -11,9 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 	signinForm : FormGroup;
 	isLoggedIn : boolean = false;
-	isLoginFailed : boolean = false;
 	submitted : boolean = false;
-	errorMessage : string = '';
 
 	constructor(private formBuilder : FormBuilder,
 				private authService : AuthService,
@@ -35,16 +33,13 @@ export class LoginComponent implements OnInit {
 		let userInfo = form.value;
 
 		this.authService
-			.login(userInfo.username, userInfo.password)
+			.signin(userInfo.username, userInfo.password)
 			.subscribe(
 				(data) => {
 					this.isLoggedIn = true;
-					this.isLoginFailed = false;
 					this.router.navigate(['/dashboard'])
 				},
 				(err) => {
-					this.errorMessage = err.error.message;
-					this.isLoginFailed = true;
 					this.isLoggedIn = false;
 				}
 			);
