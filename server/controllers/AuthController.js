@@ -10,7 +10,12 @@ class AuthController {
 
         // generate token
         const payload = JSON.stringify(userInfo);
-        const token = jwt.sign(payload, process.env.JWT_SECRET);
+        const token = jwt.sign({id: payload}, process.env.JWT_SECRET, 
+                            { expiresIn: '10h'} // it will be expired after 10 hours
+                            // { expiresIn: '22d'} // it will be expired after 22 days
+                            // { expiresIn: '120'} // it will be expired after 120ms
+                            // { expiresIn: '120s'} // it will be expired after 120s
+        );
 
         try {
             User
