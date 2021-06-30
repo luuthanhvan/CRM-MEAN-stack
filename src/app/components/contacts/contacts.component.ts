@@ -36,9 +36,13 @@ export class ContactsComponent implements OnInit {
 
     data = new MatTableDataSource(); // data displayed in the table
 
-    leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     leadSrc : FormControl;
+    leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     leadSrcFromDashboard : string;
+
+    assignedTo : FormControl;
+    assignedToUsers : string[];
+    assignedFromDashboard : string;
 
     createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
@@ -53,8 +57,14 @@ export class ContactsComponent implements OnInit {
         // get lead source passed from dashboard page
         this.route.queryParams.subscribe((params) => {
             if(params){
-                this.leadSrcFromDashboard = params['leadSrc'];
-                this.leadSrc = new FormControl(this.leadSrcFromDashboard);
+                if(params['leadSrc']){
+                    this.leadSrcFromDashboard = params['leadSrc'];
+                    this.leadSrc = new FormControl(this.leadSrcFromDashboard);
+                }
+                if(params['assignedTo']){
+                    this.assignedFromDashboard = params['assignedTo'];
+                    this.assignedTo = new FormControl(this.assignedFromDashboard);
+                }
             }
         });
     }
@@ -62,6 +72,11 @@ export class ContactsComponent implements OnInit {
     ngOnInit() {
         // get list of contacts
         this.contactsService.getContacts().subscribe((data) => {
+            // get list of assigned to
+            this.assignedToUsers = data.map(value => value.assignedTo);
+            // Remove array duplicate
+            this.assignedToUsers = [...new Set(this.assignedToUsers)];
+
             this.dataSource = data.map((value, index) => {
                 value.no = index+1;
                 // format datetime to display
@@ -71,11 +86,15 @@ export class ContactsComponent implements OnInit {
             });
             this.dataArray = this.dataSource; // store the original datasource
 
-            // filter automately
+            // filter automatically
             // if leadSrc (a param) got from dashboard, then filter the datasource by the leadSrc
             if(this.leadSrcFromDashboard != undefined)
                 this.dataSource = data.filter(value => value.leadSrc === this.leadSrcFromDashboard);
             
+            // if assignedTo (a param) got from dashboard, then filter the datasource by the assignedTo
+            if(this.assignedFromDashboard != undefined)
+                this.dataSource = data.filter(value => value.assignedTo === this.assignedFromDashboard);
+
             // assign the datasource to data displayed in the table
             this.data = new MatTableDataSource(this.dataSource);
             this.dataSource = this.dataArray; // restore the datasource
@@ -94,7 +113,7 @@ export class ContactsComponent implements OnInit {
 
     // function to cancel filter contacts
     onCancel(){
-        if(this.leadSrcFromDashboard){
+        if(this.leadSrcFromDashboard || this.assignedFromDashboard){
             this.router.navigate(['/dashboard']);
         }
         else
@@ -120,8 +139,12 @@ export class ContactsComponent implements OnInit {
             });
     }
 
-    applySelectFilter(filterValue: string){
-        this.dataSource =  this.dataSource.filter(value => value.leadSrc === filterValue);
+    applySelectFilter(filterValue: string, filterBy : string){
+        if(filterBy === 'leadSrc')
+            this.dataSource =  this.dataSource.filter(value => value.leadSrc === filterValue);
+        if(filterBy === 'assignedTo')
+            this.dataSource =  this.dataSource.filter(value => value.assignedTo === filterValue);
+        
         this.data = new MatTableDataSource(this.dataSource);
         this.dataSource = this.dataArray;
     }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, QueryList} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { MatPaginator, MatTableDataSource } from "@angular/material";
 import { Router, NavigationExtras } from '@angular/router';
 
@@ -14,7 +14,7 @@ import { datetimeFormat } from '../../helpers/datetime_format';
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit {
 	// Pie chart for contact
 	contactPieChartLabels : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];;
 	contactPieChartData : number[] = [0, 0, 0, 0, 0, 0];
@@ -35,6 +35,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 	saleOrderDisplayedCols : string[] = ['subject', 'total', 'updatedTime'];
 	saleOrderLength : number;
 
+	isShowDetail : boolean = false; // use for show/hide a sale order detail
+	saleOrderDetail : SaleOrder;
+
 	@ViewChild('contactPaginator', {static: false}) contactPaginator : MatPaginator;
 	@ViewChild('saleOrderPaginator', {static: false}) saleOrderPaginator : MatPaginator;
 	
@@ -48,6 +51,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 		this.contactsService
 			.getContacts()
 			.subscribe((data) => {
+
 				// count number of contacts based on the lead source and push it to the contactPieChartData
 				this.contactPieChartData = [];
 				for(let i = 0; i < this.contactPieChartLabels.length; i++){
@@ -77,6 +81,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 		this.salesOrderService
 			.getSalesOrder()
 			.subscribe((data) => {
+
 				// count number of sales order based on the status and push it to the saleOrderPieChartData
 				this.saleOrderPieChartData = [];
 				for(let i = 0; i < this.saleOrderPieChartLabels.length; i++){
@@ -104,15 +109,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			});
 	}
 
-	ngAfterViewInit(){
-	}
-
-	// events
+	// function to handle chart clicked event
 	chartClicked(e : any, chartName: string) : void {
+		// get value (lead source or status) from the chart 
 		if (e.active.length > 0) {
 			const chart = e.active[0]._chart;
 			const activePoints = chart.getElementAtEvent(e.event);
-			if ( activePoints.length > 0) {
+			if (activePoints.length > 0) {
 				// get the internal index of slice in pie chart
 				const clickedElementIndex = activePoints[0]._index;
 				const label = chart.data.labels[clickedElementIndex];
@@ -121,8 +124,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 				// const value = chart.data.datasets[0].data[clickedElementIndex];
 				// console.log(clickedElementIndex, label, value)
 				
-				// navigate
+				// navigation
 				if(chartName === 'contacts'){
+					// pass the lead source label to the Contacts page
 					let navigationExtras: NavigationExtras = {
 						queryParams: { leadSrc: label },
 					};
@@ -130,6 +134,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 				}	
 
 				if(chartName === 'salesOrder'){
+					// pass the status label to the Contacts page
 					let navigationExtras: NavigationExtras = {
 						queryParams: { status: label },
 					};
@@ -142,4 +147,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 	chartHovered(e : any, chartName: string) : void {
 	}
 
+	// function to handle clicked on Assigned column
+	onClickedCell(assignedTo : string){
+		let navigationExtras: NavigationExtras = {
+			queryParams: { assignedTo: assignedTo },
+		};
+		this.router.navigate(['/contacts'], navigationExtras);
+	}
+
+	// function to show a sale order detail when clicked on a row of the sale order table
+	onShowDetail(saleOrder : SaleOrder){
+		this.isShowDetail = true;
+		this.saleOrderDetail = saleOrder
+		
+		// datetime format
+		this.saleOrderDetail.createdTime = datetimeFormat(this.saleOrderDetail.createdTime);
+	}
+
+	onHideDetail(){
+		this.isShowDetail = false;
+	}
 }

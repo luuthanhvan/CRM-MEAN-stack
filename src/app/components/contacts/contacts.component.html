@@ -20,8 +20,15 @@
 		<div class="filters">
 			<mat-form-field appearance="outline" class="selectFilter">
 				<mat-label>Lead source</mat-label>
-				<mat-select (selectionChange)="applySelectFilter($event.value)" [formControl]="leadSrc">
+				<mat-select (selectionChange)="applySelectFilter($event.value, 'leadSrc')" [formControl]="leadSrc">
 					<mat-option *ngFor="let src of leadSources" [value]="src"> {{src}} </mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="selectFilter">
+				<mat-label>Assigned to</mat-label>
+				<mat-select (selectionChange)="applySelectFilter($event.value, 'assignedTo')" [formControl]="assignedTo">
+					<mat-option *ngFor="let user of assignedToUsers" [value]="user"> {{user}} </mat-option>
 				</mat-select>
 			</mat-form-field>
 
@@ -114,95 +121,95 @@
 				<!-- No Column -->
 				<ng-container matColumnDef="no">
 					<th mat-header-cell *matHeaderCellDef> No. </th>
-					<td mat-cell *matCellDef="let element"> {{element.no}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.no}} </td>
 				</ng-container>
 
 				<!-- Contact name Column -->
 				<ng-container matColumnDef="contactName">
 					<th mat-header-cell *matHeaderCellDef> Contact name </th>
-					<td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.contactName}} </td>
 				</ng-container>
 
 				<!-- Salutation Column -->
 				<ng-container matColumnDef="salutation">
 					<th mat-header-cell *matHeaderCellDef> Salutation </th>
-					<td mat-cell *matCellDef="let element"> {{element.salutation}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.salutation}} </td>
 				</ng-container>
 			
 				<!-- Mobile phone Column -->
 				<ng-container matColumnDef="mobilePhone">
 					<th mat-header-cell *matHeaderCellDef> Mobile phone </th>
-					<td mat-cell *matCellDef="let element"> {{element.mobilePhone}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.mobilePhone}} </td>
 				</ng-container>
 				
 				<!-- Email Column -->
 				<ng-container matColumnDef="email">
 					<th mat-header-cell *matHeaderCellDef> Email </th>
-					<td mat-cell *matCellDef="let element"> {{element.email}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.email}} </td>
 				</ng-container>
 
 				<!-- Organization Column -->
 				<ng-container matColumnDef="organization">
 					<th mat-header-cell *matHeaderCellDef> Organization </th>
-					<td mat-cell *matCellDef="let element"> {{element.organization}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.organization}} </td>
 				</ng-container>
 
 				<!-- DOB Column -->
 				<ng-container matColumnDef="dob">
 					<th mat-header-cell *matHeaderCellDef> DOB </th>
-					<td mat-cell *matCellDef="let element"> {{element.dob}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.dob}} </td>
 				</ng-container>
 				
 				<!-- Lead source Column -->
 				<ng-container matColumnDef="leadSrc">
 					<th mat-header-cell *matHeaderCellDef> Lead source </th>
-					<td mat-cell *matCellDef="let element"> {{element.leadSrc}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.leadSrc}} </td>
 				</ng-container>
 
 				<!-- Assigned Column -->
 				<ng-container matColumnDef="assignedTo">
 					<th mat-header-cell *matHeaderCellDef> Assigned </th>
-					<td mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
 				</ng-container>
 
 				<!-- Address Column -->
 				<ng-container matColumnDef="address">
 					<th mat-header-cell *matHeaderCellDef> Address </th>
-					<td mat-cell *matCellDef="let element"> {{element.address}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.address}} </td>
 				</ng-container>
 
 				<!-- Description Column -->
 				<ng-container matColumnDef="description">
 					<th mat-header-cell *matHeaderCellDef> Description </th>
-					<td mat-cell *matCellDef="let element"> {{element.description}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.description}} </td>
 				</ng-container>
 		
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
 					<th mat-header-cell *matHeaderCellDef> Created time </th>
-					<td mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
 				</ng-container>
 		
 				<!-- Updated time Column -->
 				<ng-container matColumnDef="updatedTime">
 					<th mat-header-cell *matHeaderCellDef> Updated time </th>
-					<td mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->
 				<ng-container matColumnDef="modify">
 					<th mat-header-cell *matHeaderCellDef> Modify </th>
-					<td mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
+					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
 				</ng-container>
 
 				<!-- Delete contact infomation column -->
 				<ng-container matColumnDef="delete">
 					<th mat-header-cell *matHeaderCellDef> Delete </th>
-					<td mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id)"><mat-icon>delete</mat-icon></button></td>
+					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id)"><mat-icon>delete</mat-icon></button></td>
 				</ng-container>
 
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 			
 			</table>
 		</div>

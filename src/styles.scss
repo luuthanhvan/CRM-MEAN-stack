@@ -141,3 +141,12 @@ body {
         font-size: 16px;
     }
 }
+
+.row, .cell {
+    cursor: pointer;
+}
+
+.row:hover {
+    background-color: lavender;
+    border-color: lavender;
+}

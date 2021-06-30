@@ -35,21 +35,21 @@
             <table mat-table [dataSource]="contactData" class="mat-elevation-z8">
                 <ng-container matColumnDef="contactName">
                     <th mat-header-cell *matHeaderCellDef> Contact name </th>
-                    <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+                    <td class="cell" mat-cell *matCellDef="let element"> {{element.contactName}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="assignedTo">
                     <th mat-header-cell *matHeaderCellDef> Assigned </th>
-                    <td mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
+                    <td class="cell" mat-cell *matCellDef="let element" (click)="onClickedCell(element.assignedTo)"> {{element.assignedTo}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="updatedTime">
                     <th mat-header-cell *matHeaderCellDef> Updated time </th>
-                    <td mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+                    <td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
-                <tr mat-row *matRowDef="let row; columns: contactDisplayedCols;"></tr>
+                <tr class="row" mat-row *matRowDef="let row; columns: contactDisplayedCols;"></tr>
             </table>
 
             <mat-paginator
@@ -62,33 +62,79 @@
         </div>
 
         <!-- Widget 4:  Sales order information -->
-        <div class="saleOrder">
-            <p>Sale order information</p>
-            <table mat-table [dataSource]="saleOrderData" class="mat-elevation-z8">
-                <ng-container matColumnDef="subject">
-                    <th mat-header-cell *matHeaderCellDef> Subject </th>
-                    <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
-                </ng-container>
+        <div *ngIf="isShowDetail; then detail else info"></div>
 
-                <ng-container matColumnDef="total">
-                    <th mat-header-cell *matHeaderCellDef> Total </th>
-                    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
-                </ng-container>
+        <ng-template #info>
+            <div class="saleOrder">
+                <p>Sale order information</p>
+                <table mat-table [dataSource]="saleOrderData" class="mat-elevation-z8">
+                    <ng-container matColumnDef="subject">
+                        <th mat-header-cell *matHeaderCellDef> Subject </th>
+                        <td class="cell" mat-cell *matCellDef="let element"> {{element.subject}} </td>
+                    </ng-container>
 
-                <ng-container matColumnDef="updatedTime">
-                    <th mat-header-cell *matHeaderCellDef> Updated time </th>
-                    <td mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
-                </ng-container>
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef> Total </th>
+                        <td class="cell" mat-cell *matCellDef="let element"> {{element.total}} </td>
+                    </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
-                <tr mat-row *matRowDef="let row; columns: saleOrderDisplayedCols;"></tr>
-            </table>
+                    <ng-container matColumnDef="updatedTime">
+                        <th mat-header-cell *matHeaderCellDef> Updated time </th>
+                        <td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+                    </ng-container>
 
-            <mat-paginator
-                #saleOrderPaginator
-                [length]="saleOrderLength"
-                [pageSize]="5"
-                [pageSizeOptions]="[3, 5, 10]" showFirstLastButtons>
-            </mat-paginator>
-        </div>
+                    <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
+                    <tr class="row" mat-row *matRowDef="let row; columns: saleOrderDisplayedCols;" (click)="onShowDetail(row)"></tr>
+                </table>
+
+                <mat-paginator
+                    #saleOrderPaginator
+                    [length]="saleOrderLength"
+                    [pageSize]="5"
+                    [pageSizeOptions]="[3, 5, 10]" showFirstLastButtons>
+                </mat-paginator>
+            </div>
+        </ng-template>
+
+        <!-- Sale order detail -->
+        <ng-template #detail class="saleOrder">
+            <div class="saleOrder">
+                <p>{{saleOrderDetail.subject}}</p>
+                <mat-grid-list cols="2" rowHeight="42px">
+                    <!-- Subject row -->
+                    <mat-grid-tile>Subject</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.subject}}</mat-grid-tile>
+
+                    <!-- Contact name row -->
+                    <mat-grid-tile>Contact name</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.contactName}}</mat-grid-tile>
+
+                    <!-- Status row -->
+                    <mat-grid-tile>Status</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.status}}</mat-grid-tile>
+
+                    <!-- Total row -->
+                    <mat-grid-tile>Total</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.total}}</mat-grid-tile>
+
+                    <!-- Assigned row -->
+                    <mat-grid-tile>Assigned to</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.assignedTo}}</mat-grid-tile>
+
+                    <!-- Description row -->
+                    <mat-grid-tile>Description</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.description}}</mat-grid-tile>
+
+                    <!-- Created time row -->
+                    <mat-grid-tile>Created time</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.createdTime}}</mat-grid-tile>
+
+                    <!-- Updated time row -->
+                    <mat-grid-tile>Updated time</mat-grid-tile>
+                    <mat-grid-tile>{{saleOrderDetail.updatedTime}}</mat-grid-tile>
+                </mat-grid-list>
+
+                <div id="btnBack"><button mat-button (click)="onHideDetail()">Back</button></div>
+            </div>
+        </ng-template>
 </div>
