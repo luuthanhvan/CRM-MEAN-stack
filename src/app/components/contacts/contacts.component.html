@@ -20,7 +20,7 @@
 		<div class="filters">
 			<mat-form-field appearance="outline" class="selectFilter">
 				<mat-label>Lead source</mat-label>
-				<mat-select (selectionChange)="applySelectFilter($event.value)">
+				<mat-select (selectionChange)="applySelectFilter($event.value)" [formControl]="leadSrc">
 					<mat-option *ngFor="let src of leadSources" [value]="src"> {{src}} </mat-option>
 				</mat-select>
 			</mat-form-field>

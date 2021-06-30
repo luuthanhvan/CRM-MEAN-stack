@@ -12,14 +12,14 @@ import { AuthGuard } from './helpers/auth.guard';
 import { OnlyAdminUsersGuard } from './helpers/admin-user.guard';
 
 const routes: Routes = [
-	{
-		path: 'signin',
-		component: LoginComponent,
-	},
+	// {
+	// 	path: 'signin',
+	// 	component: LoginComponent,
+	// },
 	{
 		path: '',
 		component: HomeComponent,
-		canActivate: [AuthGuard], // require for load sign-in page first
+		// canActivate: [AuthGuard], // require for load sign-in page first
 		children: [
 			{ path: 'dashboard', component: DashboardComponent, },
 			{ path: 'contacts',  component: ContactsComponent, },

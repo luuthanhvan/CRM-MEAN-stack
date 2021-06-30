@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
 import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
@@ -26,12 +26,14 @@ export class SalesOrderComponent implements OnInit {
 		"modify",
 		"delete",
 	];
- 	dataSource: SaleOrder[] = [];
+ 	dataSource: SaleOrder[] = []; // original datasource - array of objects
 	dataArray : SaleOrder[] = []; // duplicate datasource, purpose: save the original datasource for filter
 
-	data = new MatTableDataSource();
+	data = new MatTableDataSource(); // data displayed in the table
 
 	statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
+    status: FormControl;
+    statusFromDashboard : string;
 
 	createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
@@ -40,8 +42,17 @@ export class SalesOrderComponent implements OnInit {
 	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
 				private formBuilder: FormBuilder,
-				public dialog: MatDialog,){
-  	}
+				public dialog: MatDialog,
+                private route: ActivatedRoute){
+         
+        // get status passed from dashboard page
+        this.route.queryParams.subscribe((params) => {
+            if(params){
+                this.statusFromDashboard = params['status'];
+                this.status = new FormControl(this.statusFromDashboard);
+            }
+        });
+    }
 
 	ngOnInit() {
 		// get list of sales order
@@ -54,9 +65,16 @@ export class SalesOrderComponent implements OnInit {
 					value.updatedTime = datetimeFormat(value.updatedTime);
 					return value;
 				});
+                this.dataArray = this.dataSource; // store the original datasource
 
+                // filter automately
+                // if status (a param) got from dashboard, then filter the datasource by the leadSrc
+                if(this.statusFromDashboard != undefined)
+                    this.dataSource = data.filter(value => value.status === this.statusFromDashboard);
+
+                // assign the datasource to data displayed in the table
 				this.data = new MatTableDataSource(this.dataSource);
-				this.dataArray = this.dataSource;
+                this.dataSource = this.dataArray; // restore the datasource
 			});
 		
 		this.createdTimeForm = this.formBuilder.group({
@@ -72,7 +90,11 @@ export class SalesOrderComponent implements OnInit {
 
 	// function to handle cancel filter sales order event
 	onCancel(){
-        location.reload();
+        if(this.statusFromDashboard){
+            this.router.navigate(['/dashboard']);
+        }
+        else
+            window.location.reload();
     }
 
 	// navigate to the edit sale order page

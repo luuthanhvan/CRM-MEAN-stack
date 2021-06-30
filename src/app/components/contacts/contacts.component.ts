@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
-import { Router, NavigationExtras } from "@angular/router";
+import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 // import { MatDialog } from '@angular/material/dialog';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
@@ -31,14 +31,15 @@ export class ContactsComponent implements OnInit {
         "modify",
         "delete",
     ];
-    dataSource: Contact[] = []; // original datasource 
+    dataSource: Contact[] = []; // original datasource - array of objects
     dataArray : Contact[] = []; // duplicate datasource, purpose: save the original datasource for filter
 
-    data = new MatTableDataSource();
+    data = new MatTableDataSource(); // data displayed in the table
 
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
-    leadSrc : FormControl = new FormControl();
-    
+    leadSrc : FormControl;
+    leadSrcFromDashboard : string;
+
     createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
     searchControl : FormControl = new FormControl();
@@ -46,7 +47,17 @@ export class ContactsComponent implements OnInit {
     constructor(private router: Router, 
                 private contactsService: ContactsService,
                 /* public dialog: MatDialog, */
-                private formBuilder : FormBuilder) {}
+                private formBuilder : FormBuilder,
+                private route: ActivatedRoute) {
+        
+        // get lead source passed from dashboard page
+        this.route.queryParams.subscribe((params) => {
+            if(params){
+                this.leadSrcFromDashboard = params['leadSrc'];
+                this.leadSrc = new FormControl(this.leadSrcFromDashboard);
+            }
+        });
+    }
 
     ngOnInit() {
         // get list of contacts
@@ -58,9 +69,16 @@ export class ContactsComponent implements OnInit {
                 value.updatedTime = datetimeFormat(value.updatedTime);
                 return value;
             });
+            this.dataArray = this.dataSource; // store the original datasource
 
+            // filter automately
+            // if leadSrc (a param) got from dashboard, then filter the datasource by the leadSrc
+            if(this.leadSrcFromDashboard != undefined)
+                this.dataSource = data.filter(value => value.leadSrc === this.leadSrcFromDashboard);
+            
+            // assign the datasource to data displayed in the table
             this.data = new MatTableDataSource(this.dataSource);
-            this.dataArray = this.dataSource;
+            this.dataSource = this.dataArray; // restore the datasource
         });
 
         this.createdTimeForm = this.formBuilder.group({
@@ -76,7 +94,11 @@ export class ContactsComponent implements OnInit {
 
     // function to cancel filter contacts
     onCancel(){
-        location.reload();
+        if(this.leadSrcFromDashboard){
+            this.router.navigate(['/dashboard']);
+        }
+        else
+            window.location.reload();
     }
 
     // navigate to edit contact page
@@ -99,13 +121,12 @@ export class ContactsComponent implements OnInit {
     }
 
     applySelectFilter(filterValue: string){
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-        this.data.filter = filterValue;
+        this.dataSource =  this.dataSource.filter(value => value.leadSrc === filterValue);
+        this.data = new MatTableDataSource(this.dataSource);
+        this.dataSource = this.dataArray;
     }
 
     applyDateFilter(form: FormGroup, filter: string){
-
         if(filter === 'createdTime'){
             // format date and convert it to date object
             let fromDate = new Date(dateFormat(form.value.createdTimeFrom)),

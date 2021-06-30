@@ -33,10 +33,10 @@ export class HomeComponent implements OnInit{
 	openDialog(){
 		let dialogRef = this.dialog.open(HomeChangePasswordComponent);
 		dialogRef.afterClosed().subscribe(result => {
-			console.log(result);
+			// console.log(result);
 			if(result){ // if the password successfully changed, then sign-out
 				window.location.reload();
-				this.authService.signout();
+				this.signout();
 			}
 		});
     }

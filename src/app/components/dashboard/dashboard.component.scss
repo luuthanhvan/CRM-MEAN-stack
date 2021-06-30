@@ -4,26 +4,24 @@
 
     .contactChart, .saleOrderChart, .contact, .saleOrder {
         width: 47%;
+        height: fit-content;
         background-color: white;
-        margin: 17px;
-        
+        margin: 16px;
     }
 
-    .contactChart, .saleOrderChart {
-        height: 300px;
-    }
-
-    .contact, .saleOrder {
-        height: 500px;
-        margin-top:0;
-    }
-
-    .contactChart, .contact{
+    .contactChart, .contact {
         float: left;
     }
 
     .saleOrderChart, .saleOrder {
         float: right;
+    }
+
+    .contactChart, .saleOrderChart {
+        padding-bottom: 16px;
+        p {
+            margin-left: 16px;
+        }
     }
 
     .contact, .saleOrder {

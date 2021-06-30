@@ -1,13 +1,14 @@
 <div class="contentContainer">
         <!-- Widget 1: Number of contacts by lead source -->
         <div class="contactChart">
+            <p>Contacts</p>
             <div style="display: block">
                 <canvas baseChart 
                     [data]="contactPieChartData" 
                     [labels]="contactPieChartLabels" 
                     [chartType]="contactPieChartType"
-                    (chartHover)="chartHovered($event)" 
-                    (chartClick)="chartClicked($event)">
+                    (chartHover)="chartHovered($event, 'contacts')" 
+                    (chartClick)="chartClicked($event, 'contacts')">
                 </canvas>
             </div>
         </div>
@@ -15,17 +16,18 @@
 
         <!-- Widget 2: Number of sales orders by status -->
         <div class="saleOrderChart">
+            <p>Sales order</p>
             <div style="display: block">
                 <canvas baseChart 
                     [data]="saleOrderPieChartData" 
                     [labels]="saleOrderPieChartLabels" 
                     [chartType]="saleOrderPieChartType"
-                    (chartHover)="chartHovered($event)" 
-                    (chartClick)="chartClicked($event)">
+                    (chartHover)="chartHovered($event, 'salesOrder')" 
+                    (chartClick)="chartClicked($event, 'salesOrder')">
                 </canvas>
             </div>
         </div>            
-
+        
         <!-- Widget 3:  Contact information -->
         <div class="contact">
             <p>Contact information</p>

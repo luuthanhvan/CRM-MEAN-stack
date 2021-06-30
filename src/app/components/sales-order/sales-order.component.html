@@ -19,7 +19,7 @@
 		<div class="filters">
 			<mat-form-field appearance="outline" class="selectFilter">
 				<mat-label>Status</mat-label>
-				<mat-select (selectionChange)="applySelectFilter($event.value)">
+				<mat-select (selectionChange)="applySelectFilter($event.value)" [formControl]="status">
 					<mat-option *ngFor="let stt of statusNames" [value]="stt"> {{stt}} </mat-option>
 				</mat-select>
 			</mat-form-field>

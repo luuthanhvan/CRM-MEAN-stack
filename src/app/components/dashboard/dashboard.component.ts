@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild, QueryList} from '@angular/core';
 import { MatPaginator, MatTableDataSource } from "@angular/material";
+import { Router, NavigationExtras } from '@angular/router';
 
 import { Contact } from '../../interfaces/contact';
 import { ContactsService } from '../../services/contacts/contacts.service';
@@ -38,7 +39,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 	@ViewChild('saleOrderPaginator', {static: false}) saleOrderPaginator : MatPaginator;
 	
 	constructor(private contactsService : ContactsService,
-				private salesOrderService : SalesOrderService) {
+				private salesOrderService : SalesOrderService,
+				private router : Router) {
 	}
 
 	ngOnInit() {
@@ -106,10 +108,38 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 	}
 
 	// events
-	chartClicked(e : any) : void {
+	chartClicked(e : any, chartName: string) : void {
+		if (e.active.length > 0) {
+			const chart = e.active[0]._chart;
+			const activePoints = chart.getElementAtEvent(e.event);
+			if ( activePoints.length > 0) {
+				// get the internal index of slice in pie chart
+				const clickedElementIndex = activePoints[0]._index;
+				const label = chart.data.labels[clickedElementIndex];
+
+				// get value by index
+				// const value = chart.data.datasets[0].data[clickedElementIndex];
+				// console.log(clickedElementIndex, label, value)
+				
+				// navigate
+				if(chartName === 'contacts'){
+					let navigationExtras: NavigationExtras = {
+						queryParams: { leadSrc: label },
+					};
+					this.router.navigate(['/contacts'], navigationExtras);
+				}	
+
+				if(chartName === 'salesOrder'){
+					let navigationExtras: NavigationExtras = {
+						queryParams: { status: label },
+					};
+					this.router.navigate(['/sales_order'], navigationExtras);
+				}
+			}
+		}
 	}
 	 
-	chartHovered(e : any) : void {
+	chartHovered(e : any, chartName: string) : void {
 	}
 
 }
