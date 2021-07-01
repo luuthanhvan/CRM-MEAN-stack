@@ -45,9 +45,11 @@ export class SalesOrderComponent implements OnInit {
 				public dialog: MatDialog,
                 private route: ActivatedRoute){
          
+        // clear params (status) before get all data
+        this.router.navigateByUrl('/sales_order');
         // get status passed from dashboard page
         this.route.queryParams.subscribe((params) => {
-            if(params){
+            if(params['status']){
                 this.statusFromDashboard = params['status'];
                 this.status = new FormControl(this.statusFromDashboard);
             }
@@ -90,11 +92,33 @@ export class SalesOrderComponent implements OnInit {
 
 	// function to handle cancel filter sales order event
 	onCancel(){
-        if(this.statusFromDashboard){
-            this.router.navigate(['/dashboard']);
-        }
-        else
-            window.location.reload();
+        // get list of sales order
+		this.salesOrderService
+            .getSalesOrder()
+            .subscribe((data) => {
+                this.dataSource = data.map((value, index) => {
+                    value.no = index+1;
+                    value.createdTime = datetimeFormat(value.createdTime);
+                    value.updatedTime = datetimeFormat(value.updatedTime);
+                    return value;
+                });
+                this.dataArray = this.dataSource; // store the original datasource
+
+                // assign the datasource to data displayed in the table
+                this.data = new MatTableDataSource(this.dataSource);
+            });
+        
+        // reset form controls
+        this.status = new FormControl();
+        this.createdTimeForm = this.formBuilder.group({
+            createdTimeFrom : new FormControl(),
+            createdTimeTo : new FormControl(),
+        });
+
+        this.updatedTimeForm = this.formBuilder.group({
+            updatedTimeFrom : new FormControl(),
+            updatedTimeTo : new FormControl(),
+        });
     }
 
 	// navigate to the edit sale order page
@@ -116,9 +140,10 @@ export class SalesOrderComponent implements OnInit {
 	}
 
 	applySelectFilter(filterValue: string){
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-        this.data.filter = filterValue;
+        this.dataSource =  this.dataSource.filter(value => value.status === filterValue);
+        
+        this.data = new MatTableDataSource(this.dataSource);
+        this.dataSource = this.dataArray;
     }
 
 	applyDateFilter(form: FormGroup, filter: string){

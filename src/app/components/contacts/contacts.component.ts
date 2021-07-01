@@ -131,20 +131,20 @@ export class ContactsComponent implements OnInit {
             });
             this.dataArray = this.dataSource; // store the original datasource
             this.data = new MatTableDataSource(this.dataSource);
-            
-            // reset form controls
-            this.leadSrc = new FormControl('');
-            this.assignedTo = new FormControl('');
+        });
 
-            this.createdTimeForm = this.formBuilder.group({
-                createdTimeFrom : new FormControl(),
-                createdTimeTo : new FormControl(),
-            });
-    
-            this.updatedTimeForm = this.formBuilder.group({
-                updatedTimeFrom : new FormControl(),
-                updatedTimeTo : new FormControl(),
-            });
+        // reset form controls
+        this.leadSrc = new FormControl('');
+        this.assignedTo = new FormControl('');
+
+        this.createdTimeForm = this.formBuilder.group({
+            createdTimeFrom : new FormControl(),
+            createdTimeTo : new FormControl(),
+        });
+
+        this.updatedTimeForm = this.formBuilder.group({
+            updatedTimeFrom : new FormControl(),
+            updatedTimeTo : new FormControl(),
         });
     }
 
