@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 // import { MatDialog } from '@angular/material/dialog';
@@ -54,6 +54,8 @@ export class ContactsComponent implements OnInit {
                 private formBuilder : FormBuilder,
                 private route: ActivatedRoute) {
         
+        // clear params (leadSrc or assignedTo) before get all data
+        this.router.navigateByUrl('/contacts');
         // get lead source passed from dashboard page
         this.route.queryParams.subscribe((params) => {
             if(params){
@@ -113,11 +115,37 @@ export class ContactsComponent implements OnInit {
 
     // function to cancel filter contacts
     onCancel(){
-        if(this.leadSrcFromDashboard || this.assignedFromDashboard){
-            this.router.navigate(['/dashboard']);
-        }
-        else
-            window.location.reload();
+        // get list of contacts
+        this.contactsService.getContacts().subscribe((data) => {
+            // get list of assigned to
+            this.assignedToUsers = data.map(value => value.assignedTo);
+            // Remove array duplicate
+            this.assignedToUsers = [...new Set(this.assignedToUsers)];
+
+            this.dataSource = data.map((value, index) => {
+                value.no = index+1;
+                // format datetime to display
+                value.createdTime = datetimeFormat(value.createdTime);
+                value.updatedTime = datetimeFormat(value.updatedTime);
+                return value;
+            });
+            this.dataArray = this.dataSource; // store the original datasource
+            this.data = new MatTableDataSource(this.dataSource);
+            
+            // reset form controls
+            this.leadSrc = new FormControl('');
+            this.assignedTo = new FormControl('');
+
+            this.createdTimeForm = this.formBuilder.group({
+                createdTimeFrom : new FormControl(),
+                createdTimeTo : new FormControl(),
+            });
+    
+            this.updatedTimeForm = this.formBuilder.group({
+                updatedTimeFrom : new FormControl(),
+                updatedTimeTo : new FormControl(),
+            });
+        });
     }
 
     // navigate to edit contact page

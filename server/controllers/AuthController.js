@@ -14,7 +14,7 @@ class AuthController {
                     // generate token
                     const token = jwt.sign(JSON.stringify(user._id), process.env.JWT_SECRET);
 
-                    return apiResponse.successResponseWithData(res, 'Success', {user: user, idToken: token, expiresIn: 120});
+                    return apiResponse.successResponseWithData(res, 'Success', {user: user, idToken: token, expiresIn: 3600}); // expired in 1 hour
                 });
         } catch(err){
             return apiResponse.ErrorResponse(res, err);

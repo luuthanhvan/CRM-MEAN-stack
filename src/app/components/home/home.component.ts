@@ -14,15 +14,16 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit{
 	currentUser : User;
-	
+	isBrowserRefresh : boolean;
+	isAdminUser : boolean = false;
+
 	constructor(private authService : AuthService,
-				public dialog: MatDialog) { 
-		// get current user information
-		this.currentUser = this.authService.getUser;
-	}
+				public dialog: MatDialog,
+				private router : Router){}
 	
 	ngOnInit(){
-
+		this.currentUser = this.authService.getUser;
+		this.isAdminUser = this.currentUser.isAdmin;
 	}
 
 	signout(){

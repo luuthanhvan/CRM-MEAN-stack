@@ -4,19 +4,19 @@ import { AuthService } from '../services/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
+    
     constructor(
         private router: Router,
         private authService: AuthService) { }
 
     canActivate(){
-        let currentUser = this.authService.getUser,
-            isLoggedIn = this.authService.isLoggedIn();
+        const authInfo = this.authService.getAuthData;
 
-        if(isLoggedIn){
+        if(authInfo){
             return true;
         }
-        
+
         this.router.navigate(['/signin']);
-        return false;
+        return true;
     }
 }

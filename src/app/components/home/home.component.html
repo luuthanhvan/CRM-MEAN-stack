@@ -12,18 +12,18 @@
 		<button mat-button class="menu-button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
 		<button mat-button class="menu-button" routerLink="/contacts" routerLinkActive="active">Contacts</button>
 		<button mat-button class="menu-button" routerLink="/sales_order" routerLinkActive="active">Sales Order</button>
-		<button mat-button class="menu-button" routerLink="/user_management" routerLinkActive="active">User Management</button>
+		<!-- <button mat-button class="menu-button" routerLink="/user_management" routerLinkActive="active">User Management</button> -->
 		
-		<!-- <div *ngIf="currentUser && currentUser.isAdmin; then admin else user"></div>
+		<div *ngIf="isAdminUser; then admin else user"></div>
 
 		<ng-template #admin>
 			<button mat-button class="menu-button" routerLink="/user_management" routerLinkActive="active">User Management</button>
-		</ng-template> -->
+		</ng-template>
 
 		<!-- user cannot see the user management menu -->
-		<!-- <ng-template #user>
+		<ng-template #user>
 			<div></div>
-		</ng-template> -->
+		</ng-template>
 
 	</mat-sidenav>
 

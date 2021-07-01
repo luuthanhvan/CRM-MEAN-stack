@@ -79,7 +79,7 @@
                     <mat-select formControlName="leadSrc">
                         <mat-option *ngFor="let src of leadSources" [value]="src">{{src}}</mat-option>
                     </mat-select>
-
+                    
                     <!-- lead source validation error -->
                     <div *ngIf="contactFormControl.leadSrc.touched || submitted">
                         <span *ngIf="contactFormControl.leadSrc.errors?.required">
