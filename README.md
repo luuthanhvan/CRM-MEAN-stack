@@ -51,23 +51,11 @@ npm --version # or npm -v
 
 ### Ubuntu 18.04
 - Open the terminal and run: `npm install`
-- Create a new file named '.env' in the root directory of this project. Add environment-specific variables on new lines in the form of NAME=VALUE. Example:
-```
-SERVER_PORT=4040
-HOSTNAME=localhost
-NODE_ENV=development
-JWT_SECRET=abc123
-```
+- Rename `.env_example` file to `.env`: `cp .env_example .env`
 
 ### Windows
 - Open the terminal and run: `npm install`
-- Create a new file named '.env' in the root directory of this project. Add environment-specific variables on new lines in the form of NAME=VALUE. Example:
-```
-SERVER_PORT=4040
-HOSTNAME=localhost
-NODE_ENV=development'
-JWT_SECRET=abc123
-```
+- Rename `.env_example` file to `.env`
 - Create a new folder named "data" in server directory for MongoDB data store directory. Then, run the command in your terminal: `mongod --dbpath [your_absolute_path_to_project/server/data]`. Example: `mongod --dbpath "D:\MEAN-stack\server\data"`
 
 ## Running
