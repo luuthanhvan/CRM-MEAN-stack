@@ -32,7 +32,7 @@ export class SalesOrderComponent implements OnInit {
 	data = new MatTableDataSource(); // data displayed in the table
 
 	statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
-    status: FormControl;
+    status: FormControl = new FormControl('');
     statusFromDashboard : string;
 
 	createdTimeForm : FormGroup;

@@ -1,72 +1,64 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../../interfaces/user';
-import * as moment from "moment";
-
-interface AuthResponse {
-	token: string;
-	user: User;
-}
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 	SERVER_URL: string = "http://localhost:4040";
+	noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
 	private user$ = new BehaviorSubject<User | null>(null);
-	public isAuthenticated : boolean = false;
 
   	constructor(private httpClient: HttpClient) { }
 	
-	signin(username: string, password: string): Observable<AuthResponse>{
+	signin(username: string, password: string) : Observable<void>{
 		return this.httpClient
-					.post<AuthResponse>(`${this.SERVER_URL}/signin`, { username: username, password: password})
-					.pipe(map(res => {
-						let user = res['data'].user, 
-						token = res['data'].idToken,
-						expiresInDuration = res['data'].expiresIn;
-
-						// save the token and expiration date to local storage
-						const now = new Date();
-						const expirationDate = new Date(now.getTime() + expiresInDuration*1000);
-						this.saveAuthData(token, expirationDate);
-						this.isAuthenticated = true;
-						this.user$.next(user);
-
-						return user;
-					
-					}));
+					.post<void>(`${this.SERVER_URL}/signin`, { username, password }, this.noAuthHeader);					
 	}
 
-	signout(){
-		this.clearAuthData();
-		this.user$.next(null);
+	me() : Observable<User>{
+		return this.httpClient
+					.get<User>(`${this.SERVER_URL}/userProfile`)
+					.pipe(map(res => res['data'].user));
 	}
 
-	public get getUser(): User{
-		return this.user$.value;
-	}
-
-	private saveAuthData(token: string, expirationDate: Date) : void{
+	// helper functions
+	setToken(token: string) : void{
 		window.localStorage.setItem('token', token);
-		window.localStorage.setItem('expiration', expirationDate.toISOString());
 	}
 
-	private clearAuthData() : void{
-		// remove token and expiration in local storage
+	removeToken() : void{
+		// remove token in local storage
 		window.localStorage.removeItem('token');
-		window.localStorage.removeItem('expiration');
 	}
 
-	public get getAuthData(){
+	getToken(){
 		const token = window.localStorage.getItem('token');
-		const expirationDate = window.localStorage.getItem('expiration');
 
-		if(!token && !expirationDate)
+		if(!token)
 			return;
-		return { token: token, expirationDate : new Date(expirationDate)};
+		return token;
 	}
+
+	getUserPayload() {
+		var token = this.getToken();
+		if (token) {
+			var userPayload = atob(token.split('.')[1]);
+			return JSON.parse(userPayload);
+		}
+		else
+		  	return null;
+	  }
+	
+	  isLoggedIn() {
+		var userPayload = this.getUserPayload();
+		if (userPayload)
+		  	return userPayload.exp > Date.now() / 1000;
+		else
+		  	return false;
+	  }
 }

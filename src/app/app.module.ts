@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /* ERROR: NullInjectorError: No provider for HttpClient when using HttpClient */
-import { HttpClientModule } from '@angular/common/http'; // FIX: import HttpClientModule
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // FIX: import HttpClientModule
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { 
@@ -29,6 +29,11 @@ import { SalesOrderComponent, /*SalesOrderCreatedTimeDialogComponent, SalesOrder
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
+
+import { AuthGuard } from './helpers/auth.guard';
+import { AuthInterceptor } from './helpers/auth.interceptor';
+import { AuthService } from './services/auth/auth.service';
+
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
@@ -66,7 +71,14 @@ const materials = [
     ChartsModule,
     materials,
   ],
-  providers: [ThemeService],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    ThemeService, AuthGuard, AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

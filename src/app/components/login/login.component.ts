@@ -16,13 +16,20 @@ export class LoginComponent implements OnInit {
 
 	constructor(private formBuilder : FormBuilder,
 				private authService : AuthService,
-				private router : Router) {}
+				private router : Router) {
+	}
 
 	ngOnInit() {
 		this.signinForm = this.formBuilder.group({
 			username: new FormControl('', [Validators.required]),
 			password: new FormControl('', [Validators.required, Validators.minLength(6)])
 		});
+
+		const isLoggedIn = this.authService.isLoggedIn();
+
+		if(isLoggedIn){
+			this.router.navigateByUrl('/dashboard');
+		}
 	}
 
 	get signinFormControl(){
@@ -35,16 +42,9 @@ export class LoginComponent implements OnInit {
 
 		this.authService
 			.signin(userInfo.username, userInfo.password)
-			.subscribe(
-				(data) => {
-					if(data['isActive']){
-						this.router.navigate(['/dashboard']);
-					}
-					else {
-						this.isLoggingFailed = true;
-						this.errorMessage = "* You account has been disabled";
-					}
-				},
-			);
+			.subscribe(res => {
+				this.authService.setToken(res['data'].token);
+				this.router.navigateByUrl('/dashboard');
+			});
 	}
 }

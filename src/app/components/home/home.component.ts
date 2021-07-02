@@ -19,24 +19,29 @@ export class HomeComponent implements OnInit{
 
 	constructor(private authService : AuthService,
 				public dialog: MatDialog,
-				private router : Router){}
+				private router : Router){
+	}
 	
 	ngOnInit(){
-		this.currentUser = this.authService.getUser;
-		this.isAdminUser = this.currentUser.isAdmin;
+		// get user logged in info
+		const isLoggedIn = this.authService.isLoggedIn();
+		if(isLoggedIn){
+			this.authService.me().subscribe(data => {
+				this.currentUser = data;
+				this.isAdminUser = this.currentUser.isAdmin;
+			})
+		}
 	}
 
 	signout(){
-		this.authService.signout();
-		window.location.reload();
+		this.authService.removeToken();
+		this.router.navigateByUrl('/signin');
 	}
 
 	openDialog(){
 		let dialogRef = this.dialog.open(HomeChangePasswordComponent);
-		dialogRef.afterClosed().subscribe(result => {
-			// console.log(result);
-			if(result){ // if the password successfully changed, then sign-out
-				window.location.reload();
+		dialogRef.afterClosed().subscribe((result) => {
+			if(result){ // if password successfully changed, then sign-out
 				this.signout();
 			}
 		});
@@ -64,6 +69,14 @@ export class HomeChangePasswordComponent{
 		{
 			validators: MustMatch('newPass', 'confirmPass')	
 		});
+
+		// get user logged in info
+		const isLoggedIn = this.authService.isLoggedIn();
+		if(isLoggedIn){
+			this.authService.me().subscribe(data => {
+				this.currentUser = data;
+			})
+		}
 	}
 
 	get changePassFormControl(){
@@ -72,10 +85,7 @@ export class HomeChangePasswordComponent{
 
 	onSubmit(form : FormGroup){
 		this.submitted = true;
-
-		// get current user
-		this.currentUser = this.authService.getUser;
-
+		
 		this.userService
 				.changePassword(this.currentUser._id, form.value.newPass)
 				.subscribe();

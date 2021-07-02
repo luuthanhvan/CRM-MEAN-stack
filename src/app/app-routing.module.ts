@@ -9,7 +9,6 @@ import { UserManagementComponent } from './components/user-management/user-manag
 import { LoginComponent } from './components/login/login.component';
 
 import { AuthGuard } from './helpers/auth.guard';
-import { OnlyAdminUsersGuard } from './helpers/admin-user.guard';
 
 const routes: Routes = [
 	{
@@ -24,7 +23,7 @@ const routes: Routes = [
 			{ path: 'dashboard', component: DashboardComponent, },
 			{ path: 'contacts',  component: ContactsComponent, },
 			{ path: 'sales_order', component: SalesOrderComponent, },
-			{ path: 'user_management', component: UserManagementComponent, /* canActivate: [OnlyAdminUsersGuard] */},
+			{ path: 'user_management', component: UserManagementComponent,},
 			{
 				path: 'contacts/add',
 				loadChildren: () => import('./components/contacts/add/add.module').then(m => m.AddContactModule),
@@ -55,8 +54,14 @@ const routes: Routes = [
 				loadChildren: () => import('./components/user-management/edit/edit.module').then(m => m.EditUserModule),
 				// loadChildren: './components/user-management/edit/edit.module#EditUserModule',
 			},
+			{
+				path: '', redirectTo: '/dashboard', pathMatch: 'full'
+			}
 		],
 	},
+	{
+		path: '', redirectTo: '/signin', pathMatch: 'full'
+	}
 ];
 
 @NgModule({

@@ -7,6 +7,9 @@ import { ContactsService } from '../../services/contacts/contacts.service';
 
 import { SaleOrder } from '../../interfaces/sale-order';
 import { SalesOrderService } from '../../services/sales_order/sales-order.service';
+
+import { User } from '../../interfaces/user';
+import { AuthService } from '../../services/auth/auth.service';
 import { datetimeFormat } from '../../helpers/datetime_format';
 
 @Component({
@@ -38,12 +41,16 @@ export class DashboardComponent implements OnInit {
 	isShowDetail : boolean = false; // use for show/hide a sale order detail
 	saleOrderDetail : SaleOrder;
 
+	currentUser : User;
+	isAdminUser : boolean = false;
+
 	@ViewChild('contactPaginator', {static: false}) contactPaginator : MatPaginator;
 	@ViewChild('saleOrderPaginator', {static: false}) saleOrderPaginator : MatPaginator;
 	
 	constructor(private contactsService : ContactsService,
 				private salesOrderService : SalesOrderService,
-				private router : Router) {
+				private router : Router,
+				private authService : AuthService) {
 	}
 
 	ngOnInit() {
@@ -107,6 +114,14 @@ export class DashboardComponent implements OnInit {
 				this.saleOrderData = new MatTableDataSource(this.saleOrderDataSrc);
 				this.saleOrderData.paginator = this.saleOrderPaginator;
 			});
+
+		// get current user logged infor
+		this.authService.me().subscribe(
+			(data) => { 
+				this.currentUser = data; 
+				this.isAdminUser = this.currentUser.isAdmin; 
+			}
+		);
 	}
 
 	// function to handle chart clicked event

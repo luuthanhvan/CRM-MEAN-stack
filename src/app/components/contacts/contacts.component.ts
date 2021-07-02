@@ -36,11 +36,11 @@ export class ContactsComponent implements OnInit {
 
     data = new MatTableDataSource(); // data displayed in the table
 
-    leadSrc : FormControl;
+    leadSrc : FormControl = new FormControl('');
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     leadSrcFromDashboard : string;
 
-    assignedTo : FormControl;
+    assignedTo : FormControl = new FormControl('');
     assignedToUsers : string[];
     assignedFromDashboard : string;
 

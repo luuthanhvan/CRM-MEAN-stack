@@ -1,8 +1,11 @@
+require('./config/passport');
+
 const express = require('express');
 const logger = require('morgan');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
+const passport = require('passport');
 const route = require('./routers');
 const db = require('./config/db_connection');
 
@@ -29,6 +32,8 @@ app.use(express.json());
 No 'Access-Control-Allow-Origin' header is present on the requested resource */
 // FIX: use cors middleware to allow cross-origin requests
 app.use(cors());
+
+app.use(passport.initialize());
 
 /* Routing */
 route(app);
