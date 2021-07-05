@@ -17,6 +17,10 @@ const User = new Schema({
 });
 
 // Methods
+User.methods.verifyPassword = function (password) {
+    return password === this.password;
+};
+
 User.methods.generateJwt = function () {
     return jwt.sign({ _id: this._id}, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXP });
 }

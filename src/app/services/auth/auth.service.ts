@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 import { User } from '../../interfaces/user';
 
 @Injectable({
@@ -17,15 +17,22 @@ export class AuthService {
 	
 	signin(username: string, password: string) : Observable<void>{
 		return this.httpClient
-					.post<void>(`${this.SERVER_URL}/signin`, { username, password }, this.noAuthHeader);					
+					.post<void>(`${this.SERVER_URL}/signin`, { username, password }, this.noAuthHeader);				
 	}
 
 	me() : Observable<User>{
 		return this.httpClient
 					.get<User>(`${this.SERVER_URL}/userProfile`)
-					.pipe(map(res => res['data'].user));
+					.pipe(tap(res => {
+						this.user$.next(res['data'].user);
+					}));
 	}
 
+	getUser() : Observable<User | null> {
+		return this.user$.asObservable();
+	}
+
+	
 	// helper functions
 	setToken(token: string) : void{
 		window.localStorage.setItem('token', token);

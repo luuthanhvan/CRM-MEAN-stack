@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { MustMatch } from '../../helpers/validation_functions';
 import { UserManagementService } from '../../services/user_management/user-management.service';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -25,12 +27,15 @@ export class HomeComponent implements OnInit{
 	ngOnInit(){
 		// get user logged in info
 		const isLoggedIn = this.authService.isLoggedIn();
+
 		if(isLoggedIn){
-			this.authService.me().subscribe(data => {
-				this.currentUser = data;
-				this.isAdminUser = this.currentUser.isAdmin;
+			this.authService.getUser().subscribe(user => {
+				this.currentUser = user; // this line will get information of an user
+				console.log(this.currentUser); // result like: eg: {_id: "60d14ee04da4be2d06331514", name: "thanh van", username: "lthanhvan", email: "van@gmail.com", phone: "1234566788", …}
+				this.isAdminUser = this.currentUser.isAdmin; // TypeError: Cannot read property 'isAdmin' of null
 			})
 		}
+		
 	}
 
 	signout(){

@@ -29,14 +29,14 @@ class AuthController {
         passport.authenticate('local', (err, user, info) => {       
             // error from passport middleware
             if (err)
-                return apiResponse.ErrorResponse(res, err);
+                return apiResponse.validationError(res, err);
             // registered user
             else if (user){
                 return apiResponse.successResponseWithData(res, 'Success', {token: user.generateJwt()});
             }
             // unknown user or wrong password
             else 
-                return apiResponse.ErrorResponse(res, info);
+                return apiResponse.notFoundResponse(res, info);
         })(req, res);
     }
 

@@ -42,9 +42,10 @@ export class LoginComponent implements OnInit {
 
 		this.authService
 			.signin(userInfo.username, userInfo.password)
-			.subscribe(res => {
+			.subscribe((res) => {
 				this.authService.setToken(res['data'].token);
 				this.router.navigateByUrl('/dashboard');
-			});
+			}, (err) => {console.log(err)}
+			);
 	}
 }
