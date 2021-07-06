@@ -73,33 +73,6 @@
 			</div>
 		</div>
 		<div class="btnCancel"><button mat-button (click)="onCancel()">Cancel</button></div>
-		<!-- <mat-grid-list cols="3" rowHeight="75px">
-			<mat-grid-tile [colspan]="3"><h2>Filters</h2></mat-grid-tile>
-
-			<form [formGroup]="leadSource" (ngSubmit)="applyFilter(leadSource)">
-				<mat-grid-tile>
-					<mat-form-field appearance="outline">
-						<mat-label>Lead source</mat-label>
-						<mat-select formControlName="leadSrc">
-							<mat-option *ngFor="let src of leadSources" [value]="src"> {{src}} </mat-option>
-						</mat-select>
-					</mat-form-field>
-				</mat-grid-tile>
-
-				<mat-grid-tile>
-					<button mat-button (click)="openDialog('createdTime')">Choose created time</button>
-				</mat-grid-tile>
-
-				<mat-grid-tile>
-					<button mat-button (click)="openDialog('updatedTime')">Choose updated time</button>
-				</mat-grid-tile>
-				
-				<mat-grid-tile [colspan]="3">
-					<button mat-button type="submit">Apply</button>
-					<button mat-button (click)="onCancel()">Cancel</button>
-				</mat-grid-tile>
-			</form>
-		</mat-grid-list> -->
 	</div> <!-- End div filters -->
 
   <!-- List of contacts -->
@@ -197,19 +170,19 @@
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->
-				<ng-container matColumnDef="modify">
+				<!-- <ng-container matColumnDef="modify">
 					<th mat-header-cell *matHeaderCellDef> Modify </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
-				</ng-container>
+				</ng-container> -->
 
 				<!-- Delete contact infomation column -->
-				<ng-container matColumnDef="delete">
+				<!-- <ng-container matColumnDef="delete">
 					<th mat-header-cell *matHeaderCellDef> Delete </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id, element.contactName)"><mat-icon>delete</mat-icon></button></td>
-				</ng-container>
+				</ng-container> -->
 
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onClickedRow(row)"></tr>
 			
 			</table>
 		</div>

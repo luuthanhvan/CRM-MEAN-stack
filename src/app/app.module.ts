@@ -23,9 +23,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 /* import ThemeService and put it in providers of NgModule */
 import { ChartsModule, ThemeService } from 'ng2-charts';
 
-import { ContactsComponent, ContactConfirmationDialog, /* ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent, */ } from './components/contacts/contacts.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { ContactConfirmationDialog } from './components/contacts/delete-dialog/confirmation-dialog.component';
+import { EditContactDialog } from './components/contacts/edit-dialog/contacts-edit-dialog.component';
+
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SalesOrderComponent, SalesOrderConfirmationDialog,/*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/sales-order/sales-order.component';
+import { SalesOrderComponent, SalesOrderConfirmationDialog, } from './components/sales-order/sales-order.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
@@ -45,9 +48,9 @@ const materials = [
 @NgModule({
   declarations: [
     AppComponent,
-    ContactsComponent, ContactConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
+    ContactsComponent, ContactConfirmationDialog, EditContactDialog,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
+    SalesOrderComponent, SalesOrderConfirmationDialog,
     UserManagementComponent,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
@@ -55,9 +58,9 @@ const materials = [
   ],
   entryComponents : [
     AppComponent,
-    ContactsComponent, ContactConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
+    ContactsComponent, ContactConfirmationDialog, EditContactDialog,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
+    SalesOrderComponent, SalesOrderConfirmationDialog, 
     UserManagementComponent, 
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,

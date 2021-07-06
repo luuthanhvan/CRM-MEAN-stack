@@ -1,11 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material';
+
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
-import { MatTableDataSource } from '@angular/material';
+import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
+import { EditContactDialog } from './edit-dialog/contacts-edit-dialog.component';
 
 @Component({
     selector: "app-contacts",
@@ -28,8 +31,8 @@ export class ContactsComponent implements OnInit {
         "description",
         "createdTime",
         "updatedTime",
-        "modify",
-        "delete",
+        // "modify",
+        // "delete",
     ];
     dataSource: Contact[] = []; // original datasource - array of objects
     dataArray : Contact[] = []; // duplicate datasource, purpose: save the original datasource for filter
@@ -156,30 +159,6 @@ export class ContactsComponent implements OnInit {
         this.router.navigate(["/contacts/edit"], navigationExtras);
     }
 
-    // function to handle delete a contact
-    onDelete(contactId: string, contactName: string) {
-        // show confirmation dialog before detele an item
-        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
-        dialogRef.componentInstance.confirmMess = `You want to delete the "${contactName}" contact?`;
-        dialogRef.afterClosed().subscribe(
-            (result) => {
-                if(result){
-                    // do confirmation action: delete the contact
-                    this.contactsService
-                        .deleteContact(contactId)
-                        .subscribe((res) => {
-                            if(res['status'] == 1){ // status = 1 => OK
-                                location.reload(); // reload contacts page
-                            }
-                        });
-                }
-                else{
-                    dialogRef = null;
-                }
-            }
-        )
-    }
-
     applySelectFilter(filterValue: string, filterBy : string){
         if(filterBy === 'leadSrc')
             this.dataSource =  this.dataSource.filter(value => value.leadSrc === filterValue);
@@ -234,99 +213,18 @@ export class ContactsComponent implements OnInit {
         this.searchControl = new FormControl('');
     }
 
-    /*
-    openDialog(dialogName : string){
-        if(dialogName === 'createdTime'){
-            let dialogRef = this.dialog.open(ContactsCreatedTimeDialogComponent);
-            dialogRef.afterClosed().subscribe(result => {
-                console.log(`Dialog result: ${result}`);
-            });
-        }
-
-        else if(dialogName === 'updatedTime'){
-            let dialogRef = this.dialog.open(ContactsUpdatedTimeDialogComponent);
-            dialogRef.afterClosed().subscribe(result => {
-                // console.log(`Dialog result: ${result}`);
-            });
-        }
-    } */
-}
-
-@Component({
-    selector: 'confirmation-dialog',
-    templateUrl: 'confirmation-dialog.component.html'
-})
-export class ContactConfirmationDialog{
-    confirmMess : string;
-
-    constructor(){}
-}
-
-/*
-@Component({
-    selector: 'contacts-created-time-dialog',
-    templateUrl: 'contacts-created-time-dialog.component.html'
-})
-export class ContactsCreatedTimeDialogComponent implements OnInit {
-    createdTimeForm : FormGroup;
-    dataSource: Contact[] = [];
-    data = new MatTableDataSource();
-
-    constructor(private formBuilder: FormBuilder,
-        private contactsService: ContactsService){
-            
-        this.createdTimeForm = this.formBuilder.group({
-            fromDate : new FormControl(''),
-            toDate : new FormControl(''),
-        });
-
-        // get list of contacts
-        this.contactsService.getContacts().subscribe((data) => {
-            this.dataSource = data.map((value, index) => {
-                value.no = index+1;
-                // value.createdTime = datetimeFormat(value.createdTime);
-                // value.updatedTime = datetimeFormat(value.updatedTime);
-                return value;
-            });
-
-            this.data = new MatTableDataSource(this.dataSource);
-        });
-    }
-
-    get fromDate() { return this.createdTimeForm.get('fromDate').value; }
-    get toDate() { return this.createdTimeForm.get('toDate').value; }
-
-    ngOnInit() {
-    }
-
-    applyFilter(form: FormGroup){
-        console.log(new Date(this.dataSource[0].createdTime));
-        let fromDate = datetimeFormat(form.value.fromDate),
-            toDate = datetimeFormat(form.value.toDate);
-        
-        
-        let filterValue = this.dataSource.filter((value) => value.createdTime > fromDate && value.createdTime < toDate);
-
-        this.data = new MatTableDataSource(filterValue);
+    onClickedRow(row : Contact){
+        let dialogRef = this.dialog.open(EditContactDialog, { disableClose : false, panelClass: 'formDialog' });
+        dialogRef.componentInstance.contactId = row._id;
+        dialogRef.afterClosed().subscribe(
+            (result) => {
+                if(result){
+                    window.location.reload();
+                }
+                else {
+                    dialogRef = null;
+                }
+            }
+        );
     }
 }
-
-@Component({
-    selector: 'contacts-updated-time-dialog',
-    templateUrl: 'contacts-updated-time-dialog.component.html'
-})
-export class ContactsUpdatedTimeDialogComponent implements OnInit{
-    
-    updatedTimeForm : FormGroup;
-
-    constructor(private formBuilder: FormBuilder){
-
-    }
-
-    ngOnInit() {
-        this.updatedTimeForm = this.formBuilder.group({
-            updatedTimeFrom : new FormControl(''),
-            updatedTimeTo : new FormControl(''),
-        });
-    }
-} */
