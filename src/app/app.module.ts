@@ -13,7 +13,7 @@ import {
   MatDividerModule, MatFormFieldModule, MatDatepickerModule,
   MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
   MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
-  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule,
+  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
 } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -23,18 +23,20 @@ import { MatNativeDateModule } from '@angular/material/core';
 /* import ThemeService and put it in providers of NgModule */
 import { ChartsModule, ThemeService } from 'ng2-charts';
 
+import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/login/login.component';
+
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { ContactConfirmationDialog } from './components/contacts/delete-dialog/confirmation-dialog.component';
 import { EditContactDialog } from './components/contacts/edit-dialog/contacts-edit-dialog.component';
 
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SalesOrderComponent, } from './components/sales-order/sales-order.component';
 import { SalesOrderConfirmationDialog } from './components/sales-order/delete-dialog/confirmation-dialog.component';
 import { EditSaleOrderDialog } from './components/sales-order/edit-dialog/sales-order-edit-dialog.component';
 
 import { UserManagementComponent } from './components/user-management/user-management.component';
-import { LoginComponent } from './components/login/login.component';
-import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
+import { EditUserDialog } from './components/user-management/edit-dialog/user-edit-dialog.component';
 
 import { AuthGuard } from './helpers/auth.guard';
 import { AuthInterceptor } from './helpers/auth.interceptor';
@@ -44,7 +46,7 @@ const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
   MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
-  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule,
+  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule
 ];
 
 
@@ -54,7 +56,7 @@ const materials = [
     ContactsComponent, ContactConfirmationDialog, EditContactDialog,
     DashboardComponent,
     SalesOrderComponent, SalesOrderConfirmationDialog, EditSaleOrderDialog,
-    UserManagementComponent,
+    UserManagementComponent, EditUserDialog,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
     
@@ -64,7 +66,7 @@ const materials = [
     ContactsComponent, ContactConfirmationDialog, EditContactDialog,
     DashboardComponent,
     SalesOrderComponent, SalesOrderConfirmationDialog, EditSaleOrderDialog,
-    UserManagementComponent, 
+    UserManagementComponent, EditUserDialog,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
   ],

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../interfaces/user';
 import { UserManagementService } from '../../services/user_management/user-management.service';
 import { datetimeFormat } from '../../helpers/datetime_format';
+import { EditUserDialog } from './edit-dialog/user-edit-dialog.component';
 
 @Component({
 	selector: 'app-user-management',
@@ -18,12 +20,13 @@ export class UserManagementComponent implements OnInit {
 		"isAdmin",
 		"isActive",
 		"createdTime",
-		"modify",
+		// "modify",
 	];
 	dataSource : User[] = [];
 
 	constructor(private router: Router,
-				private userService: UserManagementService) {
+				private userService: UserManagementService,
+				public dialog: MatDialog,) {
 		
 		// get list of users
 		this.userService.getUsers().subscribe((data) => {
@@ -46,4 +49,19 @@ export class UserManagementComponent implements OnInit {
 		};
 		this.router.navigate(["/user_management/edit"], navigationExtras);
 	}
+
+	onClickedRow(row : User){
+        let dialogRef = this.dialog.open(EditUserDialog, { disableClose : false, panelClass: 'formDialog' });
+        dialogRef.componentInstance.userId = row._id;
+        dialogRef.afterClosed().subscribe(
+            (result) => {
+                if(result){
+                    window.location.reload();
+                }
+                else {
+                    dialogRef = null;
+                }
+            }
+        );
+    }
 }

@@ -130,30 +130,7 @@ export class SalesOrderComponent implements OnInit {
 		};
 		this.router.navigate(["/sales_order/edit"], navigationExtras);
 	}
-
-	// function to handle delete a sale order
-	onDelete(saleOrderId: string, sub: string) {
-        // show confirmation dialog before detele an item
-        let dialogRef = this.dialog.open(SalesOrderConfirmationDialog, { disableClose : false });
-        dialogRef.componentInstance.confirmMess = `You want to delete the "${sub}"?`;
-        dialogRef.afterClosed().subscribe(
-            (result) => {
-                if(result){
-                    // do confirmation action: delete the sales order
-                    this.salesOrderService
-                    	.deleteSaleOrder(saleOrderId)
-                    	.subscribe((res) => {
-                    		if(res['status'] == 1) // status = 1 => OK
-                    			location.reload(); // reload the sales order page
-                    	});
-                }
-                else{
-                    dialogRef = null;
-                }
-            }
-        );
-	}
-
+    
 	applySelectFilter(filterValue: string){
         this.dataSource =  this.dataSource.filter(value => value.status === filterValue);
         
