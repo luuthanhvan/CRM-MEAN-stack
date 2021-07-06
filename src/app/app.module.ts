@@ -28,7 +28,10 @@ import { ContactConfirmationDialog } from './components/contacts/delete-dialog/c
 import { EditContactDialog } from './components/contacts/edit-dialog/contacts-edit-dialog.component';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SalesOrderComponent, SalesOrderConfirmationDialog, } from './components/sales-order/sales-order.component';
+import { SalesOrderComponent, } from './components/sales-order/sales-order.component';
+import { SalesOrderConfirmationDialog } from './components/sales-order/delete-dialog/confirmation-dialog.component';
+import { EditSaleOrderDialog } from './components/sales-order/edit-dialog/sales-order-edit-dialog.component';
+
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
@@ -50,7 +53,7 @@ const materials = [
     AppComponent,
     ContactsComponent, ContactConfirmationDialog, EditContactDialog,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog,
+    SalesOrderComponent, SalesOrderConfirmationDialog, EditSaleOrderDialog,
     UserManagementComponent,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
@@ -60,7 +63,7 @@ const materials = [
     AppComponent,
     ContactsComponent, ContactConfirmationDialog, EditContactDialog,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog, 
+    SalesOrderComponent, SalesOrderConfirmationDialog, EditSaleOrderDialog,
     UserManagementComponent, 
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
