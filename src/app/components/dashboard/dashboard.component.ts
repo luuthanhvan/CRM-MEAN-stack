@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
 	saleOrderDetail : SaleOrder;
 
 	currentUser : User;
-	isAdminUser : boolean = false;
+	isAdminUser : boolean = true;
 
 	@ViewChild('contactPaginator', {static: false}) contactPaginator : MatPaginator;
 	@ViewChild('saleOrderPaginator', {static: false}) saleOrderPaginator : MatPaginator;
@@ -115,13 +115,19 @@ export class DashboardComponent implements OnInit {
 				this.saleOrderData.paginator = this.saleOrderPaginator;
 			});
 
-		// get current user logged infor
-		this.authService.me().subscribe(
-			(data) => { 
-				this.currentUser = data; 
-				this.isAdminUser = this.currentUser.isAdmin; 
+		// get current user logged information, we use getUser here
+		this.authService.getUser().subscribe(
+			(data) => {
+				this.currentUser = data
+				this.isAdminUser = this.currentUser && this.currentUser.isAdmin; // avoid null pointer exception
 			}
-		);
+		)
+		// this.authService.me().subscribe(
+		// 	(data) => { 
+		// 		this.currentUser = data; 
+		// 		this.isAdminUser = this.currentUser.isAdmin; 
+		// 	}
+		// );
 	}
 
 	// function to handle chart clicked event

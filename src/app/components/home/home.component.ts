@@ -29,11 +29,16 @@ export class HomeComponent implements OnInit{
 		const isLoggedIn = this.authService.isLoggedIn();
 
 		if(isLoggedIn){
-			this.authService.getUser().subscribe(user => {
-				this.currentUser = user; // this line will get information of an user
-				console.log(this.currentUser); // result like: eg: {_id: "60d14ee04da4be2d06331514", name: "thanh van", username: "lthanhvan", email: "van@gmail.com", phone: "1234566788", …}
-				this.isAdminUser = this.currentUser.isAdmin; // TypeError: Cannot read property 'isAdmin' of null
-			})
+			// because Home component is rendered before Dashboard component, we call me API first here and use getUser() in Dashboard later
+			this.authService.me().subscribe((data) => {
+				this.currentUser = data;
+				this.isAdminUser = this.currentUser.isAdmin;
+			});
+			// this.authService.getUser().subscribe(user => {
+			// 	this.currentUser = user; // this line will get information of an user
+			// 	console.log(this.currentUser); // result like: eg: {_id: "60d14ee04da4be2d06331514", name: "thanh van", username: "lthanhvan", email: "van@gmail.com", phone: "1234566788", …}
+			// 	this.isAdminUser = this.currentUser.isAdmin; // TypeError: Cannot read property 'isAdmin' of null
+			// })
 		}
 		
 	}

@@ -23,9 +23,10 @@ export class AuthService {
 	me() : Observable<User>{
 		return this.httpClient
 					.get<User>(`${this.SERVER_URL}/userProfile`)
-					.pipe(tap(res => {
-						this.user$.next(res['data'].user);
-					}));
+					.pipe(
+						map(res => res['data'].user),
+						tap(res => this.user$.next(res))
+					);
 	}
 
 	getUser() : Observable<User | null> {
