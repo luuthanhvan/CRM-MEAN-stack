@@ -173,7 +173,7 @@
 				<!-- Delete contact infomation column -->
 				<ng-container matColumnDef="delete">
 					<th mat-header-cell *matHeaderCellDef> Delete </th>
-					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id)"><mat-icon>delete</mat-icon></button></td>
+					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id, element.subject)"><mat-icon>delete</mat-icon></button></td>
 				</ng-container>
 		
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

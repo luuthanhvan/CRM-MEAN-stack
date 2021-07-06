@@ -130,13 +130,26 @@ export class SalesOrderComponent implements OnInit {
 	}
 
 	// function to handle delete a sale order
-	onDelete(saleOrderId: string) {
-		this.salesOrderService
-			.deleteSaleOrder(saleOrderId)
-			.subscribe((res) => {
-				if(res['status'] == 1) // status = 1 => OK
-					location.reload(); // reload the sales order page
-			});
+	onDelete(saleOrderId: string, sub: string) {
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(SalesOrderConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the "${sub}"?`;
+        dialogRef.afterClosed().subscribe(
+            (result) => {
+                if(result){
+                    // do confirmation action: delete the sales order
+                    this.salesOrderService
+                    	.deleteSaleOrder(saleOrderId)
+                    	.subscribe((res) => {
+                    		if(res['status'] == 1) // status = 1 => OK
+                    			location.reload(); // reload the sales order page
+                    	});
+                }
+                else{
+                    dialogRef = null;
+                }
+            }
+        );
 	}
 
 	applySelectFilter(filterValue: string){
@@ -207,6 +220,16 @@ export class SalesOrderComponent implements OnInit {
             });
         }
     } */
+}
+
+@Component({
+    selector: 'sales-order-confirmation-dialog',
+    templateUrl: 'confirmation-dialog.component.html'
+})
+export class SalesOrderConfirmationDialog{
+    confirmMess : string;
+
+    constructor(){}
 }
 
 /*

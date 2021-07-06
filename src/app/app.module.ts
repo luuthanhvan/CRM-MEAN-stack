@@ -25,7 +25,7 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
 
 import { ContactsComponent, ConfirmationDialog, /* ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent, */ } from './components/contacts/contacts.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SalesOrderComponent, /*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/sales-order/sales-order.component';
+import { SalesOrderComponent, SalesOrderConfirmationDialog,/*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/sales-order/sales-order.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
@@ -47,8 +47,8 @@ const materials = [
     AppComponent,
     ContactsComponent, ConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
     DashboardComponent,
-    SalesOrderComponent, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
-    UserManagementComponent, 
+    SalesOrderComponent, SalesOrderConfirmationDialog, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
+    UserManagementComponent,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
     
@@ -57,8 +57,8 @@ const materials = [
     AppComponent,
     ContactsComponent, ConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
     DashboardComponent,
-    SalesOrderComponent, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
-    UserManagementComponent,
+    SalesOrderComponent, SalesOrderConfirmationDialog, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
+    UserManagementComponent, 
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
   ],
