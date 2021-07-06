@@ -23,7 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 /* import ThemeService and put it in providers of NgModule */
 import { ChartsModule, ThemeService } from 'ng2-charts';
 
-import { ContactsComponent, ConfirmationDialog, /* ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent, */ } from './components/contacts/contacts.component';
+import { ContactsComponent, ContactConfirmationDialog, /* ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent, */ } from './components/contacts/contacts.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SalesOrderComponent, SalesOrderConfirmationDialog,/*SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent*/ } from './components/sales-order/sales-order.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
@@ -45,7 +45,7 @@ const materials = [
 @NgModule({
   declarations: [
     AppComponent,
-    ContactsComponent, ConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
+    ContactsComponent, ContactConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
     DashboardComponent,
     SalesOrderComponent, SalesOrderConfirmationDialog, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
     UserManagementComponent,
@@ -55,7 +55,7 @@ const materials = [
   ],
   entryComponents : [
     AppComponent,
-    ContactsComponent, ConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
+    ContactsComponent, ContactConfirmationDialog, // ContactsCreatedTimeDialogComponent, ContactsUpdatedTimeDialogComponent,
     DashboardComponent,
     SalesOrderComponent, SalesOrderConfirmationDialog, // SalesOrderCreatedTimeDialogComponent, SalesOrderUpdatedTimeDialogComponent,
     UserManagementComponent, 

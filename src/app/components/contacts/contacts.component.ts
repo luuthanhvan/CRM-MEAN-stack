@@ -159,7 +159,7 @@ export class ContactsComponent implements OnInit {
     // function to handle delete a contact
     onDelete(contactId: string, contactName: string) {
         // show confirmation dialog before detele an item
-        let dialogRef = this.dialog.open(ConfirmationDialog, { disableClose : false });
+        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
         dialogRef.componentInstance.confirmMess = `You want to delete the "${contactName}" contact?`;
         dialogRef.afterClosed().subscribe(
             (result) => {
@@ -256,7 +256,7 @@ export class ContactsComponent implements OnInit {
     selector: 'confirmation-dialog',
     templateUrl: 'confirmation-dialog.component.html'
 })
-export class ConfirmationDialog{
+export class ContactConfirmationDialog{
     confirmMess : string;
 
     constructor(){}
