@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
-// import { MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
@@ -50,7 +50,7 @@ export class ContactsComponent implements OnInit {
 
     constructor(private router: Router, 
                 private contactsService: ContactsService,
-                /* public dialog: MatDialog, */
+                public dialog: MatDialog,
                 private formBuilder : FormBuilder,
                 private route: ActivatedRoute) {
         
@@ -157,14 +157,27 @@ export class ContactsComponent implements OnInit {
     }
 
     // function to handle delete a contact
-    onDelete(contactId: string) {
-        this.contactsService
-            .deleteContact(contactId)
-            .subscribe((res) => {
-                if(res['status'] == 1){ // status = 1 => OK
-                    location.reload(); // reload contacts page
+    onDelete(contactId: string, contactName: string) {
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(ConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the "${contactName}" contact?`;
+        dialogRef.afterClosed().subscribe(
+            (result) => {
+                if(result){
+                    // do confirmation action: delete the contact
+                    this.contactsService
+                        .deleteContact(contactId)
+                        .subscribe((res) => {
+                            if(res['status'] == 1){ // status = 1 => OK
+                                location.reload(); // reload contacts page
+                            }
+                        });
                 }
-            });
+                else{
+                    dialogRef = null;
+                }
+            }
+        )
     }
 
     applySelectFilter(filterValue: string, filterBy : string){
@@ -237,6 +250,16 @@ export class ContactsComponent implements OnInit {
             });
         }
     } */
+}
+
+@Component({
+    selector: 'confirmation-dialog',
+    templateUrl: 'confirmation-dialog.component.html'
+})
+export class ConfirmationDialog{
+    confirmMess : string;
+
+    constructor(){}
 }
 
 /*
