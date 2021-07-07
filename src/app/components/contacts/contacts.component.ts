@@ -7,7 +7,6 @@ import { MatTableDataSource } from '@angular/material';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
-import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { EditContactDialog } from './edit-dialog/contacts-edit-dialog.component';
 
 @Component({

@@ -38,9 +38,11 @@ import { EditSaleOrderDialog } from './components/sales-order/edit-dialog/sales-
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { EditUserDialog } from './components/user-management/edit-dialog/user-edit-dialog.component';
 
-import { AuthGuard } from './helpers/auth.guard';
-import { AuthInterceptor } from './helpers/auth.interceptor';
-import { AuthService } from './services/auth/auth.service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
+// overlay progress spinner
+import { AppOverlayModule } from './overlay/overlay.module';
+import { ProgressSpinnerModule } from './components/progress-spinner/progress-spinner.module';
 
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
@@ -78,14 +80,11 @@ const materials = [
     FormsModule, ReactiveFormsModule,
     ChartsModule,
     materials,
+    AppOverlayModule, ProgressSpinnerModule
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-    ThemeService, AuthGuard, AuthService
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    ThemeService,
   ],
   bootstrap: [AppComponent]
 })

@@ -137,4 +137,21 @@
             <button mat-button (click)="router.navigate(['/contacts'])">Back</button>
         </div>
     </section>
+    <!-- <mat-progress-spinner *ngIf="loading$ | async" [mode]="'indeterminate'"></mat-progress-spinner> -->
 </form>
+
+<!-- overlay progress spinner -->
+<app-progress-spinner   [color]="color" 
+                        [mode]="mode" 
+                        [value]="value" 
+                        [backdropEnabled]="true" 
+                        [positionGloballyCenter]="true"
+                        [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>
+
+<app-progress-spinner   [color]="color" 
+                        [mode]="mode" 
+                        [value]="value" 
+                        [backdropEnabled]="false" 
+                        [displayProgressSpinner]="spinnerWithoutBackdrop">
+</app-progress-spinner>

@@ -8,7 +8,7 @@ import { SalesOrderComponent } from './components/sales-order/sales-order.compon
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { LoginComponent } from './components/login/login.component';
 
-import { AuthGuard } from './helpers/auth.guard';
+import { AuthGuard } from './guards/auth.guard';;
 
 const routes: Routes = [
 	{
@@ -39,28 +39,28 @@ const routes: Routes = [
 				loadChildren: () => import('./components/sales-order/add/add.module').then(m => m.AddSaleOrderModule),
 				// loadChildren: './components/sales-order/add/add.module#AddSaleOrderModule',
 			},
-			{
-				path: 'sales_order/edit',
-				loadChildren: () => import('./components/sales-order/edit/edit.module').then(m => m.EditSaleOrderModule),
-				// loadChildren: './components/sales-order/edit/edit.module#EditSaleOrderModule',
-			},
+			// {
+			// 	path: 'sales_order/edit',
+			// 	loadChildren: () => import('./components/sales-order/edit/edit.module').then(m => m.EditSaleOrderModule),
+			// 	// loadChildren: './components/sales-order/edit/edit.module#EditSaleOrderModule',
+			// },
 			{
 				path: 'user_management/add',
 				loadChildren: () => import('./components/user-management/add/add.module').then(m => m.AddUserModule),
 				// loadChildren: './components/user-management/add/add.module#AddUserModule',
 			},
+			// {
+			// 	path: 'user_management/edit',
+			// 	loadChildren: () => import('./components/user-management/edit/edit.module').then(m => m.EditUserModule),
+			// 	// loadChildren: './components/user-management/edit/edit.module#EditUserModule',
+			// },
 			{
-				path: 'user_management/edit',
-				loadChildren: () => import('./components/user-management/edit/edit.module').then(m => m.EditUserModule),
-				// loadChildren: './components/user-management/edit/edit.module#EditUserModule',
-			},
-			{
-				path: '', redirectTo: '/dashboard', pathMatch: 'full'
+				path: '**', redirectTo: '/dashboard', pathMatch: 'full', // for page not found
 			}
 		],
 	},
 	{
-		path: '', redirectTo: '/signin', pathMatch: 'full'
+		path: '**', redirectTo: '/signin', pathMatch: 'full', // for page not found
 	}
 ];
 
