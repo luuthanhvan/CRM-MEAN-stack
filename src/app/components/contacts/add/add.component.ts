@@ -20,13 +20,6 @@ export class AddContactComponent implements OnInit{
     users : Object;
     submitted = false;
 
-    // some variables for the overlay progress bar
-    color = 'primary';
-    mode = 'indeterminate';
-    value = 50;
-    displayProgressSpinner = false;
-    spinnerWithoutBackdrop = false;
-
     // some variables for the the snackbar (a kind of toast message)
     sucessfulMessage: string = 'Success to add a new contact!';
     errorMessage: string = 'Failed to add a new contact!';
@@ -79,12 +72,12 @@ export class AddContactComponent implements OnInit{
                     this.snackBar.open(this.sucessfulMessage, this.label, config);
                     this.router.navigateByUrl('/contacts'); // navigate back to the contacts page
                 }
-            },
-            (err) => {
-                // show error message
-                // config.panelClass = ['failed'];
-                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-                this.snackBar.open(this.errorMessage, this.label, config);
+                else {
+                    // show error message
+                    // config.panelClass = ['failed'];
+                    let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+                    this.snackBar.open(this.errorMessage, this.label, config);
+                }
             }
         );
         

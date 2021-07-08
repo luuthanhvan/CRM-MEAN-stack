@@ -181,3 +181,13 @@ mat-progress-spinner {
     transform: translate(-50%, -50%);
     z-index: 2;
 }
+
+.success {
+    background: #107d47;
+    color: white;
+}
+
+.failed {
+    background: rgb(218, 50, 50);
+    color: white;
+}

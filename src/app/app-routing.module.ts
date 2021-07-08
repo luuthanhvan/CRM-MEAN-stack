@@ -29,11 +29,11 @@ const routes: Routes = [
 				loadChildren: () => import('./components/contacts/add/add.module').then(m => m.AddContactModule),
 				// loadChildren: './components/contacts/add/add.module#AddContactModule',
 			},
-			// {
-			// 	path: 'contacts/edit',
-			// 	loadChildren: () => import('./components/contacts/edit/edit.module').then(m => m.EditContactModule),
-			// 	// loadChildren: './components/contacts/edit/edit.module#EditContactModule',
-			// },
+			{
+				path: 'contacts/edit',
+				loadChildren: () => import('./components/contacts/edit/edit.module').then(m => m.EditContactModule),
+				// loadChildren: './components/contacts/edit/edit.module#EditContactModule',
+			},
 			{
 				path: 'sales_order/add',
 				loadChildren: () => import('./components/sales-order/add/add.module').then(m => m.AddSaleOrderModule),

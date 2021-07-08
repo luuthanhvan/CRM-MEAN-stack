@@ -130,9 +130,10 @@
         </mat-grid-list>
     </mat-dialog-content>
 
+    
     <mat-dialog-actions>
         <div class="btnStart">
-            <button mat-button type="submit" [disabled]="contactFormInfo.invalid" [mat-dialog-close]="true">Save</button>
+            <button mat-button type="submit" [disabled]="contactFormInfo.invalid" mat-dialog-close>Save</button>
             <button mat-button mat-dialog-close>Cancel</button>
         </div>
         <div class="btnEnd"><button mat-button (click)="onDelete()">Delete</button></div>

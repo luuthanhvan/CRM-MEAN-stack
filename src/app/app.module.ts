@@ -14,6 +14,7 @@ import {
   MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
   MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
   MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
+  MatSnackBarModule,
 } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -41,14 +42,15 @@ import { EditUserDialog } from './components/user-management/edit-dialog/user-ed
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 // overlay progress spinner
-import { AppOverlayModule } from './overlay/overlay.module';
+// import { AppOverlayModule } from './overlay/overlay.module';
 import { ProgressSpinnerModule } from './components/progress-spinner/progress-spinner.module';
 
 const materials = [
   MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
   MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
-  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule
+  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
+  MatSnackBarModule,
 ];
 
 

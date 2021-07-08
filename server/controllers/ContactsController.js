@@ -62,30 +62,34 @@ class ContactsController {
     contactsUpdate(req, res){
         let contactId = req.params.id;
         let contactInfo = req.body;
-        try{
-            Contacts
-                .updateOne({ _id: contactId }, contactInfo)
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Update contact successfully');
-                });
-        }catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+        setTimeout(() => {
+            try{
+                Contacts
+                    .updateOne({ _id: contactId }, contactInfo)
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Update contact successfully');
+                    });
+            }catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 1000);
     }
 
     // [DELETE] /contacts/:id - function to delete a contact information by contact ID
     contactsDelete(req, res){
         let contactId = req.params.id;
-        try{
-            Contacts
-                .remove({ _id: contactId })
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Delete contact successfully');
-                });
-
-        }catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+        setTimeout(() => {
+            try{
+                Contacts
+                    .remove({ _id: contactId })
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Delete contact successfully');
+                    });
+    
+            }catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 1000)
     }
 }
 

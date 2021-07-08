@@ -92,10 +92,18 @@
 		<div class="info">
 			<table mat-table [dataSource]="data" class="mat-elevation-z8">
 				<!-- No Column -->
-				<ng-container matColumnDef="no">
+				<!-- <ng-container matColumnDef="no">
 					<th mat-header-cell *matHeaderCellDef> No. </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.no}} </td>
-				</ng-container>
+				</ng-container> -->
+				
+				<!-- Checkbox column -->
+				<!-- <ng-container matColumnDef="check">
+					<th mat-header-cell *matHeaderCellDef></th>
+					<td class="cell" mat-cell *matCellDef="let element">
+						<input type="checkbox">
+					</td>
+				</ng-container> -->
 
 				<!-- Contact name Column -->
 				<ng-container matColumnDef="contactName">
@@ -110,28 +118,28 @@
 				</ng-container>
 			
 				<!-- Mobile phone Column -->
-				<ng-container matColumnDef="mobilePhone">
+				<!-- <ng-container matColumnDef="mobilePhone">
 					<th mat-header-cell *matHeaderCellDef> Mobile phone </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.mobilePhone}} </td>
-				</ng-container>
+				</ng-container> -->
 				
 				<!-- Email Column -->
-				<ng-container matColumnDef="email">
+				<!-- <ng-container matColumnDef="email">
 					<th mat-header-cell *matHeaderCellDef> Email </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.email}} </td>
-				</ng-container>
+				</ng-container> -->
 
 				<!-- Organization Column -->
-				<ng-container matColumnDef="organization">
+				<!-- <ng-container matColumnDef="organization">
 					<th mat-header-cell *matHeaderCellDef> Organization </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.organization}} </td>
-				</ng-container>
+				</ng-container> -->
 
 				<!-- DOB Column -->
-				<ng-container matColumnDef="dob">
+				<!-- <ng-container matColumnDef="dob">
 					<th mat-header-cell *matHeaderCellDef> DOB </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.dob}} </td>
-				</ng-container>
+				</ng-container> -->
 				
 				<!-- Lead source Column -->
 				<ng-container matColumnDef="leadSrc">
@@ -146,16 +154,16 @@
 				</ng-container>
 
 				<!-- Address Column -->
-				<ng-container matColumnDef="address">
+				<!-- <ng-container matColumnDef="address">
 					<th mat-header-cell *matHeaderCellDef> Address </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.address}} </td>
-				</ng-container>
+				</ng-container> -->
 
 				<!-- Description Column -->
-				<ng-container matColumnDef="description">
+				<!-- <ng-container matColumnDef="description">
 					<th mat-header-cell *matHeaderCellDef> Description </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.description}} </td>
-				</ng-container>
+				</ng-container> -->
 		
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
@@ -169,20 +177,21 @@
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
 				</ng-container>
 				
+			
 				<!-- Modify contact infomation column -->
-				<!-- <ng-container matColumnDef="modify">
+				<ng-container matColumnDef="modify">
 					<th mat-header-cell *matHeaderCellDef> Modify </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
-				</ng-container> -->
+				</ng-container>
 
 				<!-- Delete contact infomation column -->
-				<!-- <ng-container matColumnDef="delete">
+				<ng-container matColumnDef="delete">
 					<th mat-header-cell *matHeaderCellDef> Delete </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id, element.contactName)"><mat-icon>delete</mat-icon></button></td>
-				</ng-container> -->
+				</ng-container>
 
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onClickedRow(row)"></tr>
+				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 			
 			</table>
 		</div>

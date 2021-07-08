@@ -7,7 +7,11 @@ import { MatTableDataSource } from '@angular/material';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
-import { EditContactDialog } from './edit-dialog/contacts-edit-dialog.component';
+// import { EditContactDialog } from './edit-dialog/contacts-edit-dialog.component';
+import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { snackbarConfig } from '../../helpers/snackbar_config';
+import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
     selector: "app-contacts",
@@ -17,21 +21,15 @@ import { EditContactDialog } from './edit-dialog/contacts-edit-dialog.component'
 
 export class ContactsComponent implements OnInit {
     displayedColumns: string[] = [
-        "no",
+        // "check",
         "contactName",
         "salutation",
-        "mobilePhone",
-        "email",
-        "organization",
-        "dob",
         "leadSrc",
         "assignedTo",
-        "address",
-        "description",
         "createdTime",
         "updatedTime",
-        // "modify",
-        // "delete",
+        "modify",
+        "delete",
     ];
     dataSource: Contact[] = []; // original datasource - array of objects
     dataArray : Contact[] = []; // duplicate datasource, purpose: save the original datasource for filter
@@ -50,11 +48,22 @@ export class ContactsComponent implements OnInit {
     updatedTimeForm : FormGroup;
     searchControl : FormControl = new FormControl();
 
+    // some variables for the the snackbar (a kind of toast message)
+    sucessfulMessage: string = 'Success to delete the contact!';
+    errorMessage: string = 'Failed to delete the contact!';
+    label: string = '';
+    setAutoHide: boolean = true;
+    duration: number = 1500;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
     constructor(private router: Router, 
                 private contactsService: ContactsService,
                 public dialog: MatDialog,
                 private formBuilder : FormBuilder,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                public snackBar: MatSnackBar,
+                private loadingService: LoadingService) {
         
         // clear params (leadSrc or assignedTo) before get all data
         this.router.navigateByUrl('/contacts');
@@ -212,18 +221,43 @@ export class ContactsComponent implements OnInit {
         this.searchControl = new FormControl('');
     }
 
-    onClickedRow(row : Contact){
-        let dialogRef = this.dialog.open(EditContactDialog, { disableClose : false, panelClass: 'formDialog' });
-        dialogRef.componentInstance.contactId = row._id;
+    onDelete(contactId: string, contactName: string) {
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the "${contactName}" contact?`;
         dialogRef.afterClosed().subscribe(
             (result) => {
+                this.loadingService.showLoading();
                 if(result){
-                    window.location.reload();
+                    // do confirmation action: delete the contact
+                    this.contactsService
+                        .deleteContact(contactId)
+                        .subscribe((res) => {
+                            this.loadingService.hideLoading();
+                            if(res['status'] == 1){ // status = 1 => OK
+                                // show successful message
+                                // display the snackbar belong with the indicator
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+                                this.snackBar.open(this.sucessfulMessage, this.label, config);
+                                window.location.reload(); // reload contacts page
+                            }
+                            else {
+                                // show error message
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+                                this.snackBar.open(this.errorMessage, this.label, config);
+                            }
+                        });
                 }
-                else {
+                else{
                     dialogRef = null;
                 }
             }
-        );
+        )
     }
+
+    // onClickedRow(row : Contact){
+    //     let dialogRef = this.dialog.open(EditContactDialog, { disableClose : false, panelClass: 'formDialog' });
+    //     dialogRef.componentInstance.contactId = row._id;
+    //     dialogRef.afterClosed().subscribe();
+    // }
 }
