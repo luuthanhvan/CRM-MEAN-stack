@@ -3,7 +3,9 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { snackbarConfig } from '../../../helpers/snackbar_config';
+import { LoadingService } from '../../../services/loading/loading.service';
 
 @Component({
     selector: 'app-add-contact',
@@ -30,14 +32,15 @@ export class AddContactComponent implements OnInit{
     errorMessage: string = 'Failed to add a new contact!';
     label: string = '';
     setAutoHide: boolean = true;
-    autoHide: number = 1500;
+    duration: number = 1500;
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,
                 protected router : Router,
-                public snackBar: MatSnackBar){
+                public snackBar: MatSnackBar,
+                private loadingService: LoadingService){
     }
 
     ngOnInit(){
@@ -64,31 +67,54 @@ export class AddContactComponent implements OnInit{
         contactInfo.createdTime = new Date();
         contactInfo.updatedTime = new Date();
 
-        let config = new MatSnackBarConfig();
-        config.verticalPosition = this.verticalPosition;
-        config.horizontalPosition = this.horizontalPosition;
-        config.duration = this.setAutoHide ? this.autoHide : 0;
+        this.loadingService.showLoading();
+        this.contactsService.addContact(contactInfo).subscribe(
+            (res) => {
+                this.loadingService.hideLoading();
+                if(res['status'] == 1){ // status = 1 => OK
+                    // show successful message
+                    // display the snackbar belong with the indicator
+                    // config.panelClass = ['success'];
+                    let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+                    this.snackBar.open(this.sucessfulMessage, this.label, config);
+                    this.router.navigateByUrl('/contacts'); // navigate back to the contacts page
+                }
+            },
+            (err) => {
+                // show error message
+                // config.panelClass = ['failed'];
+                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+                this.snackBar.open(this.errorMessage, this.label, config);
+            }
+        );
+        
+        // let config = new MatSnackBarConfig();
+        // config.verticalPosition = this.verticalPosition;
+        // config.horizontalPosition = this.horizontalPosition;
+        // config.duration = this.setAutoHide ? this.autoHide : 0;
 
         // overlay progress spinner when call api
-        this.displayProgressSpinner = true;
-        setTimeout(() => {
-            this.displayProgressSpinner = false;
-            this.contactsService.addContact(contactInfo).subscribe(
-                (res) => {
-                    if(res['status'] == 1){ // status = 1 => OK
-                        // show successful message
-                        // display the snackbar belong with the indicator
-                        config.panelClass = ['success'];
-                        this.snackBar.open(this.sucessfulMessage, this.label, config);
-                        this.router.navigateByUrl('/contacts'); // navigate back to the contacts page
-                    }
-                },
-                (err) => {
-                    // show error message
-                    config.panelClass = ['failed'];
-                    this.snackBar.open(this.errorMessage, this.label, config);
-                }
-            );
-        }, 3000);
+        // this.displayProgressSpinner = true;
+        // setTimeout(() => {
+        //     this.displayProgressSpinner = false;
+        //     this.contactsService.addContact(contactInfo).subscribe(
+        //         (res) => {
+        //             if(res['status'] == 1){ // status = 1 => OK
+        //                 // show successful message
+        //                 // display the snackbar belong with the indicator
+        //                 // config.panelClass = ['success'];
+        //                 let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+        //                 this.snackBar.open(this.sucessfulMessage, this.label, config);
+        //                 this.router.navigateByUrl('/contacts'); // navigate back to the contacts page
+        //             }
+        //         },
+        //         (err) => {
+        //             // show error message
+        //             // config.panelClass = ['failed'];
+        //             let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+        //             this.snackBar.open(this.errorMessage, this.label, config);
+        //         }
+        //     );
+        // }, 3000);
     }
 }

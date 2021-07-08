@@ -11,17 +11,20 @@ This model will interact with database to store or update data.
 class ContactsController {
     // [POST] /contacts - function to store a contact information
     contactsStore(req, res){
-        try{
-            const contacts = new Contacts(req.body);
-            contacts
-                .save()
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Add contact successfully');
-                });
-
-        }catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+        setTimeout(() => {
+            try{
+                const contacts = new Contacts(req.body);
+                contacts
+                    .save()
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Add contact successfully');
+                    });
+    
+            }catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 
+        1000)
     }
     
     // [GET] /contacts - function to get a list of contacts information

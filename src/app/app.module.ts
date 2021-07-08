@@ -80,7 +80,7 @@ const materials = [
     FormsModule, ReactiveFormsModule,
     ChartsModule,
     materials,
-    AppOverlayModule, ProgressSpinnerModule
+    ProgressSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
