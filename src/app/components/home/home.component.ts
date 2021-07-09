@@ -6,8 +6,9 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { MustMatch } from '../../helpers/validation_functions';
 import { UserManagementService } from '../../services/user_management/user-management.service';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { snackbarConfig } from '../../helpers/snackbar_config';
+import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
   selector: 'app-home',
@@ -50,11 +51,7 @@ export class HomeComponent implements OnInit{
 
 	openDialog(){
 		let dialogRef = this.dialog.open(HomeChangePasswordComponent);
-		dialogRef.afterClosed().subscribe((result) => {
-			if(result){ // if password successfully changed, then sign-out
-				this.signout();
-			}
-		});
+		dialogRef.afterClosed().subscribe();
     }
 }
 
@@ -67,10 +64,22 @@ export class HomeChangePasswordComponent{
 	submitted : boolean = false;
 	currentUser : User;
 
+	// some variables for the the snackbar (a kind of toast message)
+    sucessfulMessage: string = 'Success to change the password!';
+    errorMessage: string = 'Failed to change the password!';
+    label: string = '';
+    setAutoHide: boolean = true;
+    duration: number = 1500;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
     constructor(private formBuilder : FormBuilder,
 				private userService : UserManagementService,
 				private authService : AuthService,
+				public snackBar: MatSnackBar,
+                private loadingService: LoadingService,
 				private router : Router){
+
 		this.changePassForm = this.formBuilder.group({
 			oldPass: new FormControl('', [Validators.required, Validators.minLength(6)]), 
 			newPass: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -96,8 +105,22 @@ export class HomeChangePasswordComponent{
 	onSubmit(form : FormGroup){
 		this.submitted = true;
 		
+		this.loadingService.showLoading();
 		this.userService
 				.changePassword(this.currentUser._id, form.value.newPass)
-				.subscribe();
+				.subscribe((res) => {
+					if(res['status'] == 1){
+						this.loadingService.hideLoading();
+						// show successful message
+						// display the snackbar belong with the indicator
+						let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+						this.snackBar.open(this.sucessfulMessage, this.label, config);
+					}
+					else {
+						// show error message
+						let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+						this.snackBar.open(this.errorMessage, this.label, config);
+					}
+				});
 	}
 }
