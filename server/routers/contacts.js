@@ -8,5 +8,6 @@ router.get('/', contactsController.contactsList); // get list of contacts
 router.get('/:id', contactsController.contactsDetail); // get a contact
 router.put('/:id', contactsController.contactsUpdate); // update a contact
 router.delete('/:id', contactsController.contactsDelete); // delete a contact
+router.post('/delete', contactsController.contactsMultiDelete); // delete multi contacts
 
 module.exports = router;

@@ -60,4 +60,10 @@ export class ContactsService {
 		return this.httpClient
 					.delete<void>(`${this.SERVER_URL}/${contactId}?_method=DELETE`);
 	}
+
+	// delete multi contacts by list of contact ID
+	deleteContacts(contactIds : string[]):Observable<void>{
+		return this.httpClient
+					.post<void>(`${this.SERVER_URL}/delete`, contactIds);
+	}
 }

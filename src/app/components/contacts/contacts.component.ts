@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
+import { FormControl, FormBuilder, FormGroup, FormArray } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material';
@@ -21,7 +21,7 @@ import { LoadingService } from '../../services/loading/loading.service';
 
 export class ContactsComponent implements OnInit {
     displayedColumns: string[] = [
-        // "check",
+        "check",
         "contactName",
         "salutation",
         "leadSrc",
@@ -49,14 +49,15 @@ export class ContactsComponent implements OnInit {
     searchControl : FormControl = new FormControl();
 
     // some variables for the the snackbar (a kind of toast message)
-    sucessfulMessage: string = 'Success to delete the contact!';
-    errorMessage: string = 'Failed to delete the contact!';
     label: string = '';
     setAutoHide: boolean = true;
     duration: number = 1500;
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
+    form: FormGroup;
+    isShowMassDelete : boolean = false; // it used to show/hide the mass delete button
+    
     constructor(private router: Router, 
                 private contactsService: ContactsService,
                 public dialog: MatDialog,
@@ -121,6 +122,10 @@ export class ContactsComponent implements OnInit {
         this.updatedTimeForm = this.formBuilder.group({
             updatedTimeFrom : new FormControl(),
             updatedTimeTo : new FormControl(),
+        });
+
+        this.form = this.formBuilder.group({
+            checkArray : this.formBuilder.array([])
         });
     }
 
@@ -238,13 +243,13 @@ export class ContactsComponent implements OnInit {
                                 // show successful message
                                 // display the snackbar belong with the indicator
                                 let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
-                                this.snackBar.open(this.sucessfulMessage, this.label, config);
+                                this.snackBar.open('Success to delete the contact!', this.label, config);
                                 window.location.reload(); // reload contacts page
                             }
                             else {
                                 // show error message
                                 let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-                                this.snackBar.open(this.errorMessage, this.label, config);
+                                this.snackBar.open('Failed to delete the contact!', this.label, config);
                             }
                         });
                 }
@@ -255,6 +260,64 @@ export class ContactsComponent implements OnInit {
         )
     }
 
+    onCheckboxClicked(e){
+        this.isShowMassDelete = true;
+        const checkArray: FormArray = this.form.get('checkArray') as FormArray;
+
+        if(e.target.checked){
+            checkArray.push(new FormControl(e.target.value));
+        }
+        else {
+            let i : number = 0;
+            checkArray.controls.forEach((item: FormControl) => {
+                if(item.value == e.target.value){
+                    checkArray.removeAt(i);
+                    return;
+                }
+                i++;
+            })
+        }
+
+        if(checkArray.length == 0){
+            this.isShowMassDelete = false;
+        }
+    }
+
+    onMassDeleteBtnClicked(){
+        const contactIds = this.form.value;
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;
+        dialogRef.afterClosed().subscribe(
+            (result) => {
+                this.loadingService.showLoading();
+                if(result){
+                    // do confirmation action: delete the contact
+                    this.contactsService
+                        .deleteContacts(contactIds)
+                        .subscribe((res) => {
+                            this.loadingService.hideLoading();
+                            if(res['status'] == 1){ // status = 1 => OK
+                                // show successful message
+                                // display the snackbar belong with the indicator
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+                                this.snackBar.open('Success to delete the contacts!', this.label, config);
+                                window.location.reload(); // reload contacts page
+                            }
+                            else {
+                                // show error message
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+                                this.snackBar.open('Failed to delete the contacts!', this.label, config);
+                            }
+                        });
+                }
+                else{
+                    dialogRef = null;
+                }
+            }
+        )
+    }
+    
     // onClickedRow(row : Contact){
     //     let dialogRef = this.dialog.open(EditContactDialog, { disableClose : false, panelClass: 'formDialog' });
     //     dialogRef.componentInstance.contactId = row._id;

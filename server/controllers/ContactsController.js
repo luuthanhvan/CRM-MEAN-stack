@@ -91,6 +91,22 @@ class ContactsController {
             }
         }, 1000)
     }
+
+    // [POST] /delete - function to delete multi contacts information by list of contact ID
+    contactsMultiDelete(req, res){
+        let contactIds = req.body.checkArray;
+        setTimeout(() => {
+            try{
+                Contacts
+                    .remove({ _id: { $in : contactIds }})
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Delete list of contacts successfully');
+                    })
+            }catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 1000)
+    }
 }
 
 module.exports = new ContactsController();

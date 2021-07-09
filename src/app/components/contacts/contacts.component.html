@@ -88,7 +88,12 @@
 				</mat-grid-tile>
 			</mat-grid-list>
 		</div>
-    
+		
+		<!-- Mass delete button -->
+		<div class="massDeleteBtn" *ngIf="isShowMassDelete">
+			<button mat-button (click)="onMassDeleteBtnClicked()"><mat-icon>delete</mat-icon></button>
+		</div>
+
 		<div class="info">
 			<table mat-table [dataSource]="data" class="mat-elevation-z8">
 				<!-- No Column -->
@@ -98,12 +103,12 @@
 				</ng-container> -->
 				
 				<!-- Checkbox column -->
-				<!-- <ng-container matColumnDef="check">
+				<ng-container matColumnDef="check">
 					<th mat-header-cell *matHeaderCellDef></th>
 					<td class="cell" mat-cell *matCellDef="let element">
-						<input type="checkbox">
+						<input type="checkbox" [value]="element._id" (change)="onCheckboxClicked($event)">
 					</td>
-				</ng-container> -->
+				</ng-container>
 
 				<!-- Contact name Column -->
 				<ng-container matColumnDef="contactName">
