@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
@@ -7,7 +7,10 @@ import { SalesOrderService } from '../../services/sales_order/sales-order.servic
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
 import { MatTableDataSource } from '@angular/material';
 import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
-import { EditSaleOrderDialog } from './edit-dialog/sales-order-edit-dialog.component';
+// import { EditSaleOrderDialog } from './edit-dialog/sales-order-edit-dialog.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { snackbarConfig } from '../../helpers/snackbar_config';
+import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
   selector: "app-sales-order",
@@ -16,17 +19,18 @@ import { EditSaleOrderDialog } from './edit-dialog/sales-order-edit-dialog.compo
 })
 export class SalesOrderComponent implements OnInit {
 	displayedColumns: string[] = [
-		"no",
+		// "no",
+        "check",
 		"subject",
 		"contactName",
 		"status",
 		"total",
 		"assignedTo",
-		"description",
+		// "description",
 		"createdTime",
 		"updatedTime",
-		// "modify",
-		// "delete",
+		"modify",
+		"delete",
 	];
  	dataSource: SaleOrder[] = []; // original datasource - array of objects
 	dataArray : SaleOrder[] = []; // duplicate datasource, purpose: save the original datasource for filter
@@ -41,11 +45,23 @@ export class SalesOrderComponent implements OnInit {
     updatedTimeForm : FormGroup;
     searchControl : FormControl = new FormControl();
 
+    // some variables for the the snackbar (a kind of toast message)
+    label: string = '';
+    setAutoHide: boolean = true;
+    duration: number = 1500;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
+    form: FormGroup;
+    isShowMassDelete : boolean = false; // it used to show/hide the mass delete button
+
 	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
 				private formBuilder: FormBuilder,
 				public dialog: MatDialog,
-                private route: ActivatedRoute){
+                private route: ActivatedRoute,
+                public snackBar: MatSnackBar,
+                private loadingService: LoadingService){
          
         // clear params (status) before get all data
         this.router.navigateByUrl('/sales_order');
@@ -90,6 +106,10 @@ export class SalesOrderComponent implements OnInit {
 			updatedTimeFrom : new FormControl(),
 			updatedTimeTo : new FormControl(),
 		});
+
+        this.form = this.formBuilder.group({
+            checkArray : this.formBuilder.array([])
+        });
 	}
 
 	// function to handle cancel filter sales order event
@@ -183,18 +203,110 @@ export class SalesOrderComponent implements OnInit {
         this.searchControl = new FormControl('');
     }
 
-    onClickedRow(row : SaleOrder){
-        let dialogRef = this.dialog.open(EditSaleOrderDialog, { disableClose : false, panelClass: 'formDialog' });
-        dialogRef.componentInstance.saleOrderId = row._id;
+    onDelete(saleOrderId: string, sub: string) {
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(SalesOrderConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the "${sub}"?`;
         dialogRef.afterClosed().subscribe(
             (result) => {
                 if(result){
-                    window.location.reload();
+                    this.loadingService.showLoading();
+                    // do confirmation action: delete the sales order
+                    this.salesOrderService
+                    	.deleteSaleOrder(saleOrderId)
+                    	.subscribe((res) => {
+                            this.loadingService.hideLoading();
+                    		if(res['status'] == 1){ // status = 1 => OK
+                                // show successful message
+                                // display the snackbar belong with the indicator
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+                                this.snackBar.open('Success to delete the sale order!', this.label, config);
+                    			location.reload(); // reload the sales order page
+                            }
+                            else {
+                                // show error message
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+                                this.snackBar.open('Failed to delete the sale order!', this.label, config);
+                            }
+                    	});
                 }
-                else {
+                else{
                     dialogRef = null;
                 }
             }
         );
+	}
+
+    onCheckboxClicked(e){
+        this.isShowMassDelete = true;
+        const checkArray: FormArray = this.form.get('checkArray') as FormArray;
+
+        if(e.target.checked){
+            checkArray.push(new FormControl(e.target.value));
+        }
+        else {
+            let i : number = 0;
+            checkArray.controls.forEach((item: FormControl) => {
+                if(item.value == e.target.value){
+                    checkArray.removeAt(i);
+                    return;
+                }
+                i++;
+            })
+        }
+
+        if(checkArray.length == 0){
+            this.isShowMassDelete = false;
+        }
     }
+
+    onMassDeleteBtnClicked(){
+        const salesOrderIds = this.form.value;
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(SalesOrderConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;
+        dialogRef.afterClosed().subscribe(
+            (result) => {
+                this.loadingService.showLoading();
+                if(result){
+                    // do confirmation action: delete the contact
+                    this.salesOrderService
+                        .deleteSalesOrder(salesOrderIds)
+                        .subscribe((res) => {
+                            this.loadingService.hideLoading();
+                            if(res['status'] == 1){ // status = 1 => OK
+                                // show successful message
+                                // display the snackbar belong with the indicator
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+                                this.snackBar.open('Success to delete the sales order!', this.label, config);
+                                window.location.reload(); // reload contacts page
+                            }
+                            else {
+                                // show error message
+                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+                                this.snackBar.open('Failed to delete the sales order!', this.label, config);
+                            }
+                        });
+                }
+                else{
+                    dialogRef = null;
+                }
+            }
+        )
+    }
+
+    // onClickedRow(row : SaleOrder){
+    //     let dialogRef = this.dialog.open(EditSaleOrderDialog, { disableClose : false, panelClass: 'formDialog' });
+    //     dialogRef.componentInstance.saleOrderId = row._id;
+    //     dialogRef.afterClosed().subscribe(
+    //         (result) => {
+    //             if(result){
+    //                 window.location.reload();
+    //             }
+    //             else {
+    //                 dialogRef = null;
+    //             }
+    //         }
+    //     );
+    // }
 }

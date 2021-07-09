@@ -56,4 +56,10 @@ export class SalesOrderService {
 		return this.httpClient
 					.delete<void>(`${this.SERVER_URL}/${saleOrderId}?_method=DELETE`);
 	}
+
+	// delete a sale order by list of sales order ids
+	deleteSalesOrder(salesOrderIds : string[]):Observable<void>{
+		return this.httpClient
+					.post<void>(`${this.SERVER_URL}/delete`, salesOrderIds);
+	}
 }

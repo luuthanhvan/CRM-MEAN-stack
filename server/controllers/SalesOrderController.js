@@ -10,17 +10,19 @@ This model will interact with database to store or update data.
 class SalesOrderController {
     // [POST] /sales_order - function to store a sale order information
     salesOrderStore(req, res){
-        try{
-            const saleOrder = new SalesOrder(req.body);
-            saleOrder
-                .save()
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Add sale order successfully');
-                });
-
-        }catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+        setTimeout(() => {
+            try{
+                const saleOrder = new SalesOrder(req.body);
+                saleOrder
+                    .save()
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Add sale order successfully');
+                    });
+    
+            }catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 1000);
     }
 
     // [GET] /sales_order - function to get a list of sales order information
@@ -58,30 +60,51 @@ class SalesOrderController {
     salesOrderUpdate(req, res){
         let saleOrderId = req.params.id;
         let saleOrderInfo = req.body;
-        try{
-            SalesOrder
-                .updateOne({ _id: saleOrderId }, saleOrderInfo)
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Update sale order successfully');
-                });
-        } catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+        setTimeout(() => {
+            try{
+                SalesOrder
+                    .updateOne({ _id: saleOrderId }, saleOrderInfo)
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Update sale order successfully');
+                    });
+            } catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 1000);
     }
 
     // [DELETE] /sales_order/:id - function to delete a sale order information by sale order ID
     salesOrderDelete(req, res){
         let saleOrderId = req.params.id;
-        try{
-            SalesOrder
-                .remove({ _id: saleOrderId })
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Delete sale order successfully');
-                });
+        setTimeout(() => {
+            try{
+                SalesOrder
+                    .remove({ _id: saleOrderId })
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Delete sale order successfully');
+                    });
+    
+            } catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 500);
+    }
 
-        } catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+    // [POST] /delete - function to delete multi contacts information by list of contact ID
+    salesOrderMultiDelete(req, res){
+        let salesOrderIds = req.body.checkArray;
+        setTimeout(() => {
+            try{
+                SalesOrder
+                    .remove({ _id: { $in : salesOrderIds } })
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Delete sales orders successfully');
+                    });
+    
+            } catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 500);
     }
 }
 

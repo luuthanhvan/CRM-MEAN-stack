@@ -39,11 +39,11 @@ const routes: Routes = [
 				loadChildren: () => import('./components/sales-order/add/add.module').then(m => m.AddSaleOrderModule),
 				// loadChildren: './components/sales-order/add/add.module#AddSaleOrderModule',
 			},
-			// {
-			// 	path: 'sales_order/edit',
-			// 	loadChildren: () => import('./components/sales-order/edit/edit.module').then(m => m.EditSaleOrderModule),
-			// 	// loadChildren: './components/sales-order/edit/edit.module#EditSaleOrderModule',
-			// },
+			{
+				path: 'sales_order/edit',
+				loadChildren: () => import('./components/sales-order/edit/edit.module').then(m => m.EditSaleOrderModule),
+				// loadChildren: './components/sales-order/edit/edit.module#EditSaleOrderModule',
+			},
 			{
 				path: 'user_management/add',
 				loadChildren: () => import('./components/user-management/add/add.module').then(m => m.AddUserModule),

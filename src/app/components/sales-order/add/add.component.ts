@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
 import { ContactsService } from '../../../services/contacts/contacts.service';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { snackbarConfig } from '../../../helpers/snackbar_config';
+import { LoadingService } from '../../../services/loading/loading.service';
 
 @Component({
     selector: 'app-add-sales-order',
@@ -16,10 +19,21 @@ export class AddSaleOrderComponent implements OnInit{
     users : Object;
     submitted = false;
 
+    // some variables for the the snackbar (a kind of toast message)
+    sucessfulMessage: string = 'Success to add a new sale order!';
+    errorMessage: string = 'Failed to add a new sale order!';
+    label: string = '';
+    setAutoHide: boolean = true;
+    duration: number = 1500;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
     constructor(protected router : Router,
                 protected salesOrderService: SalesOrderService,
                 private contactService : ContactsService,
-                private userService : UserManagementService){}
+                private userService : UserManagementService,
+                public snackBar: MatSnackBar,
+                private loadingService: LoadingService){}
 
     ngOnInit(){
         this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();
@@ -55,13 +69,24 @@ export class AddSaleOrderComponent implements OnInit{
         saleOrderInfo.createdTime = new Date();
         saleOrderInfo.updatedTime = new Date();
 
-        // console.log(saleOrderInfo);
-
+        this.loadingService.showLoading();
         this.salesOrderService
             .addSaleOrder(saleOrderInfo)
             .subscribe((res) => {
-                if(res['status'] == 1) // status = 1 => OK
+                this.loadingService.hideLoading();
+                if(res['status'] == 1){ // status = 1 => OK
+                    // show successful message
+                    // display the snackbar belong with the indicator
+                    let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
+                    this.snackBar.open(this.sucessfulMessage, this.label, config);
                     this.router.navigate(['/sales_order']); // go back to the sales order page
+                }
+                else {
+                    // show error message
+                    // config.panelClass = ['failed'];
+                    let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
+                    this.snackBar.open(this.errorMessage, this.label, config);
+                }
             });
     }
 }

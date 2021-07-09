@@ -80,15 +80,27 @@
 			</mat-grid-tile>
 			</mat-grid-list>
 		</div>
+
+		<!-- Mass delete button -->
+		<div class="massDeleteBtn" *ngIf="isShowMassDelete">
+			<button mat-button (click)="onMassDeleteBtnClicked()"><mat-icon>delete</mat-icon></button>
+		</div>
       
 		<div class="info">
 			<table mat-table [dataSource]="data" class="mat-elevation-z8">
 				<!-- No Column -->
-				<ng-container matColumnDef="no">
+				<!-- <ng-container matColumnDef="no">
 					<th mat-header-cell *matHeaderCellDef> No. </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.no}} </td>
+				</ng-container> -->
+				<!-- Checkbox column -->
+				<ng-container matColumnDef="check">
+					<th mat-header-cell *matHeaderCellDef></th>
+					<td class="cell" mat-cell *matCellDef="let element">
+						<input type="checkbox" [value]="element._id" (change)="onCheckboxClicked($event)">
+					</td>
 				</ng-container>
-				
+
 				<!-- Subject Column -->
 				<ng-container matColumnDef="subject">
 					<th mat-header-cell *matHeaderCellDef> Subject </th>
@@ -120,10 +132,10 @@
 				</ng-container>
 
 				<!-- Description Column -->
-				<ng-container matColumnDef="description">
+				<!-- <ng-container matColumnDef="description">
 					<th mat-header-cell *matHeaderCellDef> Description </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.description}} </td>
-				</ng-container>
+				</ng-container> -->
 			
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
@@ -138,19 +150,19 @@
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->
-				<!-- <ng-container matColumnDef="modify">
+				<ng-container matColumnDef="modify">
 					<th mat-header-cell *matHeaderCellDef> Modify </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
-				</ng-container> -->
+				</ng-container>
 		
 				<!-- Delete contact infomation column -->
-				<!-- <ng-container matColumnDef="delete">
+				<ng-container matColumnDef="delete">
 					<th mat-header-cell *matHeaderCellDef> Delete </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id, element.subject)"><mat-icon>delete</mat-icon></button></td>
-				</ng-container> -->
+				</ng-container>
 		
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onClickedRow(row)"></tr>
+				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 			</table>
       	</div>
     </div> <!-- End div list of contacts -->
