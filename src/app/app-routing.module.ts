@@ -49,11 +49,11 @@ const routes: Routes = [
 				loadChildren: () => import('./components/user-management/add/add.module').then(m => m.AddUserModule),
 				// loadChildren: './components/user-management/add/add.module#AddUserModule',
 			},
-			// {
-			// 	path: 'user_management/edit',
-			// 	loadChildren: () => import('./components/user-management/edit/edit.module').then(m => m.EditUserModule),
-			// 	// loadChildren: './components/user-management/edit/edit.module#EditUserModule',
-			// },
+			{
+				path: 'user_management/edit',
+				loadChildren: () => import('./components/user-management/edit/edit.module').then(m => m.EditUserModule),
+				// loadChildren: './components/user-management/edit/edit.module#EditUserModule',
+			},
 			{
 				path: '**', redirectTo: '/dashboard', pathMatch: 'full', // for page not found
 			}

@@ -13,14 +13,15 @@ import { EditUserDialog } from './edit-dialog/user-edit-dialog.component';
 })
 export class UserManagementComponent implements OnInit {
 	displayedColumns: string[] = [
-		"no",
+		// "no",
+		// "check",
 		"name",
 		"username",
 		"email",
 		"isAdmin",
 		"isActive",
 		"createdTime",
-		// "modify",
+		"modify",
 	];
 	dataSource : User[] = [];
 
@@ -50,18 +51,18 @@ export class UserManagementComponent implements OnInit {
 		this.router.navigate(["/user_management/edit"], navigationExtras);
 	}
 
-	onClickedRow(row : User){
-        let dialogRef = this.dialog.open(EditUserDialog, { disableClose : false, panelClass: 'formDialog' });
-        dialogRef.componentInstance.userId = row._id;
-        dialogRef.afterClosed().subscribe(
-            (result) => {
-                if(result){
-                    window.location.reload();
-                }
-                else {
-                    dialogRef = null;
-                }
-            }
-        );
-    }
+	// onClickedRow(row : User){
+    //     let dialogRef = this.dialog.open(EditUserDialog, { disableClose : false, panelClass: 'formDialog' });
+    //     dialogRef.componentInstance.userId = row._id;
+    //     dialogRef.afterClosed().subscribe(
+    //         (result) => {
+    //             if(result){
+    //                 window.location.reload();
+    //             }
+    //             else {
+    //                 dialogRef = null;
+    //             }
+    //         }
+    //     );
+    // }
 }

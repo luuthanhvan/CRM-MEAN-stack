@@ -11,19 +11,21 @@ This model will interact with database to store or update data.
 class UserController {
     // [POST] /user_management - function to store a user
     userStore(req, res){
-        try{
-            let userInfo = req.body;
-            const user = new User(userInfo);
-
-            user
-                .save()
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Add user successfully');
-                });
-
-        }catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+        setTimeout(() => {
+            try{
+                let userInfo = req.body;
+                const user = new User(userInfo);
+    
+                user
+                    .save()
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Add user successfully');
+                    });
+    
+            }catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 1000);
     }
 
     // [GET] /user_management - function to get list of user
@@ -59,17 +61,19 @@ class UserController {
 
     // [PUT] /user_management/:id - function to update a user
     userUpdate(req, res){
-        try{
-            let userId = req.params.id;
-            let userInfo = req.body;
-            User
-                .updateOne({ _id: userId }, userInfo)
-                .then(() => {
-                    return apiResponse.successResponse(res, 'Update user successfully');
-                });
-        }catch(err){
-            return apiResponse.ErrorResponse(res, err);
-        }
+        setTimeout(() => {
+            try{
+                let userId = req.params.id;
+                let userInfo = req.body;
+                User
+                    .updateOne({ _id: userId }, userInfo)
+                    .then(() => {
+                        return apiResponse.successResponse(res, 'Update user successfully');
+                    });
+            }catch(err){
+                return apiResponse.ErrorResponse(res, err);
+            }
+        }, 1000);
     }
 
     // [POST] /user_management/:id - function to change user's password
