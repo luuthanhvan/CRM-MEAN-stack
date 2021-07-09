@@ -6,8 +6,13 @@ const localLogin = new LocalStrategy(
     async (username, password, done) => {
         let user = await User.findOne({ username: username });
 
-        if(!user || password != user.password)
-            return done(null, false, { message : 'Your login details could not be verified. Please try again.'})
+        if(!user){
+            return done(null, false, { message : 'Account does not exist!'});
+        }
+
+        if(password != user.password){
+            return done(null, false, { message : 'Password incorrect!'});
+        }
 
         done(null, user);
     }
