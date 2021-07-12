@@ -3,15 +3,12 @@ import { FormControl, FormBuilder, FormGroup, FormArray } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material';
-
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
-// import { EditContactDialog } from './edit-dialog/contacts-edit-dialog.component';
 import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
-import { snackbarConfig } from '../../helpers/snackbar_config';
 import { LoadingService } from '../../services/loading/loading.service';
+import { ToastMessageService } from '../../services/toast_message/toast-message.service';
 
 @Component({
     selector: "app-contacts",
@@ -48,13 +45,6 @@ export class ContactsComponent implements OnInit {
     updatedTimeForm : FormGroup;
     searchControl : FormControl = new FormControl();
 
-    // some variables for the the snackbar (a kind of toast message)
-    label: string = '';
-    setAutoHide: boolean = true;
-    duration: number = 1500;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-
     form: FormGroup;
     isShowMassDelete : boolean = false; // it used to show/hide the mass delete button
     
@@ -63,8 +53,8 @@ export class ContactsComponent implements OnInit {
                 public dialog: MatDialog,
                 private formBuilder : FormBuilder,
                 private route: ActivatedRoute,
-                public snackBar: MatSnackBar,
-                private loadingService: LoadingService) {
+                private loadingService: LoadingService,
+                private toastMessage: ToastMessageService) {
         
         // clear params (leadSrc or assignedTo) before get all data
         this.router.navigateByUrl('/contacts');
@@ -242,14 +232,12 @@ export class ContactsComponent implements OnInit {
                             if(res['status'] == 1){ // status = 1 => OK
                                 // show successful message
                                 // display the snackbar belong with the indicator
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
-                                this.snackBar.open('Success to delete the contact!', this.label, config);
+                                this.toastMessage.showInfo('Success to delete the contact!');
                                 window.location.reload(); // reload contacts page
                             }
                             else {
                                 // show error message
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-                                this.snackBar.open('Failed to delete the contact!', this.label, config);
+                                this.toastMessage.showError('Failed to delete the contact!');
                             }
                         });
                 }
@@ -300,14 +288,12 @@ export class ContactsComponent implements OnInit {
                             if(res['status'] == 1){ // status = 1 => OK
                                 // show successful message
                                 // display the snackbar belong with the indicator
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
-                                this.snackBar.open('Success to delete the contacts!', this.label, config);
+                                this.toastMessage.showInfo('Success to delete the contacts!');
                                 window.location.reload(); // reload contacts page
                             }
                             else {
                                 // show error message
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-                                this.snackBar.open('Failed to delete the contacts!', this.label, config);
+                                this.toastMessage.showError('Failed to delete the contacts!');
                             }
                         });
                 }

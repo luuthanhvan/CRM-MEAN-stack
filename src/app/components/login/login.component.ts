@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
-import { snackbarConfig } from '../../helpers/snackbar_config';
-import { LoadingService } from '../../services/loading/loading.service';
+import { ToastMessageService } from '../../services/toast_message/toast-message.service';
 
 @Component({
 	selector: 'app-login',
@@ -14,22 +12,12 @@ import { LoadingService } from '../../services/loading/loading.service';
 export class LoginComponent implements OnInit {
 	signinForm : FormGroup;
 	submitted : boolean = false;
-	isLoggingFailed : boolean = false;
-
-	// some variables for the the snackbar (a kind of toast message)
     errorMessage: string;
-    label: string = '';
-    setAutoHide: boolean = true;
-    duration: number = 1500;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-
 
 	constructor(private formBuilder : FormBuilder,
 				private authService : AuthService,
 				private router : Router,
-				public snackBar: MatSnackBar,
-                private loadingService: LoadingService,) {
+				private toastMessage: ToastMessageService) {
 	}
 
 	ngOnInit() {
@@ -63,8 +51,7 @@ export class LoginComponent implements OnInit {
 				(err) => {
 					this.errorMessage = err.error['message'].message;
 					// show error message
-					let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-					this.snackBar.open(this.errorMessage, this.label, config);
+					this.toastMessage.showError(this.errorMessage);
 				}
 			);
 	}

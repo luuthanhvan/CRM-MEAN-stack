@@ -6,9 +6,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { MustMatch } from '../../helpers/validation_functions';
 import { UserManagementService } from '../../services/user_management/user-management.service';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
-import { snackbarConfig } from '../../helpers/snackbar_config';
 import { LoadingService } from '../../services/loading/loading.service';
+import { ToastMessageService } from '../../services/toast_message/toast-message.service';
 
 @Component({
   selector: 'app-home',
@@ -35,11 +34,6 @@ export class HomeComponent implements OnInit{
 				this.currentUser = data;
 				this.isAdminUser = this.currentUser.isAdmin;
 			});
-			// this.authService.getUser().subscribe(user => {
-			// 	this.currentUser = user; // this line will get information of an user
-			// 	console.log(this.currentUser); // result like: eg: {_id: "60d14ee04da4be2d06331514", name: "thanh van", username: "lthanhvan", email: "van@gmail.com", phone: "1234566788", …}
-			// 	this.isAdminUser = this.currentUser.isAdmin; // TypeError: Cannot read property 'isAdmin' of null
-			// })
 		}
 		
 	}
@@ -63,22 +57,14 @@ export class HomeChangePasswordComponent{
 	changePassForm : FormGroup;
 	submitted : boolean = false;
 	currentUser : User;
-
-	// some variables for the the snackbar (a kind of toast message)
-    sucessfulMessage: string = 'Success to change the password!';
+    successMessage: string = 'Success to change the password!';
     errorMessage: string = 'Failed to change the password!';
-    label: string = '';
-    setAutoHide: boolean = true;
-    duration: number = 1500;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
     constructor(private formBuilder : FormBuilder,
 				private userService : UserManagementService,
 				private authService : AuthService,
-				public snackBar: MatSnackBar,
                 private loadingService: LoadingService,
-				private router : Router){
+				private toastMessage: ToastMessageService){
 
 		this.changePassForm = this.formBuilder.group({
 			oldPass: new FormControl('', [Validators.required, Validators.minLength(6)]), 
@@ -113,13 +99,11 @@ export class HomeChangePasswordComponent{
 						this.loadingService.hideLoading();
 						// show successful message
 						// display the snackbar belong with the indicator
-						let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
-						this.snackBar.open(this.sucessfulMessage, this.label, config);
+						this.toastMessage.showInfo(this.successMessage);
 					}
 					else {
 						// show error message
-						let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-						this.snackBar.open(this.errorMessage, this.label, config);
+						this.toastMessage.showError(this.errorMessage);
 					}
 				});
 	}

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
 import { ContactsService } from '../../../services/contacts/contacts.service';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
 import { LoadingService } from '../../../services/loading/loading.service';
-import { snackbarConfig } from '../../../helpers/snackbar_config';
+import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
 
 @Component({
     selector: 'app-edit-sales-order',
@@ -20,23 +19,16 @@ export class EditSalesOrderComponent implements OnInit {
     createdTime : string;
     users : Object;
     submitted = false;
-
-    // some variables for the the snackbar (a kind of toast message)
     successMessage : string = 'Success to save the sale order!';
     errorMessage : string = 'Failed to save the sale order!'
-    label: string = '';
-    setAutoHide: boolean = true;
-    duration: number = 1500;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
     constructor(private route: ActivatedRoute,
                 protected router: Router,
                 protected salesOrderService : SalesOrderService,
                 private contactService : ContactsService,
                 private userService : UserManagementService,
-                public snackBar: MatSnackBar,
-                private loadingService: LoadingService){
+                private loadingService: LoadingService,
+                private toastMessage: ToastMessageService){
         
         this.route.queryParams.subscribe((params) => {
             this.saleOrderId = params['id'];
@@ -99,14 +91,12 @@ export class EditSalesOrderComponent implements OnInit {
                 if(res['status'] == 1){ // status = 1 => OK
                     // show successful message
                     // display the snackbar belong with the indicator
-                    let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
-                    this.snackBar.open(this.successMessage, this.label, config);
+                    this.toastMessage.showInfo(this.successMessage);
                     this.router.navigate(['/sales_order']); // go back to the sales order page
                 }
                 else {
                     // show error message
-                    let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-                    this.snackBar.open(this.errorMessage, this.label, config);
+                    this.toastMessage.showError(this.errorMessage);
                 }
             });
     }

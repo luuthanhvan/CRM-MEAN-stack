@@ -7,10 +7,8 @@ import { SalesOrderService } from '../../services/sales_order/sales-order.servic
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
 import { MatTableDataSource } from '@angular/material';
 import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
-// import { EditSaleOrderDialog } from './edit-dialog/sales-order-edit-dialog.component';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
-import { snackbarConfig } from '../../helpers/snackbar_config';
 import { LoadingService } from '../../services/loading/loading.service';
+import { ToastMessageService } from '../../services/toast_message/toast-message.service';
 
 @Component({
   selector: "app-sales-order",
@@ -45,13 +43,6 @@ export class SalesOrderComponent implements OnInit {
     updatedTimeForm : FormGroup;
     searchControl : FormControl = new FormControl();
 
-    // some variables for the the snackbar (a kind of toast message)
-    label: string = '';
-    setAutoHide: boolean = true;
-    duration: number = 1500;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-
     form: FormGroup;
     isShowMassDelete : boolean = false; // it used to show/hide the mass delete button
 
@@ -60,8 +51,8 @@ export class SalesOrderComponent implements OnInit {
 				private formBuilder: FormBuilder,
 				public dialog: MatDialog,
                 private route: ActivatedRoute,
-                public snackBar: MatSnackBar,
-                private loadingService: LoadingService){
+                private loadingService: LoadingService,
+                private toastMessage: ToastMessageService){
          
         // clear params (status) before get all data
         this.router.navigateByUrl('/sales_order');
@@ -219,14 +210,12 @@ export class SalesOrderComponent implements OnInit {
                     		if(res['status'] == 1){ // status = 1 => OK
                                 // show successful message
                                 // display the snackbar belong with the indicator
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
-                                this.snackBar.open('Success to delete the sale order!', this.label, config);
+                                this.toastMessage.showInfo('Success to delete the sale order!');
                     			location.reload(); // reload the sales order page
                             }
                             else {
                                 // show error message
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-                                this.snackBar.open('Failed to delete the sale order!', this.label, config);
+                                this.toastMessage.showError('Failed to delete the sale order!');
                             }
                     	});
                 }
@@ -277,14 +266,12 @@ export class SalesOrderComponent implements OnInit {
                             if(res['status'] == 1){ // status = 1 => OK
                                 // show successful message
                                 // display the snackbar belong with the indicator
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['success']);
-                                this.snackBar.open('Success to delete the sales order!', this.label, config);
+                                this.toastMessage.showInfo('Success to delete the sales order!');
                                 window.location.reload(); // reload contacts page
                             }
                             else {
                                 // show error message
-                                let config = snackbarConfig(this.verticalPosition, this.horizontalPosition, this.setAutoHide, this.duration, ['failed']);
-                                this.snackBar.open('Failed to delete the sales order!', this.label, config);
+                                this.toastMessage.showError('Failed to delete the sales order!');
                             }
                         });
                 }
