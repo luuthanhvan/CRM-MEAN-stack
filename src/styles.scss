@@ -3,6 +3,9 @@
 /* Could not find Angular Material core them. Most Material components may not work as expected */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css"; // <- import
 
+$redColor : #c22727;
+$greenColor : #107d47;
+
 html, body { 
     height: 100%; 
 }
@@ -21,14 +24,9 @@ body {
 
     h2 {
         font-size: 24px;
-        
-        // align to left
-        position: absolute;
-        left: 16px;
     }
 
     .searchContainer {
-        // border: 1px solid red;
         h1 {
             position: absolute;
             left: 16px;
@@ -43,6 +41,10 @@ body {
 
     .filtersContainter, .list {
         margin: 0 16px 16px 16px;
+
+        h2 {
+            margin-left: 16px;
+        }
     }
 
     .filtersContainter {
@@ -50,13 +52,7 @@ body {
         background-color: white;
         overflow: hidden;
 
-        h2 {
-            // border: 1px solid red;
-            margin-left: 32px;
-        }   
-
         .filters {
-            // border: 1px solid red;
             width: 50%;
             margin: 0 auto;
 
@@ -77,29 +73,32 @@ body {
     }
 
     .list {
-        overflow: hidden;
         background-color: white;
-        clear: both;
-        .btnCreateCustomer {
-            button {
-                // align to right
-                position: absolute;
-                right: 16px;
+        overflow: hidden;
+               
+       .head {
+            .title, .btnRow {
+                width: fit-content;
+                height: fit-content;
+            }
+            
+            .title {
+                float: left;
+            }
 
-                // align both icon and text to center
-                height: 80%;
-                width: 200px;
-                background-color: #107d47;
+            .btnRow{
+                margin-top: 8px;
+                margin-right: 16px;
+                float: right;
                 color: white;
-                margin: 5px 0;
+                
+                .btnCreate {
+                    margin-left: 5px;
+                    background-color: $greenColor;
+                }
 
-                div {
-                    display: flex;
-                    height: 100%;
-
-                    mat-icon, span {
-                        margin: auto 0;
-                    }
+                .btnDelete {
+                    background-color: $redColor;
                 }
             }
         }
@@ -183,12 +182,12 @@ mat-progress-spinner {
 }
 
 .success {
-    background: #107d47;
+    background: $greenColor;
     color: white;
 }
 
 .failed {
-    background: rgb(218, 50, 50);
+    background: $redColor;
     color: white;
 }
 

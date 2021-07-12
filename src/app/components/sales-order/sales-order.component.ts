@@ -43,8 +43,8 @@ export class SalesOrderComponent implements OnInit {
     updatedTimeForm : FormGroup;
     searchControl : FormControl = new FormControl();
 
-    form: FormGroup;
-    isShowMassDelete : boolean = false; // it used to show/hide the mass delete button
+    checkArray : string[] = [];
+    isDisabled : boolean = true; // it used to show/hide the mass delete button
 
 	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
@@ -97,10 +97,6 @@ export class SalesOrderComponent implements OnInit {
 			updatedTimeFrom : new FormControl(),
 			updatedTimeTo : new FormControl(),
 		});
-
-        this.form = this.formBuilder.group({
-            checkArray : this.formBuilder.array([])
-        });
 	}
 
 	// function to handle cancel filter sales order event
@@ -227,30 +223,24 @@ export class SalesOrderComponent implements OnInit {
 	}
 
     onCheckboxClicked(e){
-        this.isShowMassDelete = true;
-        const checkArray: FormArray = this.form.get('checkArray') as FormArray;
-
+        this.isDisabled = false; // enable the Delete button
         if(e.target.checked){
-            checkArray.push(new FormControl(e.target.value));
+            // add the checked value to array
+            this.checkArray.push(e.target.value);
         }
-        else {
-            let i : number = 0;
-            checkArray.controls.forEach((item: FormControl) => {
-                if(item.value == e.target.value){
-                    checkArray.removeAt(i);
-                    return;
-                }
-                i++;
-            })
+        else{
+            // remove the unchecked value from array
+            this.checkArray.splice(this.checkArray.indexOf(e.target.value), 1);
         }
 
-        if(checkArray.length == 0){
-            this.isShowMassDelete = false;
+        // if there is no value in checkArray then disable the Delete button
+        if(this.checkArray.length == 0){
+            this.isDisabled = true;
         }
     }
 
     onMassDeleteBtnClicked(){
-        const salesOrderIds = this.form.value;
+        const salesOrderIds = this.checkArray;
         // show confirmation dialog before detele an item
         let dialogRef = this.dialog.open(SalesOrderConfirmationDialog, { disableClose : false });
         dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;

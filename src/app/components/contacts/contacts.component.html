@@ -78,30 +78,23 @@
   <!-- List of contacts -->
   	<div class="list">
 		<div class="head">
-			<mat-grid-list cols="3" rowHeight="50px">
-				<mat-grid-tile><h2>Customers information</h2></mat-grid-tile>
-				<mat-grid-tile [colspan]="2" class="btnCreateCustomer">
-				<button mat-button [routerLink]="['/contacts/add']">
+			<div class="title"><h2>Customers information</h2></div>
+			<div class="btnRow">
+				<!-- Mass delete button -->
+				<button mat-button class="btnDelete" [disabled]="isDisabled" (click)="onMassDeleteBtnClicked()">
+					<mat-icon>delete</mat-icon>
+					<span>Delete</span>
+				</button>
+
+				<button mat-button [routerLink]="['/contacts/add']" class="btnCreate">
 					<mat-icon>add</mat-icon>
 					<span>Create new customer</span>
 				</button>
-				</mat-grid-tile>
-			</mat-grid-list>
+			</div>		
 		</div>
 		
-		<!-- Mass delete button -->
-		<div class="massDeleteBtn" *ngIf="isShowMassDelete">
-			<button mat-button (click)="onMassDeleteBtnClicked()"><mat-icon>delete</mat-icon></button>
-		</div>
-
 		<div class="info">
 			<table mat-table [dataSource]="data" class="mat-elevation-z8">
-				<!-- No Column -->
-				<!-- <ng-container matColumnDef="no">
-					<th mat-header-cell *matHeaderCellDef> No. </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.no}} </td>
-				</ng-container> -->
-				
 				<!-- Checkbox column -->
 				<ng-container matColumnDef="check">
 					<th mat-header-cell *matHeaderCellDef></th>
@@ -121,30 +114,6 @@
 					<th mat-header-cell *matHeaderCellDef> Salutation </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.salutation}} </td>
 				</ng-container>
-			
-				<!-- Mobile phone Column -->
-				<!-- <ng-container matColumnDef="mobilePhone">
-					<th mat-header-cell *matHeaderCellDef> Mobile phone </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.mobilePhone}} </td>
-				</ng-container> -->
-				
-				<!-- Email Column -->
-				<!-- <ng-container matColumnDef="email">
-					<th mat-header-cell *matHeaderCellDef> Email </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.email}} </td>
-				</ng-container> -->
-
-				<!-- Organization Column -->
-				<!-- <ng-container matColumnDef="organization">
-					<th mat-header-cell *matHeaderCellDef> Organization </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.organization}} </td>
-				</ng-container> -->
-
-				<!-- DOB Column -->
-				<!-- <ng-container matColumnDef="dob">
-					<th mat-header-cell *matHeaderCellDef> DOB </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.dob}} </td>
-				</ng-container> -->
 				
 				<!-- Lead source Column -->
 				<ng-container matColumnDef="leadSrc">
@@ -157,18 +126,6 @@
 					<th mat-header-cell *matHeaderCellDef> Assigned </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
 				</ng-container>
-
-				<!-- Address Column -->
-				<!-- <ng-container matColumnDef="address">
-					<th mat-header-cell *matHeaderCellDef> Address </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.address}} </td>
-				</ng-container> -->
-
-				<!-- Description Column -->
-				<!-- <ng-container matColumnDef="description">
-					<th mat-header-cell *matHeaderCellDef> Description </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.description}} </td>
-				</ng-container> -->
 		
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
@@ -182,7 +139,6 @@
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
 				</ng-container>
 				
-			
 				<!-- Modify contact infomation column -->
 				<ng-container matColumnDef="modify">
 					<th mat-header-cell *matHeaderCellDef> Modify </th>

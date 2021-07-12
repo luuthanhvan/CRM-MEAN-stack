@@ -92,7 +92,7 @@ class SalesOrderController {
 
     // [POST] /delete - function to delete multi contacts information by list of contact ID
     salesOrderMultiDelete(req, res){
-        let salesOrderIds = req.body.checkArray;
+        let salesOrderIds = req.body;
         setTimeout(() => {
             try{
                 SalesOrder
