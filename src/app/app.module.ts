@@ -27,22 +27,13 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
 import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
-
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { ContactConfirmationDialog } from './components/contacts/delete-dialog/confirmation-dialog.component';
-import { EditContactDialog } from './components/contacts/edit-dialog/contacts-edit-dialog.component';
-
+import { ContactDetailsDialog } from './components/contacts/contact-details/contact-details.compoment';
 import { SalesOrderComponent, } from './components/sales-order/sales-order.component';
 import { SalesOrderConfirmationDialog } from './components/sales-order/delete-dialog/confirmation-dialog.component';
-import { EditSaleOrderDialog } from './components/sales-order/edit-dialog/sales-order-edit-dialog.component';
-
 import { UserManagementComponent } from './components/user-management/user-management.component';
-import { EditUserDialog } from './components/user-management/edit-dialog/user-edit-dialog.component';
-
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-
-// overlay progress spinner
-// import { AppOverlayModule } from './overlay/overlay.module';
 import { ProgressSpinnerModule } from './components/progress-spinner/progress-spinner.module';
 
 const materials = [
@@ -57,20 +48,20 @@ const materials = [
 @NgModule({
   declarations: [
     AppComponent,
-    ContactsComponent, ContactConfirmationDialog, EditContactDialog,
+    ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog, EditSaleOrderDialog,
-    UserManagementComponent, EditUserDialog,
+    SalesOrderComponent, SalesOrderConfirmationDialog,
+    UserManagementComponent,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
     
   ],
   entryComponents : [
     AppComponent,
-    ContactsComponent, ContactConfirmationDialog, EditContactDialog,
-    DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog, EditSaleOrderDialog,
-    UserManagementComponent, EditUserDialog,
+    ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
+    DashboardComponent, 
+    SalesOrderComponent, SalesOrderConfirmationDialog,
+    UserManagementComponent,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
   ],

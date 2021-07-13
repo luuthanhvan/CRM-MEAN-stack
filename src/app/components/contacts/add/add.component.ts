@@ -3,8 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
-import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
-import { LoadingService } from '../../../services/loading/loading.service';
 
 @Component({
     selector: 'app-add-contact',
@@ -23,9 +21,7 @@ export class AddContactComponent implements OnInit{
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,
-                protected router : Router,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService){
+                protected router : Router){
     }
 
     ngOnInit(){
@@ -51,22 +47,6 @@ export class AddContactComponent implements OnInit{
         let contactInfo = form.value;
         contactInfo.createdTime = new Date();
         contactInfo.updatedTime = new Date();
-
-        this.loadingService.showLoading();
-        this.contactsService.addContact(contactInfo).subscribe(
-            (res) => {
-                this.loadingService.hideLoading();
-                if(res['status'] == 1){ // status = 1 => OK
-                    // show successful message
-                    // display the snackbar belong with the indicator
-                    this.toastMessage.showInfo(this.sucessfulMessage);
-                    this.router.navigateByUrl('/contacts'); // navigate back to the contacts page
-                }
-                else {
-                    // show error message
-                    this.toastMessage.showError(this.errorMessage);
-                }
-            }
-        );
+        this.contactsService.addContact(contactInfo).subscribe();
     }
 }

@@ -100,7 +100,7 @@ export class SalesOrderComponent implements OnInit {
 	}
 
 	// function to handle cancel filter sales order event
-	onCancel(){
+	reset(){
         // get list of sales order
 		this.salesOrderService
             .getSalesOrder()
@@ -207,7 +207,7 @@ export class SalesOrderComponent implements OnInit {
                                 // show successful message
                                 // display the snackbar belong with the indicator
                                 this.toastMessage.showInfo('Success to delete the sale order!');
-                    			location.reload(); // reload the sales order page
+                    			this.reset();
                             }
                             else {
                                 // show error message
@@ -257,7 +257,7 @@ export class SalesOrderComponent implements OnInit {
                                 // show successful message
                                 // display the snackbar belong with the indicator
                                 this.toastMessage.showInfo('Success to delete the sales order!');
-                                window.location.reload(); // reload contacts page
+                                this.reset();
                             }
                             else {
                                 // show error message

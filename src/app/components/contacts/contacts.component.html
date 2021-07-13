@@ -8,7 +8,7 @@
 					<mat-form-field>
 						<input matInput placeholder="Enter contact name" [formControl]="searchControl">
 					</mat-form-field>
-					<button mat-button (click)="clearSearch()"><mat-icon>clear</mat-icon></button>
+					<button mat-button (click)="reset()"><mat-icon>clear</mat-icon></button>
 				</mat-grid-tile>
 			</form>
 		</mat-grid-list>
@@ -34,7 +34,7 @@
 
 			<div class="dateFilter">
 				<p>Created time</p>
-				<form [formGroup]="createdTimeForm" (ngSubmit)="applyDateFilter(createdTimeForm, 'createdTime')">
+				<form [formGroup]="createdTimeForm">
 					<mat-form-field appearance="outline">
 						<mat-label>From</mat-label>
 						<input matInput [matDatepicker]="createdTimeFromPicker" formControlName="createdTimeFrom">
@@ -54,7 +54,7 @@
 
 			<div class="dateFilter">
 				<p>Updated time</p>
-				<form [formGroup]="updatedTimeForm" (ngSubmit)="applyDateFilter(updatedTimeForm, 'updatedTime')">
+				<form [formGroup]="updatedTimeForm">
 					<mat-form-field appearance="outline">
 						<mat-label>From</mat-label>
 						<input matInput [matDatepicker]="updatedTimeFromPicker" formControlName="updatedTimeFrom">
@@ -72,7 +72,7 @@
 				</form>
 			</div>
 		</div>
-		<div class="btnCancel"><button mat-button (click)="onCancel()">Cancel</button></div>
+		<div class="btnCancel"><button mat-button (click)="reset()">Cancel</button></div>
 	</div> <!-- End div filters -->
 
   <!-- List of contacts -->
@@ -94,7 +94,7 @@
 		</div>
 		
 		<div class="info">
-			<table mat-table [dataSource]="data" class="mat-elevation-z8">
+			<table mat-table [dataSource]="(contacts$ | async)" class="mat-elevation-z8">
 				<!-- Checkbox column -->
 				<ng-container matColumnDef="check">
 					<th mat-header-cell *matHeaderCellDef></th>
