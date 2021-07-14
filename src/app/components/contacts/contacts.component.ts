@@ -4,7 +4,7 @@ import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material';
 import { Observable } from 'rxjs';
-import { map, tap, finalize } from 'rxjs/operators';
+import { map, tap, switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
@@ -55,8 +55,8 @@ export class ContactsComponent implements OnInit {
                 public dialog: MatDialog,
                 private formBuilder : FormBuilder,
                 private route: ActivatedRoute,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService) {
+                private loadingService : LoadingService,
+                private toastMessage : ToastMessageService) {
         
         // clear params (leadSrc or assignedTo) before get all data
         this.router.navigateByUrl('/contacts');
@@ -77,7 +77,7 @@ export class ContactsComponent implements OnInit {
 
     ngOnInit() {
         // get list of contacts from the database
-        this.contacts$ = this.contactsService.fetchContacts();
+        this.contacts$ = this.contactsService.getContacts();
         this.init();
     }
 
@@ -112,22 +112,49 @@ export class ContactsComponent implements OnInit {
         };
         this.router.navigate(["/contacts/edit"], navigationExtras);
     }
-    
-    applySelectFilter(filterValue: string, filterBy : string){
-        let contacts = this.contactsService.getContacts();
-        if(filterBy === 'leadSrc'){
-            this.contacts$ = contacts.pipe(map(value => value.filter(value => value.leadSrc === filterValue)));
-        }
-        if(filterBy === 'assignedTo'){
-            this.contacts$ = contacts.pipe(map(value => value.filter(value => value.assignedTo === filterValue)));
-        }
-    }
 
-    applySearch(form: FormControl){
-        let contactName = form.value;
-        let contacts = this.contactsService.getContacts();
-        this.contacts$ = contacts.pipe(map(value => value.filter(value => value.contactName === contactName)));
+    onDelete(contactId: string, contactName: string) {
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the "${contactName}" contact?`;
+        dialogRef.afterClosed().pipe(
+            tap(() => this.loadingService.showLoading()),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap(() => this.contactsService.deleteContact(contactId).pipe(
+                tap((res) => {
+                    if(res['status'] == 1){ // success to delete the contact
+                        //  show successful message
+                        // display the snackbar belong with the indicator
+                        this.toastMessage.showInfo('Success to delete the contact!');
+                        // reset the table
+                        this.reset();
+                    }
+                    else {
+                        // show error message
+                        this.toastMessage.showError('Failed to delete the contact!');
+                    }
+                })
+            )),
+            tap(() => this.loadingService.hideLoading())
+        ).subscribe();
     }
+    
+    // applySelectFilter(filterValue: string, filterBy : string){
+    //     let contacts = this.contactsService.getContacts();
+    //     if(filterBy === 'leadSrc'){
+    //         this.contacts$ = contacts.pipe(map(value => value.filter(value => value.leadSrc === filterValue)));
+    //     }
+    //     if(filterBy === 'assignedTo'){
+    //         this.contacts$ = contacts.pipe(map(value => value.filter(value => value.assignedTo === filterValue)));
+    //     }
+    // }
+
+    // applySearch(form: FormControl){
+    //     let contactName = form.value;
+    //     let contacts = this.contactsService.getContacts();
+    //     this.contacts$ = contacts.pipe(map(value => value.filter(value => value.contactName === contactName)));
+    // }
 
     // applyDateFilter(form: FormGroup, filter: string){
     //     let contacts = this.contactsService.getContacts();
@@ -155,74 +182,56 @@ export class ContactsComponent implements OnInit {
     //     }
     // }
 
-    onDelete(contactId: string, contactName: string) {
-        // show confirmation dialog before detele an item
-        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
-        dialogRef.componentInstance.confirmMess = `You want to delete the "${contactName}" contact?`;
-        dialogRef.afterClosed().pipe(
-            tap((result) => {
-                if(result){
-                    // do confirmation action: delete the contact
-                    this.contactsService.deleteContact(contactId).subscribe();
-                    // this.contactsService.deleteContact(contactId);
-                }
-                else {
-                    dialogRef = null;
-                }
-            })
-        ).subscribe()
-    }
+    // onCheckboxClicked(e){
+    //     this.isDisabled = false; // enable the Delete button
+    //     if(e.target.checked){
+    //         // add the checked value to array
+    //         this.checkArray.push(e.target.value);
+    //     }
+    //     else{
+    //         // remove the unchecked value from array
+    //         this.checkArray.splice(this.checkArray.indexOf(e.target.value), 1);
+    //     }
 
-    onCheckboxClicked(e){
-        this.isDisabled = false; // enable the Delete button
-        if(e.target.checked){
-            // add the checked value to array
-            this.checkArray.push(e.target.value);
-        }
-        else{
-            // remove the unchecked value from array
-            this.checkArray.splice(this.checkArray.indexOf(e.target.value), 1);
-        }
+    //     // if there is no value in checkArray then disable the Delete button
+    //     if(this.checkArray.length == 0){
+    //         this.isDisabled = true;
+    //     }
+    // }
 
-        // if there is no value in checkArray then disable the Delete button
-        if(this.checkArray.length == 0){
-            this.isDisabled = true;
-        }
-    }
-
-    onMassDeleteBtnClicked(){
-        const contactIds = this.checkArray;
-        // console.log(contactIds);
-        // show confirmation dialog before detele an item
-        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
-        dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;
-        dialogRef.afterClosed().subscribe(
-            (result) => {
-                this.loadingService.showLoading();
-                if(result){
-                    // do confirmation action: delete the contact
-                    this.contactsService
-                        .deleteContacts(contactIds)
-                        .subscribe((res) => {
-                            this.loadingService.hideLoading();
-                            if(res['status'] == 1){ // status = 1 => OK
-                                // show successful message
-                                // display the snackbar belong with the indicator
-                                this.toastMessage.showInfo('Success to delete the contacts!');
-                                this.reset();
-                            }
-                            else {
-                                // show error message
-                                this.toastMessage.showError('Failed to delete the contacts!');
-                            }
-                        });
-                }
-                else{
-                    dialogRef = null;
-                }
-            }
-        )
-    }
+    // onMassDeleteBtnClicked(){
+    //     const contactIds = this.checkArray;
+    //     // console.log(contactIds);
+    //     // show confirmation dialog before detele an item
+    //     let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
+    //     dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;
+    //     dialogRef.afterClosed().subscribe(
+    //         (result) => {
+    //             this.loadingService.showLoading();
+    //             if(result){
+    //                 // do confirmation action: delete the contact
+    //                 this.contactsService
+    //                     .deleteContacts(contactIds)
+    //                     .subscribe((res) => {
+    //                         this.loadingService.hideLoading();
+    //                         if(res['status'] == 1){ // status = 1 => OK
+    //                             // show successful message
+    //                             // display the snackbar belong with the indicator
+    //                             this.toastMessage.showInfo('Success to delete the contacts!');
+    //                             this.reset();
+    //                         }
+    //                         else {
+    //                             // show error message
+    //                             this.toastMessage.showError('Failed to delete the contacts!');
+    //                         }
+    //                     });
+    //             }
+    //             else{
+    //                 dialogRef = null;
+    //             }
+    //         }
+    //     )
+    // }
     
     // onClickedRow(row : Contact){
     //     let dialogRef = this.dialog.open(EditContactDialog, { disableClose : false, panelClass: 'formDialog' });

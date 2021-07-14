@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
 
@@ -16,8 +17,8 @@ export class AddContactComponent implements OnInit{
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     users : Object;
     submitted = false;
-    sucessfulMessage: string = 'Success to add a new contact!';
-    errorMessage: string = 'Failed to add a new contact!';
+
+    add$ : Observable<void>;
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,

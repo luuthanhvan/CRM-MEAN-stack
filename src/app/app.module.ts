@@ -29,7 +29,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { ContactConfirmationDialog } from './components/contacts/delete-dialog/confirmation-dialog.component';
-import { ContactDetailsDialog } from './components/contacts/contact-details/contact-details.compoment';
+
 import { SalesOrderComponent, } from './components/sales-order/sales-order.component';
 import { SalesOrderConfirmationDialog } from './components/sales-order/delete-dialog/confirmation-dialog.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
@@ -48,7 +48,7 @@ const materials = [
 @NgModule({
   declarations: [
     AppComponent,
-    ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
+    ContactsComponent, ContactConfirmationDialog, 
     DashboardComponent,
     SalesOrderComponent, SalesOrderConfirmationDialog,
     UserManagementComponent,
@@ -58,7 +58,7 @@ const materials = [
   ],
   entryComponents : [
     AppComponent,
-    ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
+    ContactsComponent, ContactConfirmationDialog, 
     DashboardComponent, 
     SalesOrderComponent, SalesOrderConfirmationDialog,
     UserManagementComponent,

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Contact } from '../../../interfaces/contact';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
 import { LoadingService } from '../../../services/loading/loading.service';
@@ -18,8 +21,8 @@ export class EditContactsComponent implements OnInit {
     createdTime: string;
     users : Object;
     submitted = false;
-    successMessage : string = 'Success to save the contact!';
-    errorMessage : string = 'Failed to save the contact!'
+
+    contact$ : Observable<Contact>;
     
     constructor(protected router: Router, 
                 private route: ActivatedRoute,
@@ -47,23 +50,7 @@ export class EditContactsComponent implements OnInit {
 
     ngOnInit(){
         // load contact information to the contact form
-        this.contactsService
-            .getContact(this.contactId)
-            .subscribe((data) => {
-                this.contactFormInfo.setValue({
-                    contactName: data.contactName,
-                    salutation: data.salutation,
-                    mobilePhone: data.mobilePhone,
-                    email: data.email,
-                    organization: data.organization,
-                    dob: data.dob,
-                    leadSrc: data.leadSrc,
-                    assignedTo: data.assignedTo,
-                    address: data.address,
-                    description: data.description,
-                });
-                this.createdTime = data.createdTime; // to keep the created time when update a contact information
-            });
+        this.contact$ = this.contactsService.getContact(this.contactId);
     }
 
     get contactFormControl(){
@@ -74,24 +61,9 @@ export class EditContactsComponent implements OnInit {
     onUpdate(form: FormGroup){
         this.submitted = true;
         let contactInfo = form.value;
-        contactInfo.createdTime = this.createdTime;
+        contactInfo.createdTime = this.contact$.pipe(map(data => data.createdTime));
         contactInfo.updatedTime = new Date();
-        
-        this.loadingService.showLoading();
-        this.contactsService
-            .updateContact(this.contactId, contactInfo)
-            .subscribe((res) => {
-                this.loadingService.hideLoading();
-                if(res['status'] == 1){
-                    // show successful message
-                    // display the snackbar belong with the indicator
-                    this.toastMessage.showInfo(this.successMessage);
-                    this.router.navigateByUrl('/contacts');
-                }
-                else {
-                    // show error message
-                    this.toastMessage.showError(this.errorMessage);
-                }
-            });
+
+        this.contactsService.updateContact(this.contactId, contactInfo).subscribe();
     }
 }

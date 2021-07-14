@@ -4,11 +4,13 @@
 			<mat-grid-tile [colspan]="2"><h1>Contacts</h1></mat-grid-tile>
 			<form>
 				<mat-grid-tile>
-					<button mat-button (click)="applySearch(searchControl)"><mat-icon>search</mat-icon></button>
+					<!-- (click)="applySearch(searchControl)" -->
+					<button mat-button><mat-icon>search</mat-icon></button>
 					<mat-form-field>
 						<input matInput placeholder="Enter contact name" [formControl]="searchControl">
 					</mat-form-field>
-					<button mat-button (click)="reset()"><mat-icon>clear</mat-icon></button>
+					<!-- (click)="reset()" -->
+					<button mat-button><mat-icon>clear</mat-icon></button>
 				</mat-grid-tile>
 			</form>
 		</mat-grid-list>
@@ -20,14 +22,16 @@
 		<div class="filters">
 			<mat-form-field appearance="outline" class="selectFilter">
 				<mat-label>Lead source</mat-label>
-				<mat-select (selectionChange)="applySelectFilter($event.value, 'leadSrc')" [formControl]="leadSrc">
+				<!-- (selectionChange)="applySelectFilter($event.value, 'leadSrc')" -->
+				<mat-select [formControl]="leadSrc">
 					<mat-option *ngFor="let src of leadSources" [value]="src"> {{src}} </mat-option>
 				</mat-select>
 			</mat-form-field>
 
 			<mat-form-field appearance="outline" class="selectFilter">
 				<mat-label>Assigned to</mat-label>
-				<mat-select (selectionChange)="applySelectFilter($event.value, 'assignedTo')" [formControl]="assignedTo">
+				<!-- (selectionChange)="applySelectFilter($event.value, 'assignedTo')" -->
+				<mat-select [formControl]="assignedTo">
 					<mat-option *ngFor="let user of assignedToUsers" [value]="user"> {{user}} </mat-option>
 				</mat-select>
 			</mat-form-field>
@@ -72,7 +76,8 @@
 				</form>
 			</div>
 		</div>
-		<div class="btnCancel"><button mat-button (click)="reset()">Cancel</button></div>
+		<!-- click)="reset()" -->
+		<div class="btnCancel"><button mat-button>Cancel</button></div>
 	</div> <!-- End div filters -->
 
   <!-- List of contacts -->
@@ -81,7 +86,8 @@
 			<div class="title"><h2>Customers information</h2></div>
 			<div class="btnRow">
 				<!-- Mass delete button -->
-				<button mat-button class="btnDelete" [disabled]="isDisabled" (click)="onMassDeleteBtnClicked()">
+				<!-- (click)="onMassDeleteBtnClicked()" -->
+				<button mat-button class="btnDelete" [disabled]="isDisabled">
 					<mat-icon>delete</mat-icon>
 					<span>Delete</span>
 				</button>
@@ -99,7 +105,8 @@
 				<ng-container matColumnDef="check">
 					<th mat-header-cell *matHeaderCellDef></th>
 					<td class="cell" mat-cell *matCellDef="let element">
-						<input type="checkbox" [value]="element._id" (change)="onCheckboxClicked($event)">
+						<!-- (change)="onCheckboxClicked($event)" -->
+						<input type="checkbox" [value]="element._id">
 					</td>
 				</ng-container>
 
