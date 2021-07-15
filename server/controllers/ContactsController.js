@@ -10,7 +10,7 @@ This model will interact with database to store or update data.
 */
 class ContactsController {
     // [POST] /contacts - function to store a contact information
-    contactsStore(req, res){
+    storeContact(req, res){
         setTimeout(() => {
             try{
                 const contacts = new Contacts(req.body);
@@ -28,7 +28,7 @@ class ContactsController {
     }
     
     // [GET] /contacts - function to get a list of contacts information
-    contactsList(req, res){
+    getListOfContacts(req, res){
         try{
             Contacts
                 .find({})
@@ -45,7 +45,7 @@ class ContactsController {
     }
 
     // [GET] /contacts/:id - function to get a contact information by contact ID
-    contactsDetail(req, res){
+    getContact(req, res){
         let contactId = req.params.id;
         try{
             Contacts
@@ -59,7 +59,7 @@ class ContactsController {
     }
 
     // [PUT] /contacts/:id - function to update a contact information by contact ID
-    contactsUpdate(req, res){
+    updateContact(req, res){
         let contactId = req.params.id;
         let contactInfo = req.body;
         setTimeout(() => {
@@ -76,7 +76,7 @@ class ContactsController {
     }
 
     // [DELETE] /contacts/:id - function to delete a contact information by contact ID
-    contactsDelete(req, res){
+    deleteContact(req, res){
         let contactId = req.params.id;
         setTimeout(() => {
             try{
@@ -93,7 +93,7 @@ class ContactsController {
     }
 
     // [POST] /delete - function to delete multi contacts information by list of contact ID
-    contactsMultiDelete(req, res){
+    multiDeleteContact(req, res){
         let contactIds = req.body;
         setTimeout(() => {
             try{
@@ -106,6 +106,21 @@ class ContactsController {
                 return apiResponse.ErrorResponse(res, err);
             }
         }, 1000)
+    }
+
+    // [GET] /search/:contactName - function to find contacts by contact name
+    findContact(req, res){
+        let contactName = req.params.contactName;
+        console.log(contactName);
+        try {
+            Contacts
+                .find({ contactName : contactName })
+                .then((contact) => {
+                    return apiResponse.successResponseWithData(res, 'Success', { contact: contact });
+                })
+        }catch(err){
+            return apiResponse.ErrorResponse(res, err);
+        }
     }
 }
 

@@ -7,7 +7,7 @@
 					<!-- (click)="applySearch(searchControl)" -->
 					<button mat-button><mat-icon>search</mat-icon></button>
 					<mat-form-field>
-						<input matInput placeholder="Enter contact name" [formControl]="searchControl">
+						<input matInput placeholder="Enter contact name" [formControl]="searchText">
 					</mat-form-field>
 					<!-- (click)="reset()" -->
 					<button mat-button><mat-icon>clear</mat-icon></button>
@@ -86,27 +86,25 @@
 			<div class="title"><h2>Customers information</h2></div>
 			<div class="btnRow">
 				<!-- Mass delete button -->
-				<!-- (click)="onMassDeleteBtnClicked()" -->
-				<button mat-button class="btnDelete" [disabled]="isDisabled">
+				<button mat-button class="btnDelete" [disabled]="isDisabled" (click)="onMassDeleteBtnClicked()">
 					<mat-icon>delete</mat-icon>
 					<span>Delete</span>
 				</button>
 
 				<button mat-button [routerLink]="['/contacts/add']" class="btnCreate">
 					<mat-icon>add</mat-icon>
-					<span>Create new customer</span>
+					<span>Create new customer</span>`
 				</button>
 			</div>		
 		</div>
 		
 		<div class="info">
-			<table mat-table [dataSource]="(contacts$ | async)" class="mat-elevation-z8">
+			<table mat-table [dataSource]="contacts$ | async" class="mat-elevation-z8">
 				<!-- Checkbox column -->
 				<ng-container matColumnDef="check">
 					<th mat-header-cell *matHeaderCellDef></th>
 					<td class="cell" mat-cell *matCellDef="let element">
-						<!-- (change)="onCheckboxClicked($event)" -->
-						<input type="checkbox" [value]="element._id">
+						<input type="checkbox" [value]="element._id" (change)="onCheckboxClicked($event)">
 					</td>
 				</ng-container>
 

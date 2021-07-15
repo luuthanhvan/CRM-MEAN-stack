@@ -3,7 +3,7 @@ import { FormControl, FormBuilder, FormGroup, FormArray } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, of, combineLatest } from 'rxjs';
 import { map, tap, switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
@@ -43,12 +43,14 @@ export class ContactsComponent implements OnInit {
 
     createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
-    searchControl : FormControl;
 
     checkArray : string[] = [];
     isDisabled : boolean = true; // it used to show/hide the mass delete button
     
     contacts$ : Observable<Contact[]>;
+    search$ : Observable<Contact[]>;
+    searchText : FormControl;
+    result$ : Observable<any>;
 
     constructor(private router: Router, 
                 protected contactsService: ContactsService,
@@ -76,15 +78,28 @@ export class ContactsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.init();
         // get list of contacts from the database
         this.contacts$ = this.contactsService.getContacts();
-        this.init();
+
+        this.search$ = this.searchText.valueChanges.pipe(
+            tap((contactName) => { console.log(contactName) }),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((contactName) => this.contactsService.searchContact(contactName))
+        );
+
+        this.result$ = combineLatest([this.contacts$, this.search$]).pipe(
+            map(([contacts, search]) => {
+                return { contacts, search }
+            })
+        );
     }
 
     init(){
         this.leadSrc = new FormControl('');
         this.assignedTo = new FormControl('');
-        this.searchControl = new FormControl();
+        this.searchText = new FormControl('');
 
         this.createdTimeForm = this.formBuilder.group({
             createdTimeFrom : new FormControl(),
@@ -100,7 +115,7 @@ export class ContactsComponent implements OnInit {
     // function to cancel filter contacts
     reset(){
         // get list of contacts again
-        this.contacts$ = this.contactsService.getContacts(); 
+        this.contacts$ = this.contactsService.getContacts();
         // reset form controls
         this.init();
     }
@@ -121,25 +136,83 @@ export class ContactsComponent implements OnInit {
             tap(() => this.loadingService.showLoading()),
             debounceTime(300),
             distinctUntilChanged(),
-            switchMap(() => this.contactsService.deleteContact(contactId).pipe(
-                tap((res) => {
-                    if(res['status'] == 1){ // success to delete the contact
-                        //  show successful message
-                        // display the snackbar belong with the indicator
-                        this.toastMessage.showInfo('Success to delete the contact!');
-                        // reset the table
-                        this.reset();
-                    }
-                    else {
-                        // show error message
-                        this.toastMessage.showError('Failed to delete the contact!');
-                    }
-                })
-            )),
+            switchMap((result) => {
+                if(!result){
+                    return of(0);
+                }
+                return this.contactsService.deleteContact(contactId).pipe(
+                    tap((res) => {
+                        if(res['status'] == 1){ // success to delete the contact
+                            //  show successful message
+                            // display the snackbar belong with the indicator
+                            this.toastMessage.showInfo('Success to delete the contact!');
+                            // reset the table
+                            this.reset();
+                        }
+                        else {
+                            // show error message
+                            this.toastMessage.showError('Failed to delete the contact!');
+                        }
+                    })
+                );
+            }),
             tap(() => this.loadingService.hideLoading())
         ).subscribe();
     }
     
+    onCheckboxClicked(e){
+        this.isDisabled = false; // enable the Delete button
+        if(e.target.checked){
+            // add the checked value to array
+            this.checkArray.push(e.target.value);
+        }
+        else{
+            // remove the unchecked value from array
+            this.checkArray.splice(this.checkArray.indexOf(e.target.value), 1);
+        }
+
+        // if there is no value in checkArray then disable the Delete button
+        if(this.checkArray.length == 0){
+            this.isDisabled = true;
+        }
+    }
+
+    onMassDeleteBtnClicked(){
+        const contactIds = this.checkArray;
+        // show confirmation dialog before detele an item
+        let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
+        dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;
+        dialogRef.afterClosed().pipe(
+            tap(() => this.loadingService.showLoading()),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((result) => {
+                if(!result){
+                    return of(0);
+                }
+                return this.contactsService.deleteContacts(contactIds).pipe(
+                    tap((res) => {
+                        if(res['status'] == 1){ // success to delete the contact
+                            //  show successful message
+                            // display the snackbar belong with the indicator
+                            this.toastMessage.showInfo('Success to delete the contacts!');
+                            // reset the table
+                            this.reset();
+                        }
+                        else {
+                            // show error message
+                            this.toastMessage.showError('Failed to delete the contacts!');
+                        }
+                    })
+                );
+            }),
+            tap(() => this.loadingService.hideLoading())
+        ).subscribe()
+    }
+    
+    // applySearch(){
+        
+    // }
     // applySelectFilter(filterValue: string, filterBy : string){
     //     let contacts = this.contactsService.getContacts();
     //     if(filterBy === 'leadSrc'){
@@ -148,12 +221,6 @@ export class ContactsComponent implements OnInit {
     //     if(filterBy === 'assignedTo'){
     //         this.contacts$ = contacts.pipe(map(value => value.filter(value => value.assignedTo === filterValue)));
     //     }
-    // }
-
-    // applySearch(form: FormControl){
-    //     let contactName = form.value;
-    //     let contacts = this.contactsService.getContacts();
-    //     this.contacts$ = contacts.pipe(map(value => value.filter(value => value.contactName === contactName)));
     // }
 
     // applyDateFilter(form: FormGroup, filter: string){
@@ -182,57 +249,6 @@ export class ContactsComponent implements OnInit {
     //     }
     // }
 
-    // onCheckboxClicked(e){
-    //     this.isDisabled = false; // enable the Delete button
-    //     if(e.target.checked){
-    //         // add the checked value to array
-    //         this.checkArray.push(e.target.value);
-    //     }
-    //     else{
-    //         // remove the unchecked value from array
-    //         this.checkArray.splice(this.checkArray.indexOf(e.target.value), 1);
-    //     }
-
-    //     // if there is no value in checkArray then disable the Delete button
-    //     if(this.checkArray.length == 0){
-    //         this.isDisabled = true;
-    //     }
-    // }
-
-    // onMassDeleteBtnClicked(){
-    //     const contactIds = this.checkArray;
-    //     // console.log(contactIds);
-    //     // show confirmation dialog before detele an item
-    //     let dialogRef = this.dialog.open(ContactConfirmationDialog, { disableClose : false });
-    //     dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;
-    //     dialogRef.afterClosed().subscribe(
-    //         (result) => {
-    //             this.loadingService.showLoading();
-    //             if(result){
-    //                 // do confirmation action: delete the contact
-    //                 this.contactsService
-    //                     .deleteContacts(contactIds)
-    //                     .subscribe((res) => {
-    //                         this.loadingService.hideLoading();
-    //                         if(res['status'] == 1){ // status = 1 => OK
-    //                             // show successful message
-    //                             // display the snackbar belong with the indicator
-    //                             this.toastMessage.showInfo('Success to delete the contacts!');
-    //                             this.reset();
-    //                         }
-    //                         else {
-    //                             // show error message
-    //                             this.toastMessage.showError('Failed to delete the contacts!');
-    //                         }
-    //                     });
-    //             }
-    //             else{
-    //                 dialogRef = null;
-    //             }
-    //         }
-    //     )
-    // }
-    
     // onClickedRow(row : Contact){
     //     let dialogRef = this.dialog.open(EditContactDialog, { disableClose : false, panelClass: 'formDialog' });
     //     dialogRef.componentInstance.contactId = row._id;

@@ -3,11 +3,12 @@ const router = express.Router();
 
 const contactsController = require('../controllers/ContactsController');
 
-router.post('/', contactsController.contactsStore); // store a contact
-router.get('/', contactsController.contactsList); // get list of contacts
-router.get('/:id', contactsController.contactsDetail); // get a contact
-router.put('/:id', contactsController.contactsUpdate); // update a contact
-router.delete('/:id', contactsController.contactsDelete); // delete a contact
-router.post('/delete', contactsController.contactsMultiDelete); // delete multi contacts
+router.post('/', contactsController.storeContact); // store a contact
+router.get('/', contactsController.getListOfContacts); // get list of contacts
+router.get('/:id', contactsController.getContact); // get a contact by contact ID
+router.put('/:id', contactsController.updateContact); // update a contact by contact ID
+router.delete('/:id', contactsController.deleteContact); // delete a contact by contact ID
+router.post('/delete', contactsController.multiDeleteContact); // delete multi contacts
+router.get('/search/:contactName', contactsController.findContact); // find a contact by contact name
 
 module.exports = router;
