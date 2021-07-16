@@ -84,7 +84,7 @@ export class ContactsService {
 					get<Contact[]>(`${this.SERVER_URL}/search/${contactName}`);				
 	}
 
-	// stop emitting values
+	// stop subcriptions
 	stop(){
 		this.stop$.next();
 		this.stop$.complete();

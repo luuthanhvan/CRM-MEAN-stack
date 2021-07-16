@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { User } from '../../interfaces/user';
 import { UserManagementService } from '../../services/user_management/user-management.service';
 import { datetimeFormat } from '../../helpers/datetime_format';
@@ -12,8 +13,6 @@ import { datetimeFormat } from '../../helpers/datetime_format';
 })
 export class UserManagementComponent implements OnInit {
 	displayedColumns: string[] = [
-		// "no",
-		// "check",
 		"name",
 		"username",
 		"email",
@@ -23,23 +22,15 @@ export class UserManagementComponent implements OnInit {
 		"modify",
 	];
 	dataSource : User[] = [];
+	users$ : Observable<User[]>;
 
 	constructor(private router: Router,
 				private userService: UserManagementService,
 				public dialog: MatDialog,) {
-		
-		// get list of users
-		this.userService.getUsers().subscribe((data) => {
-			this.dataSource = data.map((value, index) => {
-				value.no = index+1;
-				value.createdTime = datetimeFormat(value.createdTime);
-				return value;
-			});
-		});
 	}
 
 	ngOnInit() {
-
+		this.users$ = this.userService.getUsers();
 	}
 
 	// navigate to the edit sale order page
@@ -49,19 +40,4 @@ export class UserManagementComponent implements OnInit {
 		};
 		this.router.navigate(["/user_management/edit"], navigationExtras);
 	}
-
-	// onClickedRow(row : User){
-    //     let dialogRef = this.dialog.open(EditUserDialog, { disableClose : false, panelClass: 'formDialog' });
-    //     dialogRef.componentInstance.userId = row._id;
-    //     dialogRef.afterClosed().subscribe(
-    //         (result) => {
-    //             if(result){
-    //                 window.location.reload();
-    //             }
-    //             else {
-    //                 dialogRef = null;
-    //             }
-    //         }
-    //     );
-    // }
 }

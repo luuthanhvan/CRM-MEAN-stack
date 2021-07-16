@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { MatPaginator, MatTableDataSource } from "@angular/material";
 import { Router, NavigationExtras } from '@angular/router';
-
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Contact } from '../../interfaces/contact';
 import { ContactsService } from '../../services/contacts/contacts.service';
-
 import { SaleOrder } from '../../interfaces/sale-order';
 import { SalesOrderService } from '../../services/sales_order/sales-order.service';
-
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth/auth.service';
 import { datetimeFormat } from '../../helpers/datetime_format';
@@ -44,6 +43,10 @@ export class DashboardComponent implements OnInit {
 	currentUser : User;
 	isAdminUser : boolean = true;
 
+	contacts$ : Observable<Contact[]>;
+	salesOrders$ : Observable<SaleOrder[]>;
+	user$ : Observable<User>;
+
 	@ViewChild('contactPaginator', {static: false}) contactPaginator : MatPaginator;
 	@ViewChild('saleOrderPaginator', {static: false}) saleOrderPaginator : MatPaginator;
 	
@@ -76,10 +79,7 @@ export class DashboardComponent implements OnInit {
 				this.contactLength = data.length;
 				
 				// data source to display on the contact information table
-				this.contactDataSrc = data.map((value) => {
-					value.updatedTime = datetimeFormat(value.updatedTime);
-					return value;
-				});
+				this.contactDataSrc = data.map((value) => value);
 				this.contactData = new MatTableDataSource(this.contactDataSrc);
 				this.contactData.paginator = this.contactPaginator;
 			});
@@ -106,28 +106,13 @@ export class DashboardComponent implements OnInit {
 				this.saleOrderLength = data.length;
 
 				// data source to display on the sale order information table
-				this.saleOrderDataSrc = data.map((value) => {
-					value.updatedTime = datetimeFormat(value.updatedTime);
-					return value;
-				});
-
+				this.saleOrderDataSrc = data.map((value) => value);
 				this.saleOrderData = new MatTableDataSource(this.saleOrderDataSrc);
 				this.saleOrderData.paginator = this.saleOrderPaginator;
 			});
-
+		
 		// get current user logged information, we use getUser here
-		this.authService.getUser().subscribe(
-			(data) => {
-				this.currentUser = data
-				this.isAdminUser = this.currentUser && this.currentUser.isAdmin; // avoid null pointer exception
-			}
-		)
-		// this.authService.me().subscribe(
-		// 	(data) => { 
-		// 		this.currentUser = data; 
-		// 		this.isAdminUser = this.currentUser.isAdmin; 
-		// 	}
-		// );
+		this.user$ = this.authService.getUser();
 	}
 
 	// function to handle chart clicked event
@@ -182,7 +167,7 @@ export class DashboardComponent implements OnInit {
 		this.saleOrderDetail = saleOrder
 		
 		// datetime format
-		this.saleOrderDetail.createdTime = datetimeFormat(this.saleOrderDetail.createdTime);
+		// this.saleOrderDetail.createdTime = datetimeFormat(this.saleOrderDetail.createdTime);
 	}
 
 	onHideDetail(){

@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormBuilder, FormGroup, FormArray } from "@angular/forms";
+import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { map, tap, switchMap, distinctUntilChanged, debounceTime, startWith } from 'rxjs/operators';
 import { Contact } from '../../interfaces/contact'; // use contact interface
+import { User } from '../../interfaces/user';
+import { UserManagementService } from '../../services/user_management/user-management.service';
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { LoadingService } from '../../services/loading/loading.service';
@@ -40,7 +41,7 @@ export class ContactsComponent implements OnInit {
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     leadSrcFromDashboard : string;
     assignedFromDashboard : string;
-    assignedToUsers : string[] = [];
+    assignedToUsers : Observable<User[]>;
     
     assignedTo : FormControl;
     leadSrc : FormControl;
@@ -62,7 +63,8 @@ export class ContactsComponent implements OnInit {
                 private formBuilder : FormBuilder,
                 private route: ActivatedRoute,
                 private loadingService : LoadingService,
-                private toastMessage : ToastMessageService) {
+                private toastMessage : ToastMessageService,
+                private userService : UserManagementService) {
         
         // clear params (leadSrc or assignedTo) before get all data
         this.router.navigateByUrl('/contacts');
@@ -86,8 +88,8 @@ export class ContactsComponent implements OnInit {
     }
 
     init(){
-        this.leadSrc = new FormControl('');
-        this.assignedTo = new FormControl('');
+        this.leadSrc = new FormControl();
+        this.assignedTo = new FormControl();
         this.searchText = new FormControl('');
 
         this.createdTimeForm = this.formBuilder.group({
@@ -99,6 +101,8 @@ export class ContactsComponent implements OnInit {
             updatedTimeFrom : new FormControl(),
             updatedTimeTo : new FormControl(),
         });
+
+        this.assignedToUsers = this.userService.getUsers();
 
         this.search$ = this.searchText.valueChanges.pipe(
             startWith(''),

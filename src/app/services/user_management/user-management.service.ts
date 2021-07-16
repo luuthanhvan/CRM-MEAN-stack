@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../interfaces/user';
 // import custom validator to validate that password and confirm password fields match
@@ -12,6 +12,7 @@ import { MustMatch } from '../../helpers/validation_functions';
 })
 export class UserManagementService {
 	SERVER_URL: string = "http://localhost:4040/user_management";
+	private stop$ : Subject<void> = new Subject<void>();
 
   	constructor(private formBuilder : FormBuilder,
 				private httpClient : HttpClient) { }
@@ -42,24 +43,39 @@ export class UserManagementService {
 	getUsers():Observable<User[]>{
 		return this.httpClient
 					.get<User[]>(this.SERVER_URL)
-					.pipe(map(res => res['data']['users']));
+					.pipe(
+						map(res => res['data']['users']),
+						takeUntil(this.stop$),
+						shareReplay()
+					);
 	}
 
 	// get a user by user ID
 	getUser(userId: string):Observable<User>{
 		return this.httpClient
 					.get<User>(`${this.SERVER_URL}/${userId}`)
-					.pipe(map(res => res['data']['user']));
+					.pipe(
+						map(res => res['data']['user']),
+						takeUntil(this.stop$)
+					);
 	}
 
 	// update a user by user ID
 	updateUser(userId : string, userInfo: User):Observable<void>{
 		return this.httpClient
-					.put<void>(`${this.SERVER_URL}/${userId}`, userInfo);
+					.put<void>(`${this.SERVER_URL}/${userId}`, userInfo)
+					.pipe(takeUntil(this.stop$));
 	}
 
 	changePassword(userId: string, newPass: string) : Observable<void>{
 		return this.httpClient
-					.post<void>(`${this.SERVER_URL}/${userId}`, {newPass: newPass});
+					.post<void>(`${this.SERVER_URL}/${userId}`, {newPass: newPass})
+					.pipe(takeUntil(this.stop$));
+	}
+
+	// stop subcriptions
+	stop(){
+		this.stop$.next();
+		this.stop$.complete();
 	}
 }

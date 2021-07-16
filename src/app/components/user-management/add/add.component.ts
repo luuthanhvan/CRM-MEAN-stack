@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
 import { LoadingService } from '../../../services/loading/loading.service';
 import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
@@ -12,8 +13,6 @@ import { ToastMessageService } from '../../../services/toast_message/toast-messa
 export class AddUserComponent implements OnInit{
     userFormInfo: FormGroup; // typescript variable declaration
     submitted = false;
-    successMessage: string = 'Success to add a new user!';
-    errorMessage: string = 'Failed to add a new user!';
 
     constructor(protected router: Router,
                 private userService : UserManagementService,
@@ -36,18 +35,20 @@ export class AddUserComponent implements OnInit{
         this.loadingService.showLoading();
         this.userService
             .addUser(userInfo)
-            .subscribe((res) => {
-                this.loadingService.hideLoading();
-                if(res['status'] == 1){ // status = 1 => OK
-                    // show successful message
-                    // display the snackbar belong with the indicator
-                    this.toastMessage.showInfo(this.successMessage);
-                    this.router.navigate(['/user_management']);
-                }
-                else {
-                    // show error message
-                    this.toastMessage.showError(this.errorMessage);
-                }
-            });
+            .pipe(
+                tap((res) => {
+                    this.loadingService.hideLoading();
+                    if(res['status'] == 1){ // status = 1 => OK
+                        // show successful message
+                        // display the snackbar belong with the indicator
+                        this.toastMessage.showInfo('Success to add a new user!');
+                        this.router.navigate(['/user_management']);
+                    }
+                    else {
+                        // show error message
+                        this.toastMessage.showError('Failed to add a new user!');
+                    }
+                })
+            ).subscribe();
     }
 }

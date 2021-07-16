@@ -6,8 +6,8 @@ import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { tap, map, switchMap, startWith, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
 import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
-import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
-import { MatTableDataSource } from '@angular/material';
+import { User } from '../../interfaces/user';
+import { UserManagementService } from '../../services/user_management/user-management.service';
 import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
@@ -37,11 +37,6 @@ export class SalesOrderComponent implements OnInit {
 		"modify",
 		"delete",
 	];
- 	dataSource: SaleOrder[] = []; // original datasource - array of objects
-	dataArray : SaleOrder[] = []; // duplicate datasource, purpose: save the original datasource for filter
-
-	data = new MatTableDataSource(); // data displayed in the table
-
 	statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
     statusFromDashboard : string;
 
@@ -51,6 +46,7 @@ export class SalesOrderComponent implements OnInit {
     searchText : FormControl;
     contactName: FormControl;
     assignedTo : FormControl;
+    assignedToUsers : Observable<User[]>;
 
     salesOrders$ : Observable<SaleOrder[]>;
     search$ : Observable<SaleOrder[]>;
@@ -66,7 +62,8 @@ export class SalesOrderComponent implements OnInit {
 				public dialog: MatDialog,
                 private route: ActivatedRoute,
                 private loadingService: LoadingService,
-                private toastMessage: ToastMessageService){
+                private toastMessage: ToastMessageService,
+                private userService : UserManagementService){
          
         // clear params (status) before get all data
         this.router.navigateByUrl('/sales_order');
@@ -97,7 +94,9 @@ export class SalesOrderComponent implements OnInit {
             updatedTimeFrom : new FormControl(),
             updatedTimeTo : new FormControl(),
         });
-
+        
+        this.assignedToUsers = this.userService.getUsers();
+        
         this.search$ = this.searchText.valueChanges.pipe(
             startWith(''),
             tap((contactName) => { console.log(contactName) }),

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
 import { LoadingService } from '../../../services/loading/loading.service';
 import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
@@ -14,8 +15,6 @@ export class EditUserComponent implements OnInit{
     userId : string;
     createdTime : string;
     submitted = false;
-    successMessage : string = 'Success to save the user!';
-    errorMessage : string = 'Failed to save the user!'
 
     constructor(protected router: Router,
                 private route : ActivatedRoute,
@@ -35,19 +34,21 @@ export class EditUserComponent implements OnInit{
         // load user information to the user form
         this.userService
             .getUser(this.userId)
-            .subscribe((data) => {
-                this.userFormInfo.setValue({
-                    name: data.name,
-                    username: data.username,
-                    password: data.password,
-                    confirmPassword: data.password,
-                    email: data.email,
-                    phone: data.phone,
-                    isAdmin: data.isAdmin,
-                    isActive: data.isActive,
-                });
-                this.createdTime = data.createdTime; // to keep the created time when update a user
-            });
+            .pipe(
+                tap((data) => {
+                    this.userFormInfo.setValue({
+                        name: data.name,
+                        username: data.username,
+                        password: data.password,
+                        confirmPassword: data.password,
+                        email: data.email,
+                        phone: data.phone,
+                        isAdmin: data.isAdmin,
+                        isActive: data.isActive,
+                    });
+                    this.createdTime = data.createdTime; // to keep the created time when update a user
+                })
+            ).subscribe();
     }
 
     get contactFormControl(){
@@ -62,18 +63,20 @@ export class EditUserComponent implements OnInit{
         this.loadingService.showLoading();
         this.userService
             .updateUser(this.userId, userInfo)
-            .subscribe((res) => {
-                this.loadingService.hideLoading();
-                if(res['status'] == 1){ // status = 1 => OK
-                    // show successful message
-                    // display the snackbar belong with the indicator
-                    this.toastMessage.showInfo(this.successMessage);
-                    this.router.navigate(['/user_management']);
-                }
-                else {
-                    // show error message
-                    this.toastMessage.showError(this.errorMessage);
-                }
-            });
+            .pipe(
+                tap((res) => {
+                    this.loadingService.hideLoading();
+                    if(res['status'] == 1){ // status = 1 => OK
+                        // show successful message
+                        // display the snackbar belong with the indicator
+                        this.toastMessage.showInfo('Success to save the user!');
+                        this.router.navigate(['/user_management']);
+                    }
+                    else {
+                        // show error message
+                        this.toastMessage.showError('Failed to save the user!');
+                    }
+                })
+            ).subscribe();
     }
 }

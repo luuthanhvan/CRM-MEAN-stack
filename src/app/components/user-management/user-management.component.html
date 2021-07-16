@@ -2,25 +2,18 @@
     <!-- List of contacts -->
     <div class="list">
 		<div class="head">
-			<mat-grid-list cols="3" rowHeight="50px">
-			<mat-grid-tile><h2>User information</h2></mat-grid-tile>
-			<mat-grid-tile [colspan]="2" class="btnCreateCustomer">
-				<button mat-button [routerLink]="['/user_management/add']">
-				<mat-icon>add</mat-icon>
-				<span>Create new user</span>
+			<div class="title"><h2>User information</h2></div>
+			
+			<div class="btnRow">
+				<button mat-button [routerLink]="['/user_management/add']" class="btnCreate">
+					<mat-icon>add</mat-icon>
+					<span>Create new user</span>
 				</button>
-			</mat-grid-tile>
-			</mat-grid-list>
+			</div>
 		</div>
       
 		<div class="info">
-			<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-				<!-- no column -->
-				<!-- <ng-container matColumnDef="no">
-					<th mat-header-cell *matHeaderCellDef> No. </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.no}} </td>
-				</ng-container> -->
-				
+			<table mat-table [dataSource]="(users$ | async)" class="mat-elevation-z8">
 				<!-- name column -->
 				<ng-container matColumnDef="name">
 					<th mat-header-cell *matHeaderCellDef> Name </th>
