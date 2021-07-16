@@ -3,13 +3,20 @@ import { FormControl, FormBuilder, FormGroup, FormArray } from "@angular/forms";
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material';
-import { Observable, of, combineLatest } from 'rxjs';
-import { map, tap, switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
+import { map, tap, switchMap, distinctUntilChanged, debounceTime, startWith } from 'rxjs/operators';
 import { Contact } from '../../interfaces/contact'; // use contact interface
 import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
 import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
+import { ContactDetailsDialog } from './contact-details/contact-details.component';
+
+interface FilterCriteria {
+    leadSrc?: string,
+    assignedTo?: string,
+    contactName?: string
+}
 
 @Component({
     selector: "app-contacts",
@@ -51,6 +58,7 @@ export class ContactsComponent implements OnInit {
     search$ : Observable<Contact[]>;
     searchText : FormControl;
     result$ : Observable<any>;
+    filterSubject: BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     constructor(private router: Router, 
                 protected contactsService: ContactsService,
@@ -79,21 +87,6 @@ export class ContactsComponent implements OnInit {
 
     ngOnInit() {
         this.init();
-        // get list of contacts from the database
-        this.contacts$ = this.contactsService.getContacts();
-
-        this.search$ = this.searchText.valueChanges.pipe(
-            tap((contactName) => { console.log(contactName) }),
-            debounceTime(300),
-            distinctUntilChanged(),
-            switchMap((contactName) => this.contactsService.searchContact(contactName))
-        );
-
-        this.result$ = combineLatest([this.contacts$, this.search$]).pipe(
-            map(([contacts, search]) => {
-                return { contacts, search }
-            })
-        );
     }
 
     init(){
@@ -110,12 +103,30 @@ export class ContactsComponent implements OnInit {
             updatedTimeFrom : new FormControl(),
             updatedTimeTo : new FormControl(),
         });
+
+        this.search$ = this.searchText.valueChanges.pipe(
+            startWith(''),
+            tap((contactName) => { console.log(contactName) }),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((contactName) => contactName ? this.contactsService.searchContact(contactName) : of(null)),
+            map(res => res && res['data'] && res['data']['contacts'])
+        );
+
+        this.contacts$ = combineLatest([this.contactsService.getContacts(), this.filterSubject, this.search$]).pipe(
+            map(([contacts, {leadSrc, assignedTo, contactName}, searchResult]) => {
+                const sourceData = searchResult ? searchResult : contacts;
+                return sourceData.filter(d => {
+                    return (leadSrc ? d.leadSrc === leadSrc : true) && 
+                        (assignedTo ? d.assignedTo === assignedTo : true);
+                });
+            })
+        );
     }
 
-    // function to cancel filter contacts
+    // function to reset the table
     reset(){
-        // get list of contacts again
-        this.contacts$ = this.contactsService.getContacts();
+        this.filterSubject.next({});
         // reset form controls
         this.init();
     }
@@ -126,6 +137,11 @@ export class ContactsComponent implements OnInit {
             queryParams: { id: contactId },
         };
         this.router.navigate(["/contacts/edit"], navigationExtras);
+    }
+
+    applySelectFilter(filterValue: string, filterBy : string){
+        const currentFilterObj = this.filterSubject.getValue();
+        this.filterSubject.next({...currentFilterObj, [filterBy]: filterValue});
     }
 
     onDelete(contactId: string, contactName: string) {
@@ -209,49 +225,12 @@ export class ContactsComponent implements OnInit {
             tap(() => this.loadingService.hideLoading())
         ).subscribe()
     }
-    
-    // applySearch(){
-        
-    // }
-    // applySelectFilter(filterValue: string, filterBy : string){
-    //     let contacts = this.contactsService.getContacts();
-    //     if(filterBy === 'leadSrc'){
-    //         this.contacts$ = contacts.pipe(map(value => value.filter(value => value.leadSrc === filterValue)));
-    //     }
-    //     if(filterBy === 'assignedTo'){
-    //         this.contacts$ = contacts.pipe(map(value => value.filter(value => value.assignedTo === filterValue)));
-    //     }
-    // }
 
-    // applyDateFilter(form: FormGroup, filter: string){
-    //     let contacts = this.contactsService.getContacts();
-    //     if(filter === 'createdTime'){
-    //         // format date and convert it to date object
-    //         let fromDate = new Date(dateFormat(form.value.createdTimeFrom)),
-    //         toDate = new Date(dateFormat(form.value.createdTimeTo));
+    onClickedRow(contactId : string){
+        const contact = this.contactsService.getContact(contactId);
 
-    //         this.contacts$ = contacts.pipe(
-    //             map(value => value.filter((value) => { 
-    //                 // get date from createdTime and convert it to date object
-    //                 let createdTime = new Date(value.createdTime.substring(0, value.createdTime.indexOf(', ')));
-    //                 return createdTime >= fromDate && createdTime <= toDate;
-    //             })));
-    //     }
-
-    //     if(filter === 'updatedTime'){
-    //         let fromDate = new Date(dateFormat(form.value.updatedTimeFrom)),
-    //         toDate = new Date(dateFormat(form.value.updatedTimeTo));
-
-    //         this.dataSource = this.dataSource.filter((value) => { 
-    //             let updatedTime = new Date(value.updatedTime.substring(0, value.updatedTime.indexOf(', ')));
-    //             return updatedTime >= fromDate && updatedTime <= toDate;
-    //         });
-    //     }
-    // }
-
-    // onClickedRow(row : Contact){
-    //     let dialogRef = this.dialog.open(EditContactDialog, { disableClose : false, panelClass: 'formDialog' });
-    //     dialogRef.componentInstance.contactId = row._id;
-    //     dialogRef.afterClosed().subscribe();
-    // }
+        let dialogRef = this.dialog.open(ContactDetailsDialog, { disableClose : false, panelClass: 'customDialog'});
+        dialogRef.componentInstance.contact$ = contact;
+        dialogRef.afterClosed().subscribe();
+    }
 }

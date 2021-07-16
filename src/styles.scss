@@ -150,26 +150,14 @@ body {
     border-color: lavender;
 }
 
-.formDialog{
+.customDialog{
     max-height: 95%;
-    width: 100%;
+    width: 50%;
     overflow-y: auto;
 
-    .btnStart{
-        width: fit-content;
-    }
-
-    .btnEnd{
-        width: fit-content;
-        position: relative;
-        left: 75%;
-    }
-
-    .description, .address {
-        mat-form-field {
-            width: 80%;
-            margin-top: 16px;
-        }
+    mat-grid-tile {
+        border: 1px solid lightgray;
+        padding: 0;
     }
 }
 

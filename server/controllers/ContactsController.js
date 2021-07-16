@@ -115,8 +115,8 @@ class ContactsController {
         try {
             Contacts
                 .find({ contactName : contactName })
-                .then((contact) => {
-                    return apiResponse.successResponseWithData(res, 'Success', { contact: contact });
+                .then((contacts) => {
+                    return apiResponse.successResponseWithData(res, 'Success', { contacts: contacts });
                 })
         }catch(err){
             return apiResponse.ErrorResponse(res, err);

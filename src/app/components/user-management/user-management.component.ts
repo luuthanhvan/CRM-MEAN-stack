@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../interfaces/user';
 import { UserManagementService } from '../../services/user_management/user-management.service';
 import { datetimeFormat } from '../../helpers/datetime_format';
-import { EditUserDialog } from './edit-dialog/user-edit-dialog.component';
 
 @Component({
 	selector: 'app-user-management',

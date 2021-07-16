@@ -1,7 +1,7 @@
 export function dateFormat(datetime: string){
     let dt = new Date(datetime);
 
-    let dateFormatted = (dt.getMonth()+1) + '/' + dt.getDate()  + '/' + dt.getFullYear();
+    let dateFormatted = new Date(dt.getDate() + '/' + (dt.getMonth()+1) + '/' + dt.getFullYear()); // dd/mm/yyyy
 
     return dateFormatted;
 }
