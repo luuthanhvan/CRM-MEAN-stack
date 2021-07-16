@@ -32,6 +32,7 @@ import { ContactConfirmationDialog } from './components/contacts/delete-dialog/c
 import { ContactDetailsDialog } from './components/contacts/contact-details/contact-details.component';
 import { SalesOrderComponent, } from './components/sales-order/sales-order.component';
 import { SalesOrderConfirmationDialog } from './components/sales-order/delete-dialog/confirmation-dialog.component';
+import { SalesOrderDetailsDialog } from './components/sales-order/sales-order-details/sales-order-details.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ProgressSpinnerModule } from './components/progress-spinner/progress-spinner.module';
@@ -50,7 +51,7 @@ const materials = [
     AppComponent,
     ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
     DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog,
+    SalesOrderComponent, SalesOrderConfirmationDialog, SalesOrderDetailsDialog,
     UserManagementComponent,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,
@@ -60,7 +61,7 @@ const materials = [
     AppComponent,
     ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
     DashboardComponent, 
-    SalesOrderComponent, SalesOrderConfirmationDialog,
+    SalesOrderComponent, SalesOrderConfirmationDialog, SalesOrderDetailsDialog,
     UserManagementComponent,
     LoginComponent, 
     HomeComponent, HomeChangePasswordComponent,

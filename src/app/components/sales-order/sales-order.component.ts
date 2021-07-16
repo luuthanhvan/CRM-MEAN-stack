@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material';
 import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
+import { SalesOrderDetailsDialog } from './sales-order-details/sales-order-details.component';
 
 interface FilterCriteria {
     status?: string,
@@ -217,18 +218,11 @@ export class SalesOrderComponent implements OnInit {
         ).subscribe();
     }
 
-    // onClickedRow(row : SaleOrder){
-    //     let dialogRef = this.dialog.open(EditSaleOrderDialog, { disableClose : false, panelClass: 'formDialog' });
-    //     dialogRef.componentInstance.saleOrderId = row._id;
-    //     dialogRef.afterClosed().subscribe(
-    //         (result) => {
-    //             if(result){
-    //                 window.location.reload();
-    //             }
-    //             else {
-    //                 dialogRef = null;
-    //             }
-    //         }
-    //     );
-    // }
+    onClickedRow(salesOrderId : string){
+        const salesOrder = this.salesOrderService.getSaleOrder(salesOrderId);
+
+        let dialogRef = this.dialog.open(SalesOrderDetailsDialog, { disableClose : false, panelClass: 'customDialog'});
+        dialogRef.componentInstance.salesOrder$ = salesOrder;
+        dialogRef.afterClosed().subscribe();
+    }
 }
