@@ -8,8 +8,8 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Contact name</mat-label>
-                    <mat-select formControlName="contactName">
-                        <mat-option *ngFor="let contact of contacts" [value]="contact['contactName']">{{contact['contactName']}}</mat-option>
+                    <mat-select formControlName="contactName" *ngIf="(contacts$ | async) as contacts">
+                        <mat-option *ngFor="let contact of contacts" [value]="contact.contactName">{{contact.contactName}}</mat-option>
                     </mat-select>
 
                     <!-- contact name validation error -->

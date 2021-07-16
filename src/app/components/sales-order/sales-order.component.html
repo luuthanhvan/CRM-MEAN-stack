@@ -4,11 +4,11 @@
 			<mat-grid-tile [colspan]="2"><h1>Sales order</h1></mat-grid-tile>
 			<form>
 				<mat-grid-tile>
-					<button mat-button (click)="applySearch(searchControl)"><mat-icon>search</mat-icon></button>
+					<button mat-button (click)="applySelectFilter(searchText.value, 'contactName')"><mat-icon>search</mat-icon></button>
 					<mat-form-field>
-						<input matInput placeholder="Enter contact name" [formControl]="searchControl">
+						<input matInput placeholder="Enter contact name" [formControl]="searchText">
 					</mat-form-field>
-					<button mat-button (click)="clearSearch(searchControl)"><mat-icon>clear</mat-icon></button>
+					<button mat-button (click)="reset()"><mat-icon>clear</mat-icon></button>
 				</mat-grid-tile>
 			</form>
 		</mat-grid-list>
@@ -19,14 +19,21 @@
 		<div class="filters">
 			<mat-form-field appearance="outline" class="selectFilter">
 				<mat-label>Status</mat-label>
-				<mat-select (selectionChange)="applySelectFilter($event.value)" [formControl]="status">
+				<mat-select (selectionChange)="applySelectFilter($event.value, 'status')" [formControl]="status">
+					<mat-option *ngFor="let stt of statusNames" [value]="stt"> {{stt}} </mat-option>
+				</mat-select>
+			</mat-form-field>
+			
+			<mat-form-field appearance="outline" class="selectFilter">
+				<mat-label>Assigned to</mat-label>
+				<mat-select (selectionChange)="applySelectFilter($event.value, 'assignedTo')" [formControl]="assignedTo">
 					<mat-option *ngFor="let stt of statusNames" [value]="stt"> {{stt}} </mat-option>
 				</mat-select>
 			</mat-form-field>
 
 			<div class="dateFilter">
 				<p>Created time</p>
-				<form [formGroup]="createdTimeForm" (ngSubmit)="applyDateFilter(createdTimeForm, 'createdTime')">
+				<form [formGroup]="createdTimeForm">
 					<mat-form-field appearance="outline">
 						<mat-label>From</mat-label>
 						<input matInput [matDatepicker]="createdTimeFromPicker" formControlName="createdTimeFrom">
@@ -46,7 +53,7 @@
 
 			<div class="dateFilter">
 				<p>Updated time</p>
-				<form [formGroup]="updatedTimeForm" (ngSubmit)="applyDateFilter(updatedTimeForm, 'updatedTime')">
+				<form [formGroup]="updatedTimeForm">
 					<mat-form-field appearance="outline">
 						<mat-label>From</mat-label>
 						<input matInput [matDatepicker]="updatedTimeFromPicker" formControlName="updatedTimeFrom">
@@ -87,7 +94,7 @@
 		</div>
       
 		<div class="info">
-			<table mat-table [dataSource]="data" class="mat-elevation-z8">
+			<table mat-table [dataSource]="(salesOrders$ | async)" class="mat-elevation-z8">
 				<!-- Checkbox column -->
 				<ng-container matColumnDef="check">
 					<th mat-header-cell *matHeaderCellDef></th>

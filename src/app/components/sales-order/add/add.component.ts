@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
 import { ContactsService } from '../../../services/contacts/contacts.service';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
 import { LoadingService } from '../../../services/loading/loading.service';
 import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
+import { Contact } from '../../../interfaces/contact';
 
 @Component({
     selector: 'app-add-sales-order',
@@ -14,11 +17,9 @@ import { ToastMessageService } from '../../../services/toast_message/toast-messa
 export class AddSaleOrderComponent implements OnInit{
     statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
     saleOrderFormInfo : FormGroup; // typescript variable declaration
-    contacts : Object;
+    contacts$ : Observable<Contact[]>;
     users : Object;
     submitted = false;
-    sucessMessage: string = 'Success to add a new sale order!';
-    errorMessage: string = 'Failed to add a new sale order!';
 
     constructor(protected router : Router,
                 protected salesOrderService: SalesOrderService,
@@ -30,14 +31,9 @@ export class AddSaleOrderComponent implements OnInit{
     ngOnInit(){
         this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();
         // get list of contacts name from database and display them to the Contact name field in saleOrderForm
-        this.contactService
-            .getContacts()
-            .subscribe((data) => {
-                this.contacts = data.map((value) => {
-                    return {contactId : value._id,
-                            contactName: value.contactName};
-                });
-            });
+        
+        this.contacts$ = this.contactService.getContacts();
+            
         
         // get list of users from database and display them to the Assigned field in saleOrderForm
         this.userService
@@ -64,18 +60,20 @@ export class AddSaleOrderComponent implements OnInit{
         this.loadingService.showLoading();
         this.salesOrderService
             .addSaleOrder(saleOrderInfo)
-            .subscribe((res) => {
-                this.loadingService.hideLoading();
-                if(res['status'] == 1){ // status = 1 => OK
-                    // show successful message
-                    // display the snackbar belong with the indicator
-                    this.toastMessage.showInfo(this.sucessMessage);
-                    this.router.navigate(['/sales_order']); // go back to the sales order page
-                }
-                else {
-                    // show error message
-                    this.toastMessage.showError(this.errorMessage);
-                }
-            });
+            .pipe(
+                tap((res) => {
+                    this.loadingService.hideLoading();
+                    if(res['status'] == 1){ // status = 1 => OK
+                        // show successful message
+                        // display the snackbar belong with the indicator
+                        this.toastMessage.showInfo('Success to add a new sale order!');
+                        this.router.navigate(['/sales_order']); // go back to the sales order page
+                    }
+                    else {
+                        // show error message
+                        this.toastMessage.showError('Failed to add a new sale order!');
+                    }
+                })
+            ).subscribe();
     }
 }

@@ -106,7 +106,7 @@
 				<!-- Contact name Column -->
 				<ng-container matColumnDef="contactName">
 					<th mat-header-cell *matHeaderCellDef> Contact name </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+					<td class="cell" mat-cell *matCellDef="let element" (click)="onClickedRow(element._id)"> {{element.contactName}} </td>
 				</ng-container>
 
 				<!-- Salutation Column -->
@@ -152,7 +152,7 @@
 				</ng-container>
 
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onClickedRow(row._id)"></tr>
+				<tr class="row" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 			
 			</table>
 		</div>

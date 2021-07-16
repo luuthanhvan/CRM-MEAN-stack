@@ -23,8 +23,7 @@ class ContactsController {
             }catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }
-        }, 
-        1000)
+        }, 1000);
     }
     
     // [GET] /contacts - function to get a list of contacts information
@@ -89,7 +88,7 @@ class ContactsController {
             }catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }
-        }, 1000)
+        }, 1000);
     }
 
     // [POST] /delete - function to delete multi contacts information by list of contact ID
@@ -105,13 +104,12 @@ class ContactsController {
             }catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }
-        }, 1000)
+        }, 1000);
     }
 
     // [GET] /search/:contactName - function to find contacts by contact name
     findContact(req, res){
         let contactName = req.params.contactName;
-        console.log(contactName);
         try {
             Contacts
                 .find({ contactName : contactName })

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil, shareReplay } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { SaleOrder } from '../../interfaces/sale-order'; // import sale order interface
 
@@ -10,7 +10,8 @@ import { SaleOrder } from '../../interfaces/sale-order'; // import sale order in
 })
 export class SalesOrderService {
 	SERVER_URL: string = "http://localhost:4040/sales_order";
-	
+	private stop$ : Subject<void> = new Subject<void>();
+
 	constructor(private formBuilder : FormBuilder,
 				private httpClient : HttpClient) { }
 	
@@ -28,38 +29,60 @@ export class SalesOrderService {
 	// add a sale order
 	addSaleOrder(saleOrder: SaleOrder):Observable<void>{
 		return this.httpClient
-					.post<void>(this.SERVER_URL, saleOrder);
+					.post<void>(this.SERVER_URL, saleOrder)
+					.pipe(takeUntil(this.stop$));
 	}
   
 	// get list of sales order
 	getSalesOrder():Observable<SaleOrder[]>{
 		return this.httpClient
 					.get<SaleOrder[]>(this.SERVER_URL)
-					.pipe(map(res => res['data']['salesOrder']));
+					.pipe(
+						map(res => res['data']['salesOrder']),
+						takeUntil(this.stop$),
+						shareReplay()
+					);
 	}
 
 	// get a sale order by sale order ID
 	getSaleOrder(saleOrderId: string):Observable<SaleOrder>{
 		return this.httpClient
 					.get<SaleOrder>(`${this.SERVER_URL}/${saleOrderId}`)
-					.pipe(map(res => res['data']['saleOrder']));
+					.pipe(
+						map(res => res['data']['saleOrder']),
+						takeUntil(this.stop$)
+					);
 	}
 
 	// update a sale order by sale order ID
 	updateSaleOrder(saleOrderId: string, saleOrder: SaleOrder):Observable<void>{
 		return this.httpClient
-					.put<void>(`${this.SERVER_URL}/${saleOrderId}?_method=PUT`, saleOrder);
+					.put<void>(`${this.SERVER_URL}/${saleOrderId}?_method=PUT`, saleOrder)
+					.pipe(takeUntil(this.stop$));
 	}
 
 	// delete a sale order by sale order ID
 	deleteSaleOrder(saleOrderId : string):Observable<void>{
 		return this.httpClient
-					.delete<void>(`${this.SERVER_URL}/${saleOrderId}?_method=DELETE`);
+					.delete<void>(`${this.SERVER_URL}/${saleOrderId}?_method=DELETE`)
+					.pipe(takeUntil(this.stop$));
 	}
 
 	// delete a sale order by list of sales order ids
 	deleteSalesOrder(salesOrderIds : string[]):Observable<void>{
 		return this.httpClient
-					.post<void>(`${this.SERVER_URL}/delete`, salesOrderIds);
+					.post<void>(`${this.SERVER_URL}/delete`, salesOrderIds)
+					.pipe(takeUntil(this.stop$));
+	}
+
+	searchSaleOrder(subject: string): Observable<SaleOrder[]>{
+		return this.httpClient.
+					get<SaleOrder[]>(`${this.SERVER_URL}/search/${subject}`);				
+	}
+
+	// stop subcriptions
+	stop(){
+		this.stop$.next();
+		this.stop$.complete();
 	}
 }

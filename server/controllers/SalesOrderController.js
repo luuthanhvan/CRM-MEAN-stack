@@ -9,7 +9,7 @@ This model will interact with database to store or update data.
 */
 class SalesOrderController {
     // [POST] /sales_order - function to store a sale order information
-    salesOrderStore(req, res){
+    storeSalesOrder(req, res){
         setTimeout(() => {
             try{
                 const saleOrder = new SalesOrder(req.body);
@@ -26,7 +26,7 @@ class SalesOrderController {
     }
 
     // [GET] /sales_order - function to get a list of sales order information
-    salesOrderList(req, res){
+    getListOfSalesOrders(req, res){
         try{
             SalesOrder
                 .find({})
@@ -43,7 +43,7 @@ class SalesOrderController {
     }
 
     // [GET] /sales_order/:id - function to get a sale order information by sale order ID
-    salesOrderDetail(req, res){
+    getSalesOrder(req, res){
         let saleOrderId = req.params.id;
         try{
             SalesOrder
@@ -57,7 +57,7 @@ class SalesOrderController {
     }
 
     // [PUT] /sales_order/:id - function to update a sale order information by sale order ID
-    salesOrderUpdate(req, res){
+    updateSalesOrder(req, res){
         let saleOrderId = req.params.id;
         let saleOrderInfo = req.body;
         setTimeout(() => {
@@ -74,7 +74,7 @@ class SalesOrderController {
     }
 
     // [DELETE] /sales_order/:id - function to delete a sale order information by sale order ID
-    salesOrderDelete(req, res){
+    deleteSalesOrder(req, res){
         let saleOrderId = req.params.id;
         setTimeout(() => {
             try{
@@ -87,11 +87,11 @@ class SalesOrderController {
             } catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }
-        }, 500);
+        }, 1000);
     }
 
-    // [POST] /delete - function to delete multi contacts information by list of contact ID
-    salesOrderMultiDelete(req, res){
+    // [POST] /delete - function to delete multi sales orders information by list of sales orders ID
+    deleteMultiSalesOrders(req, res){
         let salesOrderIds = req.body;
         setTimeout(() => {
             try{
@@ -104,7 +104,21 @@ class SalesOrderController {
             } catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }
-        }, 500);
+        }, 1000);
+    }
+
+    // [GET] /search/:salesOrder - function to find sales orders by subject
+    findSalesOrder(req, res){
+        let contactName = req.params.contactName;
+        try {
+            SalesOrder
+                .find({ contactName : contactName })
+                .then((salesOrder) => {
+                    return apiResponse.successResponseWithData(res, 'Success', { salesOrder: salesOrder });
+                })
+        }catch(err){
+            return apiResponse.ErrorResponse(res, err);
+        }
     }
 }
 

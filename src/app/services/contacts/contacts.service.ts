@@ -68,13 +68,15 @@ export class ContactsService {
 	// delete a contact by contact ID
 	deleteContact(contactId : string):Observable<void>{
 		return this.httpClient
-					.delete<void>(`${this.SERVER_URL}/${contactId}?_method=DELETE`);
+					.delete<void>(`${this.SERVER_URL}/${contactId}?_method=DELETE`)
+					.pipe(takeUntil(this.stop$));
 	}
 
 	// delete multi contacts by list of contact ID
 	deleteContacts(contactIds : string[]):Observable<void>{
 		return this.httpClient
-					.post<void>(`${this.SERVER_URL}/delete`, contactIds);
+					.post<void>(`${this.SERVER_URL}/delete`, contactIds)
+					.pipe(takeUntil(this.stop$));
 	}
 
 	searchContact(contactName: string): Observable<Contact[]>{

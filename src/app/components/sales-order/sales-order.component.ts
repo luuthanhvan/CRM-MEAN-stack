@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
+import { tap, map, switchMap, startWith, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
 import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
 import { dateFormat, datetimeFormat } from '../../helpers/datetime_format';
@@ -10,6 +12,12 @@ import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialo
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
 
+interface FilterCriteria {
+    status?: string,
+    assignedTo?: string,
+    contactName?: string,
+}
+
 @Component({
   selector: "app-sales-order",
   templateUrl: "./sales-order.component.html",
@@ -17,14 +25,12 @@ import { ToastMessageService } from '../../services/toast_message/toast-message.
 })
 export class SalesOrderComponent implements OnInit {
 	displayedColumns: string[] = [
-		// "no",
         "check",
 		"subject",
 		"contactName",
 		"status",
 		"total",
 		"assignedTo",
-		// "description",
 		"createdTime",
 		"updatedTime",
 		"modify",
@@ -36,12 +42,19 @@ export class SalesOrderComponent implements OnInit {
 	data = new MatTableDataSource(); // data displayed in the table
 
 	statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
-    status: FormControl = new FormControl('');
     statusFromDashboard : string;
 
 	createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
-    searchControl : FormControl = new FormControl();
+    status: FormControl;
+    searchText : FormControl;
+    contactName: FormControl;
+    assignedTo : FormControl;
+
+    salesOrders$ : Observable<SaleOrder[]>;
+    search$ : Observable<SaleOrder[]>;
+    result$ : Observable<any>;
+    filterSubject : BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     checkArray : string[] = [];
     isDisabled : boolean = true; // it used to show/hide the mass delete button
@@ -66,59 +79,14 @@ export class SalesOrderComponent implements OnInit {
     }
 
 	ngOnInit() {
-		// get list of sales order
-		this.salesOrderService
-			.getSalesOrder()
-			.subscribe((data) => {
-				this.dataSource = data.map((value, index) => {
-					value.no = index+1;
-					value.createdTime = datetimeFormat(value.createdTime);
-					value.updatedTime = datetimeFormat(value.updatedTime);
-					return value;
-				});
-                this.dataArray = this.dataSource; // store the original datasource
-
-                // filter automately
-                // if status (a param) got from dashboard, then filter the datasource by the leadSrc
-                if(this.statusFromDashboard != undefined)
-                    this.dataSource = data.filter(value => value.status === this.statusFromDashboard);
-
-                // assign the datasource to data displayed in the table
-				this.data = new MatTableDataSource(this.dataSource);
-                this.dataSource = this.dataArray; // restore the datasource
-			});
-		
-		this.createdTimeForm = this.formBuilder.group({
-			createdTimeFrom : new FormControl(),
-			createdTimeTo : new FormControl(),
-		});
-
-		this.updatedTimeForm = this.formBuilder.group({
-			updatedTimeFrom : new FormControl(),
-			updatedTimeTo : new FormControl(),
-		});
+		this.init();
 	}
 
-	// function to handle cancel filter sales order event
-	reset(){
-        // get list of sales order
-		this.salesOrderService
-            .getSalesOrder()
-            .subscribe((data) => {
-                this.dataSource = data.map((value, index) => {
-                    value.no = index+1;
-                    value.createdTime = datetimeFormat(value.createdTime);
-                    value.updatedTime = datetimeFormat(value.updatedTime);
-                    return value;
-                });
-                this.dataArray = this.dataSource; // store the original datasource
-
-                // assign the datasource to data displayed in the table
-                this.data = new MatTableDataSource(this.dataSource);
-            });
+    init(){
+        this.searchText = new FormControl('');
+        this.status = new FormControl('');
+        this.assignedTo = new FormControl('');
         
-        // reset form controls
-        this.status = new FormControl();
         this.createdTimeForm = this.formBuilder.group({
             createdTimeFrom : new FormControl(),
             createdTimeTo : new FormControl(),
@@ -128,6 +96,31 @@ export class SalesOrderComponent implements OnInit {
             updatedTimeFrom : new FormControl(),
             updatedTimeTo : new FormControl(),
         });
+
+        this.search$ = this.searchText.valueChanges.pipe(
+            startWith(''),
+            tap((contactName) => { console.log(contactName) }),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((contactName) => contactName ? this.salesOrderService.searchSaleOrder(contactName) : of(null)),
+            map(res => res && res['data'] && res['data'].salesOrder)
+        );
+
+        this.salesOrders$ = combineLatest([this.salesOrderService.getSalesOrder(), this.filterSubject, this.search$]).pipe(
+            map(([salesOrder, { status, assignedTo, contactName }, searchResult]) => {
+                const sourceData = searchResult ? searchResult : salesOrder;
+                return sourceData.filter(d => {
+                    return (status ? d.status === status : true) &&
+                            (assignedTo ? d.assignedTo === assignedTo : true);
+                })
+            })
+        )
+    }
+
+	// function to reset the table
+	reset(){
+        this.filterSubject.next({});
+        this.init();
     }
 
 	// navigate to the edit sale order page
@@ -138,87 +131,39 @@ export class SalesOrderComponent implements OnInit {
 		this.router.navigate(["/sales_order/edit"], navigationExtras);
 	}
     
-	applySelectFilter(filterValue: string){
-        this.dataSource =  this.dataSource.filter(value => value.status === filterValue);
-        
-        this.data = new MatTableDataSource(this.dataSource);
-        this.dataSource = this.dataArray;
-    }
-
-	applyDateFilter(form: FormGroup, filter: string){
-
-        if(filter === 'createdTime'){
-            // format date and convert it to date object
-            let fromDate = new Date(dateFormat(form.value.createdTimeFrom)),
-            toDate = new Date(dateFormat(form.value.createdTimeTo));
-
-            this.dataSource = this.dataSource.filter((value) => { 
-                // get date from createdTime and convert it to date object
-                let createdTime = new Date(value.createdTime.substring(0, value.createdTime.indexOf(', ')));
-                return createdTime >= fromDate && createdTime <= toDate;
-            });
-        }
-
-        if(filter === 'updatedTime'){
-            let fromDate = new Date(dateFormat(form.value.updatedTimeFrom)),
-            toDate = new Date(dateFormat(form.value.updatedTimeTo));
-
-            this.dataSource = this.dataSource.filter((value) => { 
-                let updatedTime = new Date(value.updatedTime.substring(0, value.updatedTime.indexOf(', ')));
-                return updatedTime >= fromDate && updatedTime <= toDate;
-            });
-        }
-
-        this.data = new MatTableDataSource(this.dataSource);
-        this.dataSource = this.dataArray;
-    }
-
-	applySearch(form: FormControl){
-        let contactName = form.value;
-        let result : SaleOrder[] = [];
-        for(let i = 0; i < this.dataSource.length; i++){
-            if(this.dataSource[i].contactName === contactName){
-                result.push(this.dataSource[i]);
-            }
-        }
-
-        this.data = new MatTableDataSource(result);
-    }
-
-	clearSearch(){
-        this.data = new MatTableDataSource(this.dataArray);
-        this.searchControl = new FormControl('');
+	applySelectFilter(filterValue: string, filterBy: string){
+        const currentFilterObj = this.filterSubject.getValue();
+        this.filterSubject.next({...currentFilterObj, [filterBy]: filterValue });
     }
 
     onDelete(saleOrderId: string, sub: string) {
         // show confirmation dialog before detele an item
         let dialogRef = this.dialog.open(SalesOrderConfirmationDialog, { disableClose : false });
         dialogRef.componentInstance.confirmMess = `You want to delete the "${sub}"?`;
-        dialogRef.afterClosed().subscribe(
-            (result) => {
-                if(result){
-                    this.loadingService.showLoading();
-                    // do confirmation action: delete the sales order
-                    this.salesOrderService
-                    	.deleteSaleOrder(saleOrderId)
-                    	.subscribe((res) => {
-                            this.loadingService.hideLoading();
-                    		if(res['status'] == 1){ // status = 1 => OK
-                                // show successful message
-                                // display the snackbar belong with the indicator
-                                this.toastMessage.showInfo('Success to delete the sale order!');
-                    			this.reset();
-                            }
-                            else {
-                                // show error message
-                                this.toastMessage.showError('Failed to delete the sale order!');
-                            }
-                    	});
+        dialogRef.afterClosed().pipe(
+            tap(() => {this.loadingService.showLoading()}),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((result) => {
+                if(!result){
+                    return of(0);
                 }
-                else{
-                    dialogRef = null;
-                }
-            }
+                return this.salesOrderService.deleteSaleOrder(saleOrderId).pipe(
+                    tap((res) => {
+                        if(res['status'] === 1){
+                            // show successful message
+                            // display the snackbar belong with the indicator
+                            this.toastMessage.showInfo('Success to delete the sale order!');
+                            this.reset();
+                        }
+                        else{
+                            // show error message
+                            this.toastMessage.showError('Failed to delete the sale order!');
+                        }
+                    })
+                );
+            }),
+            tap(() => {this.loadingService.hideLoading()})
         );
 	}
 
@@ -244,16 +189,17 @@ export class SalesOrderComponent implements OnInit {
         // show confirmation dialog before detele an item
         let dialogRef = this.dialog.open(SalesOrderConfirmationDialog, { disableClose : false });
         dialogRef.componentInstance.confirmMess = `You want to delete the contacts?`;
-        dialogRef.afterClosed().subscribe(
-            (result) => {
-                this.loadingService.showLoading();
-                if(result){
-                    // do confirmation action: delete the contact
-                    this.salesOrderService
-                        .deleteSalesOrder(salesOrderIds)
-                        .subscribe((res) => {
-                            this.loadingService.hideLoading();
-                            if(res['status'] == 1){ // status = 1 => OK
+        dialogRef.afterClosed().pipe(
+            tap(() => {this.loadingService.showLoading()}),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((result) => {
+                if(!result){
+                    return of(0);
+                }
+                return this.salesOrderService.deleteSalesOrder(salesOrderIds).pipe(
+                        tap((res) => {
+                            if(res['status'] === 1){ // status = 1 => OK
                                 // show successful message
                                 // display the snackbar belong with the indicator
                                 this.toastMessage.showInfo('Success to delete the sales order!');
@@ -263,13 +209,12 @@ export class SalesOrderComponent implements OnInit {
                                 // show error message
                                 this.toastMessage.showError('Failed to delete the sales order!');
                             }
-                        });
-                }
-                else{
-                    dialogRef = null;
-                }
-            }
-        )
+                        })
+                    )
+                
+            }),
+            tap(() => {this.loadingService.hideLoading()})
+        ).subscribe();
     }
 
     // onClickedRow(row : SaleOrder){

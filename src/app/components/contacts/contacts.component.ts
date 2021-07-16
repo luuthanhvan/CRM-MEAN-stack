@@ -36,18 +36,15 @@ export class ContactsComponent implements OnInit {
         "modify",
         "delete",
     ];
-    dataSource: Contact[] = []; // original datasource - array of objects
-    dataArray : Contact[] = []; // duplicate datasource, purpose: save the original datasource for filter
-    data = new MatTableDataSource(); // data displayed in the table
     
-    leadSrc : FormControl;
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     leadSrcFromDashboard : string;
-
-    assignedTo : FormControl;
-    assignedToUsers : string[];
     assignedFromDashboard : string;
-
+    assignedToUsers : string[] = [];
+    
+    assignedTo : FormControl;
+    leadSrc : FormControl;
+    searchText : FormControl;
     createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
 
@@ -56,7 +53,6 @@ export class ContactsComponent implements OnInit {
     
     contacts$ : Observable<Contact[]>;
     search$ : Observable<Contact[]>;
-    searchText : FormControl;
     result$ : Observable<any>;
     filterSubject: BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 

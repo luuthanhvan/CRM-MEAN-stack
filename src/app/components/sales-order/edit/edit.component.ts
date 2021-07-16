@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
 import { ContactsService } from '../../../services/contacts/contacts.service';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
 import { LoadingService } from '../../../services/loading/loading.service';
 import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
+import { Contact } from '../../../interfaces/contact';
 
 @Component({
     selector: 'app-edit-sales-order',
@@ -14,13 +17,12 @@ import { ToastMessageService } from '../../../services/toast_message/toast-messa
 export class EditSalesOrderComponent implements OnInit {
     saleOrderFormInfo : FormGroup; // typescript variable declaration
     statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
-    contacts : Object;
     saleOrderId : string;
     createdTime : string;
     users : Object;
     submitted = false;
-    successMessage : string = 'Success to save the sale order!';
-    errorMessage : string = 'Failed to save the sale order!'
+
+    contacts$ : Observable<Contact[]>;
 
     constructor(private route: ActivatedRoute,
                 protected router: Router,
@@ -36,14 +38,7 @@ export class EditSalesOrderComponent implements OnInit {
 
         this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();
         // get list of contacts name from database and display them to the Contact name field in saleOrderForm
-        this.contactService
-            .getContacts()
-            .subscribe((data) => {
-                this.contacts = data.map((value) => {
-                    return {contactId : value._id,
-                            contactName: value.contactName};
-                });
-            });
+        this.contacts$ = this.contactService.getContacts();
         
         // get list of users from database and display them to the Assigned field in saleOrderForm
         this.userService
@@ -60,17 +55,19 @@ export class EditSalesOrderComponent implements OnInit {
         // load sale order information to the sale order form
         this.salesOrderService
             .getSaleOrder(this.saleOrderId)
-            .subscribe((data) => {
-                this.saleOrderFormInfo.setValue({
-                    contactName: data.contactName,
-                    subject: data.subject,
-                    status: data.status,
-                    total: data.total,
-                    assignedTo: data.assignedTo,
-                    description: data.description,
-                });
-                this.createdTime = data.createdTime; // to keep the created time when update new sale order info
-            });
+            .pipe(
+                tap((data) => {
+                    this.saleOrderFormInfo.setValue({
+                        contactName: data.contactName,
+                        subject: data.subject,
+                        status: data.status,
+                        total: data.total,
+                        assignedTo: data.assignedTo,
+                        description: data.description,
+                    });
+                    this.createdTime = data.createdTime; // to keep the created time when update new sale order info
+                })
+            ).subscribe();
     }
 
     get saleOrderFormControl(){
@@ -86,18 +83,20 @@ export class EditSalesOrderComponent implements OnInit {
         this.loadingService.showLoading();
         this.salesOrderService
             .updateSaleOrder(this.saleOrderId, saleOrderInfo)
-            .subscribe((res) => {
-                this.loadingService.hideLoading();
-                if(res['status'] == 1){ // status = 1 => OK
-                    // show successful message
-                    // display the snackbar belong with the indicator
-                    this.toastMessage.showInfo(this.successMessage);
-                    this.router.navigate(['/sales_order']); // go back to the sales order page
-                }
-                else {
-                    // show error message
-                    this.toastMessage.showError(this.errorMessage);
-                }
-            });
+            .pipe(
+                tap((res) => {
+                    this.loadingService.hideLoading();
+                    if(res['status'] == 1){ // status = 1 => OK
+                        // show successful message
+                        // display the snackbar belong with the indicator
+                        this.toastMessage.showInfo('Success to save the sale order!');
+                        this.router.navigate(['/sales_order']); // go back to the sales order page
+                    }
+                    else {
+                        // show error message
+                        this.toastMessage.showError('Failed to save the sale order!');
+                    }
+                })
+            ).subscribe();
     }
 }
