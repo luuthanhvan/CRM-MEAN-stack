@@ -43,8 +43,10 @@ export class ContactsComponent implements OnInit {
     assignedFromDashboard : string;
     assignedToUsers : Observable<User[]>;
     
-    assignedTo : FormControl;
-    leadSrc : FormControl;
+    // leadSrc and assignedTo form controls will used for autofill when user click on contact chart or table
+    // so it need to be globally assigned a value
+    assignedTo : FormControl = new FormControl('');
+    leadSrc : FormControl = new FormControl('');
     searchText : FormControl;
     createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
@@ -74,10 +76,12 @@ export class ContactsComponent implements OnInit {
                 if(params['leadSrc']){
                     this.leadSrcFromDashboard = params['leadSrc'];
                     this.leadSrc = new FormControl(this.leadSrcFromDashboard);
+                    this.applySelectFilter(this.leadSrc.value, 'leadSrc');
                 }
                 if(params['assignedTo']){
                     this.assignedFromDashboard = params['assignedTo'];
                     this.assignedTo = new FormControl(this.assignedFromDashboard);
+                    this.applySelectFilter(this.assignedTo.value, 'assignedTo');
                 }
             }
         });
@@ -88,8 +92,6 @@ export class ContactsComponent implements OnInit {
     }
 
     init(){
-        this.leadSrc = new FormControl();
-        this.assignedTo = new FormControl();
         this.searchText = new FormControl('');
 
         this.createdTimeForm = this.formBuilder.group({
@@ -129,6 +131,9 @@ export class ContactsComponent implements OnInit {
         this.filterSubject.next({});
         // reset form controls
         this.init();
+        // reset form controls
+        this.leadSrc = new FormControl('');
+        this.assignedTo = new FormControl('');
     }
 
     // navigate to edit contact page

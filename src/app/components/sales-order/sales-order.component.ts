@@ -42,7 +42,9 @@ export class SalesOrderComponent implements OnInit {
 
 	createdTimeForm : FormGroup;
     updatedTimeForm : FormGroup;
-    status: FormControl;
+    // status form controls will used for autofill when user click on sales order chart
+    // so it need to be globally assigned a value
+    status: FormControl = new FormControl('');
     searchText : FormControl;
     contactName: FormControl;
     assignedTo : FormControl;
@@ -72,6 +74,7 @@ export class SalesOrderComponent implements OnInit {
             if(params['status']){
                 this.statusFromDashboard = params['status'];
                 this.status = new FormControl(this.statusFromDashboard);
+                this.applySelectFilter(this.status.value, 'status');
             }
         });
     }
@@ -82,7 +85,6 @@ export class SalesOrderComponent implements OnInit {
 
     init(){
         this.searchText = new FormControl('');
-        this.status = new FormControl('');
         this.assignedTo = new FormControl('');
         
         this.createdTimeForm = this.formBuilder.group({
@@ -121,6 +123,7 @@ export class SalesOrderComponent implements OnInit {
 	reset(){
         this.filterSubject.next({});
         this.init();
+        this.status = new FormControl('');
     }
 
 	// navigate to the edit sale order page

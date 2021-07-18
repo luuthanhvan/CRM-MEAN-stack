@@ -28,9 +28,8 @@
 				<mat-label>Assigned to</mat-label>
 				<mat-select 
 						[formControl]="assignedTo"
-						(selectionChange)="applySelectFilter($event.value, 'assignedTo')"
-						*ngIf="(assignedToUsers | async) as users">
-					<mat-option *ngFor="let user of users" [value]="user.name"> {{user.name}} </mat-option>
+						(selectionChange)="applySelectFilter($event.value, 'assignedTo')">
+					<mat-option *ngFor="let user of assignedToUsers | async" [value]="user.name"> {{user.name}} </mat-option>
 				</mat-select>
 			</mat-form-field>
 
