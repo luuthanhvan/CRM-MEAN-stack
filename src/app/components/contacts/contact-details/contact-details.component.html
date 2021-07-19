@@ -43,11 +43,11 @@
 
         <!-- created time row -->
         <mat-grid-tile>Created time</mat-grid-tile>
-        <mat-grid-tile>{{contact.createdTime}}</mat-grid-tile>
+        <mat-grid-tile>{{datetimeService.datetimeFormat(contact.createdTime, 2)}}</mat-grid-tile>
 
         <!-- updated time row -->
         <mat-grid-tile>Updated time</mat-grid-tile>
-        <mat-grid-tile>{{contact.updatedTime}}</mat-grid-tile>
+        <mat-grid-tile>{{datetimeService.datetimeFormat(contact.updatedTime, 2)}}</mat-grid-tile>
     </mat-grid-list>
 
     <mat-dialog-actions align="end">

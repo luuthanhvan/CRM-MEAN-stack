@@ -27,11 +27,11 @@
 
         <!-- created time row -->
         <mat-grid-tile>Created time</mat-grid-tile>
-        <mat-grid-tile>{{salesOrder.createdTime}}</mat-grid-tile>
+        <mat-grid-tile>{{datetimeService.datetimeFormat(salesOrder.createdTime, 2)}}</mat-grid-tile>
 
         <!-- updated time row -->
         <mat-grid-tile>Updated time</mat-grid-tile>
-        <mat-grid-tile>{{salesOrder.updatedTime}}</mat-grid-tile>
+        <mat-grid-tile>{{datetimeService.datetimeFormat(salesOrder.updatedTime, 2)}}</mat-grid-tile>
     </mat-grid-list>
 
     <mat-dialog-actions align="end">

@@ -13,7 +13,7 @@ import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
 import { SalesOrderDetailsDialog } from './sales-order-details/sales-order-details.component';
 import { DateRangeValidator } from '../../helpers/validation_functions';
-import { dateFormat, timeFormat } from '../../helpers/datetime_format';
+import { DatetimeService } from '../../services/datetime/datetime.service';
 
 interface FilterCriteria {
     status?: string,
@@ -68,7 +68,8 @@ export class SalesOrderComponent implements OnInit {
                 private route: ActivatedRoute,
                 private loadingService: LoadingService,
                 private toastMessage: ToastMessageService,
-                private userService : UserManagementService){
+                private userService : UserManagementService,
+                protected datetimeService : DatetimeService){
          
         // clear params (status) before get all data
         this.router.navigateByUrl('/sales_order');
@@ -154,18 +155,18 @@ export class SalesOrderComponent implements OnInit {
             map((data) => {
                 return data.filter((value, index) => {
                     if(filterBy == 'createdTime'){                        
-                        let dateFrom = new Date(dateFormat(date.createdTimeFrom)),
-                            dateTo = new Date(dateFormat(date.createdTimeTo));
+                        let dateFrom = new Date(this.datetimeService.dateFormat(date.createdTimeFrom)),
+                            dateTo = new Date(this.datetimeService.dateFormat(date.createdTimeTo));
 
-                        let createdTime = new Date(dateFormat(value.createdTime));
+                        let createdTime = new Date(this.datetimeService.dateFormat(value.createdTime));
 
                         return dateFrom <= createdTime && createdTime <= dateTo;
                     }
                     if(filterBy == 'updatedTime'){
-                        let dateFrom = new Date(dateFormat(date.updatedTimeFrom)),
-                            dateTo = new Date(dateFormat(date.updatedTimeTo));
+                        let dateFrom = new Date(this.datetimeService.dateFormat(date.updatedTimeFrom)),
+                            dateTo = new Date(this.datetimeService.dateFormat(date.updatedTimeTo));
 
-                        let updatedTime = new Date(dateFormat(value.updatedTime));
+                        let updatedTime = new Date(this.datetimeService.dateFormat(value.updatedTime));
                         return dateFrom <= updatedTime && updatedTime <= dateTo;
                     }
                 });

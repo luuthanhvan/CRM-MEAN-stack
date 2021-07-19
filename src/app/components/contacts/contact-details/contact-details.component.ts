@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contact } from '../../../interfaces/contact';
+import { DatetimeService } from '../../../services/datetime/datetime.service';
 
 @Component({
     selector: 'contact-details-dialog',
@@ -9,5 +10,5 @@ import { Contact } from '../../../interfaces/contact';
 export class ContactDetailsDialog {
     contact$ : Observable<Contact>;
 
-    constructor(){}
+    constructor(protected datetimeService: DatetimeService){}
 }

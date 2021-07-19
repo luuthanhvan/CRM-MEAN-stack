@@ -142,13 +142,13 @@
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
 					<th mat-header-cell *matHeaderCellDef> Created time </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.createdTime, 2)}} </td>
 				</ng-container>
 		
 				<!-- Updated time Column -->
 				<ng-container matColumnDef="updatedTime">
 					<th mat-header-cell *matHeaderCellDef> Updated time </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.updatedTime, 2)}} </td>
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->

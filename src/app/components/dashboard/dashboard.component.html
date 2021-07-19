@@ -47,7 +47,7 @@
 
                         <ng-container matColumnDef="updatedTime">
                             <th mat-header-cell *matHeaderCellDef> Updated time </th>
-                            <td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+                            <td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.updatedTime, 2)}} </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
@@ -82,7 +82,7 @@
 
                             <ng-container matColumnDef="updatedTime">
                                 <th mat-header-cell *matHeaderCellDef> Updated time </th>
-                                <td class="cell" mat-cell *matCellDef="let element"> {{element.updatedTime}} </td>
+                                <td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.updatedTime, 2)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
@@ -129,11 +129,11 @@
 
                             <!-- Created time row -->
                             <mat-grid-tile>Created time</mat-grid-tile>
-                            <mat-grid-tile>{{saleOrderDetail.createdTime}}</mat-grid-tile>
+                            <mat-grid-tile>{{datetimeService.datetimeFormat(saleOrderDetail.createdTime, 2)}}</mat-grid-tile>
 
                             <!-- Updated time row -->
                             <mat-grid-tile>Updated time</mat-grid-tile>
-                            <mat-grid-tile>{{saleOrderDetail.updatedTime}}</mat-grid-tile>
+                            <mat-grid-tile>{{datetimeService.datetimeFormat(saleOrderDetail.updatedTime, 2)}}</mat-grid-tile>
                         </mat-grid-list>
 
                         <div id="btnBack"><button mat-button (click)="onHideDetail()">Back</button></div>

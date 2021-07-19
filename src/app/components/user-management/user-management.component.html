@@ -48,15 +48,12 @@
 				<ng-container matColumnDef="isActive">
 					<th mat-header-cell *matHeaderCellDef> Active/Deactive </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.isActive}} </td>
-					<!-- <td mat-cell *matCellDef="let element">
-						<mat-slide-toggle></mat-slide-toggle>
-					</td> -->
 				</ng-container>
 			
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
-					<th mat-header-cell *matHeaderCellDef> Ceated time </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.createdTime}} </td>
+					<th mat-header-cell *matHeaderCellDef> Created time </th>
+					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.createdTime, 2)}} </td>
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->

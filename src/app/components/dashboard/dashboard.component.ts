@@ -2,14 +2,13 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { MatPaginator, MatTableDataSource } from "@angular/material";
 import { Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { Contact } from '../../interfaces/contact';
 import { ContactsService } from '../../services/contacts/contacts.service';
 import { SaleOrder } from '../../interfaces/sale-order';
 import { SalesOrderService } from '../../services/sales_order/sales-order.service';
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth/auth.service';
-import { datetimeFormat } from '../../helpers/datetime_format';
+import { DatetimeService } from '../../services/datetime/datetime.service';
 
 @Component({
 	selector: 'app-dashboard',
@@ -53,7 +52,8 @@ export class DashboardComponent implements OnInit {
 	constructor(private contactsService : ContactsService,
 				private salesOrderService : SalesOrderService,
 				private router : Router,
-				private authService : AuthService) {
+				private authService : AuthService,
+				protected datetimeService: DatetimeService) {
 	}
 
 	ngOnInit() {

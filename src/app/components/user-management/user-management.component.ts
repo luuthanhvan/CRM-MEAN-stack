@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { User } from '../../interfaces/user';
 import { UserManagementService } from '../../services/user_management/user-management.service';
-import { datetimeFormat } from '../../helpers/datetime_format';
+import { DatetimeService } from '../../services/datetime/datetime.service';
 
 @Component({
 	selector: 'app-user-management',
@@ -26,7 +26,8 @@ export class UserManagementComponent implements OnInit {
 
 	constructor(private router: Router,
 				private userService: UserManagementService,
-				public dialog: MatDialog,) {
+				public dialog: MatDialog,
+				protected datetimeService: DatetimeService) {
 	}
 
 	ngOnInit() {

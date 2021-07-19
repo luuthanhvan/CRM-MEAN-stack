@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SaleOrder } from '../../../interfaces/sale-order';
+import { DatetimeService } from '../../../services/datetime/datetime.service';
 
 @Component({
     selector: 'sales-order-details-dialog',
@@ -9,5 +10,5 @@ import { SaleOrder } from '../../../interfaces/sale-order';
 export class SalesOrderDetailsDialog {
     salesOrder$ : Observable<SaleOrder>;
 
-    constructor(){}
+    constructor(protected datetimeService: DatetimeService){}
 }
