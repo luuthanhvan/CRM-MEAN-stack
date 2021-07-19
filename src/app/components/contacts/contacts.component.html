@@ -36,12 +36,17 @@
 
 			<div class="dateFilter">
 				<p>Created time</p>
-				<form [formGroup]="createdTimeForm">
+				<form [formGroup]="createdTimeForm" (ngSubmit)="applyDateFilter(createdTimeForm, 'createdTime')">
 					<mat-form-field appearance="outline">
 						<mat-label>From</mat-label>
 						<input matInput [matDatepicker]="createdTimeFromPicker" formControlName="createdTimeFrom">
 						<mat-datepicker-toggle matSuffix [for]="createdTimeFromPicker"></mat-datepicker-toggle>
 						<mat-datepicker #createdTimeFromPicker></mat-datepicker>
+
+						<!-- date range validation error -->
+						<span *ngIf="createdTimeForm.controls.createdTimeFrom.errors?.restrict">
+							From field must be less than To field
+						</span>
 					</mat-form-field>
 
 					<mat-form-field appearance="outline">
@@ -50,18 +55,23 @@
 						<mat-datepicker-toggle matSuffix [for]="createdTimeToPicker"></mat-datepicker-toggle>
 						<mat-datepicker #createdTimeToPicker></mat-datepicker>
 					</mat-form-field>
-					<button mat-button type="submit">Apply</button>
+					<button mat-button type="submit" [disabled]="createdTimeForm.invalid">Apply</button>
 				</form>
 			</div>
 
 			<div class="dateFilter">
 				<p>Updated time</p>
-				<form [formGroup]="updatedTimeForm">
+				<form [formGroup]="updatedTimeForm" (ngSubmit)="applyDateFilter(updatedTimeForm, 'updatedTime')">
 					<mat-form-field appearance="outline">
 						<mat-label>From</mat-label>
 						<input matInput [matDatepicker]="updatedTimeFromPicker" formControlName="updatedTimeFrom">
 						<mat-datepicker-toggle matSuffix [for]="updatedTimeFromPicker"></mat-datepicker-toggle>
 						<mat-datepicker #updatedTimeFromPicker></mat-datepicker>
+
+						<!-- date range validation error -->
+						<span *ngIf="updatedTimeForm.controls.updatedTimeFrom.errors?.restrict">
+							From field must be less than To field
+						</span>
 					</mat-form-field>
 	
 					<mat-form-field appearance="outline">
@@ -70,7 +80,7 @@
 						<mat-datepicker-toggle matSuffix [for]="updatedTimeToPicker"></mat-datepicker-toggle>
 						<mat-datepicker #updatedTimeToPicker></mat-datepicker>
 					</mat-form-field>
-					<button mat-button type="submit">Apply</button>
+					<button mat-button type="submit" [disabled]="updatedTimeForm.invalid">Apply</button>
 				</form>
 			</div>
 		</div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
@@ -12,6 +12,8 @@ import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialo
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
 import { SalesOrderDetailsDialog } from './sales-order-details/sales-order-details.component';
+import { DateRangeValidator } from '../../helpers/validation_functions';
+import { dateFormat, timeFormat } from '../../helpers/datetime_format';
 
 interface FilterCriteria {
     status?: string,
@@ -52,11 +54,12 @@ export class SalesOrderComponent implements OnInit {
 
     salesOrders$ : Observable<SaleOrder[]>;
     search$ : Observable<SaleOrder[]>;
-    result$ : Observable<any>;
+    dateSearch$ : Observable<SaleOrder[]>;
     filterSubject : BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     checkArray : string[] = [];
     isDisabled : boolean = true; // it used to show/hide the mass delete button
+    submitted: boolean = false;
 
 	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
@@ -81,22 +84,23 @@ export class SalesOrderComponent implements OnInit {
 
 	ngOnInit() {
 		this.init();
+
+        // init created time and updated time form groups
+        this.createdTimeForm = this.formBuilder.group({
+            createdTimeFrom : new FormControl(Validators.required),
+            createdTimeTo : new FormControl(Validators.required),
+        }, { validators: DateRangeValidator('createdTimeFrom', 'createdTimeTo') });
+
+        this.updatedTimeForm = this.formBuilder.group({
+            updatedTimeFrom : new FormControl(Validators.required),
+            updatedTimeTo : new FormControl(Validators.required),
+        }, { validators: DateRangeValidator('updatedTimeFrom', 'updatedTimeTo') });
 	}
 
     init(){
         this.searchText = new FormControl('');
         this.assignedTo = new FormControl('');
-        
-        this.createdTimeForm = this.formBuilder.group({
-            createdTimeFrom : new FormControl(),
-            createdTimeTo : new FormControl(),
-        });
 
-        this.updatedTimeForm = this.formBuilder.group({
-            updatedTimeFrom : new FormControl(),
-            updatedTimeTo : new FormControl(),
-        });
-        
         this.assignedToUsers = this.userService.getUsers();
         
         this.search$ = this.searchText.valueChanges.pipe(
@@ -124,6 +128,9 @@ export class SalesOrderComponent implements OnInit {
         this.filterSubject.next({});
         this.init();
         this.status = new FormControl('');
+        // reset form groups
+        this.createdTimeForm.reset();
+        this.updatedTimeForm.reset();
     }
 
 	// navigate to the edit sale order page
@@ -137,6 +144,34 @@ export class SalesOrderComponent implements OnInit {
 	applySelectFilter(filterValue: string, filterBy: string){
         const currentFilterObj = this.filterSubject.getValue();
         this.filterSubject.next({...currentFilterObj, [filterBy]: filterValue });
+    }
+
+    applyDateFilter(dateForm: FormGroup, filterBy: string){
+        this.submitted = true;
+        const date = dateForm.value;
+
+        this.salesOrders$ = this.salesOrderService.getSalesOrder().pipe(
+            map((data) => {
+                return data.filter((value, index) => {
+                    if(filterBy == 'createdTime'){                        
+                        let dateFrom = new Date(dateFormat(date.createdTimeFrom)),
+                            dateTo = new Date(dateFormat(date.createdTimeTo));
+
+                        let createdTime = new Date(dateFormat(value.createdTime));
+
+                        return dateFrom <= createdTime && createdTime <= dateTo;
+                    }
+                    if(filterBy == 'updatedTime'){
+                        let dateFrom = new Date(dateFormat(date.updatedTimeFrom)),
+                            dateTo = new Date(dateFormat(date.updatedTimeTo));
+
+                        let updatedTime = new Date(dateFormat(value.updatedTime));
+                        return dateFrom <= updatedTime && updatedTime <= dateTo;
+                    }
+                });
+            }),
+            tap((data) => {console.log(data)})
+        )
     }
 
     onDelete(saleOrderId: string, sub: string) {

@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ValidatorFn } from '@angular/forms';
 
 // custom validator to check that two fields match
 export function MustMatch(controlName: string, matchingControlName: string) {
@@ -16,6 +16,21 @@ export function MustMatch(controlName: string, matchingControlName: string) {
             matchingControl.setErrors({ mustMatch: true });
         } else {
             matchingControl.setErrors(null);
+        }
+    }
+}
+
+export function DateRangeValidator(dateFromControlName: string, dateToControlName: string){
+    return (formGroup : FormGroup) => {
+        const dateFromControl = formGroup.controls[dateFromControlName],
+            dateToControl = formGroup.controls[dateToControlName];
+            
+        // set error on dateFromControl if validation fails
+        if(dateFromControl.value > dateToControl.value) {
+            dateFromControl.setErrors({ restrict: true });
+            dateToControl.setErrors({ restrict: true });
+        } else {
+            dateFromControl.setErrors(null);
         }
     }
 }
