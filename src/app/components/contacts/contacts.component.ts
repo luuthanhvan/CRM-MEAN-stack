@@ -18,7 +18,11 @@ import { DatetimeService } from '../../services/datetime/datetime.service';
 interface FilterCriteria {
     leadSrc?: string,
     assignedTo?: string,
-    contactName?: string
+    contactName?: string,
+    createdTimeFrom?: object,
+    createdTimeTo?: object,
+    updatedTimeFrom?: object,
+    updatedTimeTo?: object,
 }
 
 @Component({
@@ -59,7 +63,6 @@ export class ContactsComponent implements OnInit {
 
     contacts$ : Observable<Contact[]>;
     search$ : Observable<Contact[]>;
-    result$ : Observable<any>;
     filterSubject: BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     constructor(private router: Router, 
@@ -120,11 +123,15 @@ export class ContactsComponent implements OnInit {
         );
 
         this.contacts$ = combineLatest([this.contactsService.getContacts(), this.filterSubject, this.search$]).pipe(
-            map(([contacts, {leadSrc, assignedTo, contactName}, searchResult]) => {
+            map(([contacts, { leadSrc, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
                 const sourceData = searchResult ? searchResult : contacts;
                 return sourceData.filter(d => {
                     return (leadSrc ? d.leadSrc === leadSrc : true) && 
-                        (assignedTo ? d.assignedTo === assignedTo : true);
+                        (assignedTo ? d.assignedTo === assignedTo : true) &&
+                        (createdTimeFrom ? new Date(this.datetimeService.dateFormat(d.createdTime)) >= createdTimeFrom : true) &&
+                        (createdTimeTo ? new Date(this.datetimeService.dateFormat(d.createdTime)) <= createdTimeTo : true) &&
+                        (updatedTimeFrom ? new Date(this.datetimeService.dateFormat(d.updatedTime)) >= updatedTimeFrom : true) &&
+                        (updatedTimeTo ? new Date(this.datetimeService.dateFormat(d.updatedTime)) <= updatedTimeTo : true);
                 });
             })
         );
@@ -162,29 +169,20 @@ export class ContactsComponent implements OnInit {
     applyDateFilter(dateForm: FormGroup, filterBy: string){
         this.submitted = true;
         const date = dateForm.value;
+        const currentFilterObj = this.filterSubject.getValue();
+        
+        if(filterBy == 'createdTime'){
+            let dateFrom = new Date(this.datetimeService.dateFormat(date.createdTimeFrom)),
+                dateTo = new Date(this.datetimeService.dateFormat(date.createdTimeTo));
 
-        this.contacts$ = this.contactsService.getContacts().pipe(
-            map((data) => {
-                return data.filter((value, index) => {
-                    if(filterBy == 'createdTime'){                        
-                        let dateFrom = new Date(this.datetimeService.dateFormat(date.createdTimeFrom)),
-                            dateTo = new Date(this.datetimeService.dateFormat(date.createdTimeTo));
-
-                        let createdTime = new Date(this.datetimeService.dateFormat(value.createdTime));
-
-                        return dateFrom <= createdTime && createdTime <= dateTo;
-                    }
-                    if(filterBy == 'updatedTime'){
-                        let dateFrom = new Date(this.datetimeService.dateFormat(date.updatedTimeFrom)),
-                            dateTo = new Date(this.datetimeService.dateFormat(date.updatedTimeTo));
-
-                        let updatedTime = new Date(this.datetimeService.dateFormat(value.updatedTime));
-                        return dateFrom <= updatedTime && updatedTime <= dateTo;
-                    }
-                });
-            }),
-            tap((data) => {console.log(data)})
-        )
+            this.filterSubject.next({...currentFilterObj, ['createdTimeFrom']: dateFrom, ['createdTimeTo']: dateTo});
+        }
+        if(filterBy == 'updatedTime'){
+            let dateFrom = new Date(this.datetimeService.dateFormat(date.updatedTimeFrom)),
+                dateTo = new Date(this.datetimeService.dateFormat(date.updatedTimeTo));
+            
+            this.filterSubject.next({...currentFilterObj, ['updatedTimeFrom']: dateFrom, ['updatedTimeTo']: dateTo});
+        }
     }
 
     onDelete(contactId: string, contactName: string) {
@@ -202,7 +200,7 @@ export class ContactsComponent implements OnInit {
                 return this.contactsService.deleteContact(contactId).pipe(
                     tap((res) => {
                         if(res['status'] == 1){ // success to delete the contact
-                            //  show successful message
+                            // show successful message
                             // display the snackbar belong with the indicator
                             this.toastMessage.showInfo('Success to delete the contact!');
                             // reset the table

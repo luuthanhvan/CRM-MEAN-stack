@@ -19,6 +19,10 @@ interface FilterCriteria {
     status?: string,
     assignedTo?: string,
     contactName?: string,
+    createdTimeFrom?: object,
+    createdTimeTo?: object,
+    updatedTimeFrom?: object,
+    updatedTimeTo?: object,
 }
 
 @Component({
@@ -114,11 +118,15 @@ export class SalesOrderComponent implements OnInit {
         );
 
         this.salesOrders$ = combineLatest([this.salesOrderService.getSalesOrder(), this.filterSubject, this.search$]).pipe(
-            map(([salesOrder, { status, assignedTo, contactName }, searchResult]) => {
+            map(([salesOrder, { status, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
                 const sourceData = searchResult ? searchResult : salesOrder;
                 return sourceData.filter(d => {
                     return (status ? d.status === status : true) &&
-                            (assignedTo ? d.assignedTo === assignedTo : true);
+                            (assignedTo ? d.assignedTo === assignedTo : true) &&
+                            (createdTimeFrom ? new Date(this.datetimeService.dateFormat(d.createdTime)) >= createdTimeFrom : true) &&
+                            (createdTimeTo ? new Date(this.datetimeService.dateFormat(d.createdTime)) <= createdTimeTo : true) &&
+                            (updatedTimeFrom ? new Date(this.datetimeService.dateFormat(d.updatedTime)) >= updatedTimeFrom : true) &&
+                            (updatedTimeTo ? new Date(this.datetimeService.dateFormat(d.updatedTime)) <= updatedTimeTo : true);
                 })
             })
         )
@@ -150,29 +158,20 @@ export class SalesOrderComponent implements OnInit {
     applyDateFilter(dateForm: FormGroup, filterBy: string){
         this.submitted = true;
         const date = dateForm.value;
+        const currentFilterObj = this.filterSubject.getValue();
+        
+        if(filterBy == 'createdTime'){
+            let dateFrom = new Date(this.datetimeService.dateFormat(date.createdTimeFrom)),
+                dateTo = new Date(this.datetimeService.dateFormat(date.createdTimeTo));
 
-        this.salesOrders$ = this.salesOrderService.getSalesOrder().pipe(
-            map((data) => {
-                return data.filter((value, index) => {
-                    if(filterBy == 'createdTime'){                        
-                        let dateFrom = new Date(this.datetimeService.dateFormat(date.createdTimeFrom)),
-                            dateTo = new Date(this.datetimeService.dateFormat(date.createdTimeTo));
-
-                        let createdTime = new Date(this.datetimeService.dateFormat(value.createdTime));
-
-                        return dateFrom <= createdTime && createdTime <= dateTo;
-                    }
-                    if(filterBy == 'updatedTime'){
-                        let dateFrom = new Date(this.datetimeService.dateFormat(date.updatedTimeFrom)),
-                            dateTo = new Date(this.datetimeService.dateFormat(date.updatedTimeTo));
-
-                        let updatedTime = new Date(this.datetimeService.dateFormat(value.updatedTime));
-                        return dateFrom <= updatedTime && updatedTime <= dateTo;
-                    }
-                });
-            }),
-            tap((data) => {console.log(data)})
-        )
+            this.filterSubject.next({...currentFilterObj, ['createdTimeFrom']: dateFrom, ['createdTimeTo']: dateTo});
+        }
+        if(filterBy == 'updatedTime'){
+            let dateFrom = new Date(this.datetimeService.dateFormat(date.updatedTimeFrom)),
+                dateTo = new Date(this.datetimeService.dateFormat(date.updatedTimeTo));
+            
+            this.filterSubject.next({...currentFilterObj, ['updatedTimeFrom']: dateFrom, ['updatedTimeTo']: dateTo});
+        }
     }
 
     onDelete(saleOrderId: string, sub: string) {
