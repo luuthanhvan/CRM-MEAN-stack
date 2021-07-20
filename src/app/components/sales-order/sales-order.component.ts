@@ -4,16 +4,17 @@ import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { tap, map, switchMap, startWith, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { SaleOrder } from '../../interfaces/sale-order'; // use sale order interface
-import { SalesOrderService } from '../../services/sales_order/sales-order.service'; // use sale order service
+import { SaleOrder } from '../../interfaces/sale-order';
 import { User } from '../../interfaces/user';
+import { SalesOrderService } from '../../services/sales_order/sales-order.service';
 import { UserManagementService } from '../../services/user_management/user-management.service';
-import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
+import { DatetimeService } from '../../services/datetime/datetime.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { SalesOrderConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { SalesOrderDetailsDialog } from './sales-order-details/sales-order-details.component';
 import { DateRangeValidator } from '../../helpers/validation_functions';
-import { DatetimeService } from '../../services/datetime/datetime.service';
 
 interface FilterCriteria {
     status?: string,
@@ -54,11 +55,11 @@ export class SalesOrderComponent implements OnInit {
     searchText : FormControl;
     contactName: FormControl;
     assignedTo : FormControl;
-    assignedToUsers : Observable<User[]>;
 
+    assignedToUsers : Observable<User[]>;
     salesOrders$ : Observable<SaleOrder[]>;
     search$ : Observable<SaleOrder[]>;
-    dateSearch$ : Observable<SaleOrder[]>;
+    user$ : Observable<User>;
     filterSubject : BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     checkArray : string[] = [];
@@ -73,7 +74,8 @@ export class SalesOrderComponent implements OnInit {
                 private loadingService: LoadingService,
                 private toastMessage: ToastMessageService,
                 private userService : UserManagementService,
-                protected datetimeService : DatetimeService){
+                protected datetimeService : DatetimeService,
+                private authService : AuthService){
          
         // clear params (status) before get all data
         this.router.navigateByUrl('/sales_order');
@@ -106,7 +108,17 @@ export class SalesOrderComponent implements OnInit {
         this.searchText = new FormControl('');
         this.assignedTo = new FormControl('');
 
-        this.assignedToUsers = this.userService.getUsers();
+        // get user logged in 
+        this.user$ = this.authService.me();
+        
+        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.user$]).pipe(
+            map(([users, user]) => {
+                if(!user.isAdmin){
+                    return [user];
+                }
+                return users;
+            })
+        );
         
         this.search$ = this.searchText.valueChanges.pipe(
             startWith(''),
@@ -117,9 +129,21 @@ export class SalesOrderComponent implements OnInit {
             map(res => res && res['data'] && res['data'].salesOrder)
         );
 
-        this.salesOrders$ = combineLatest([this.salesOrderService.getSalesOrder(), this.filterSubject, this.search$]).pipe(
-            map(([salesOrder, { status, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
+        this.salesOrders$ = combineLatest([this.salesOrderService.getSalesOrder(), this.filterSubject, this.user$, this.search$]).pipe(
+            map(([salesOrder, { status, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, user, searchResult]) => {
                 const sourceData = searchResult ? searchResult : salesOrder;
+                
+                if(!user.isAdmin){
+                    return sourceData.filter(d => {
+                        return (status ? d.status === status : true) &&
+                                (d.assignedTo === user.name) &&
+                                (createdTimeFrom ? new Date(this.datetimeService.dateFormat(d.createdTime)) >= createdTimeFrom : true) &&
+                                (createdTimeTo ? new Date(this.datetimeService.dateFormat(d.createdTime)) <= createdTimeTo : true) &&
+                                (updatedTimeFrom ? new Date(this.datetimeService.dateFormat(d.updatedTime)) >= updatedTimeFrom : true) &&
+                                (updatedTimeTo ? new Date(this.datetimeService.dateFormat(d.updatedTime)) <= updatedTimeTo : true);
+                    })
+                }
+
                 return sourceData.filter(d => {
                     return (status ? d.status === status : true) &&
                             (assignedTo ? d.assignedTo === assignedTo : true) &&

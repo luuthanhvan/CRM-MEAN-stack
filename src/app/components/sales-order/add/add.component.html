@@ -8,8 +8,8 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Contact name</mat-label>
-                    <mat-select formControlName="contactName" *ngIf="(contacts$ | async) as contacts">
-                        <mat-option *ngFor="let contact of contacts" [value]="contact.contactName">{{contact.contactName}}</mat-option>
+                    <mat-select formControlName="contactName">
+                        <mat-option *ngFor="let contact of contacts$ | async" [value]="contact.contactName">{{contact.contactName}}</mat-option>
                     </mat-select>
 
                     <!-- contact name validation error -->
@@ -71,12 +71,12 @@
 
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
-                    <mat-label>Assigned</mat-label>
+                    <mat-label>Assigned to</mat-label>
                     <mat-select formControlName="assignedTo">
-                        <mat-option *ngFor="let user of users" [value]="user['name']">{{user['name']}}</mat-option>
+                        <mat-option *ngFor="let user of assignedToUsers | async" [value]="user.name"> {{user.name}} </mat-option>
                     </mat-select>
 
-                    <!-- assigned validation error -->
+                    <!-- assigned to validation error -->
                     <div *ngIf="saleOrderFormControl.assignedTo.touched || submitted">
                         <span *ngIf="saleOrderFormControl.assignedTo.errors?.required">
                             Assigned is required

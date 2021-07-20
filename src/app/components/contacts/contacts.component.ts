@@ -4,16 +4,17 @@ import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { map, tap, switchMap, distinctUntilChanged, debounceTime, startWith } from 'rxjs/operators';
-import { Contact } from '../../interfaces/contact'; // use contact interface
+import { Contact } from '../../interfaces/contact';
 import { User } from '../../interfaces/user';
 import { UserManagementService } from '../../services/user_management/user-management.service';
-import { ContactsService } from '../../services/contacts/contacts.service'; // use contacts service
-import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
+import { ContactsService } from '../../services/contacts/contacts.service';
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
+import { DatetimeService } from '../../services/datetime/datetime.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { ContactConfirmationDialog } from './delete-dialog/confirmation-dialog.component';
 import { ContactDetailsDialog } from './contact-details/contact-details.component';
 import { DateRangeValidator } from '../../helpers/validation_functions';
-import { DatetimeService } from '../../services/datetime/datetime.service';
 
 interface FilterCriteria {
     leadSrc?: string,
@@ -63,6 +64,7 @@ export class ContactsComponent implements OnInit {
 
     contacts$ : Observable<Contact[]>;
     search$ : Observable<Contact[]>;
+    user$ : Observable<User>;
     filterSubject: BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     constructor(private router: Router, 
@@ -73,7 +75,8 @@ export class ContactsComponent implements OnInit {
                 private loadingService : LoadingService,
                 private toastMessage : ToastMessageService,
                 private userService : UserManagementService,
-                protected datetimeService: DatetimeService) {
+                protected datetimeService: DatetimeService,
+                private authService : AuthService) {
         
         // clear params (leadSrc or assignedTo) before get all data
         this.router.navigateByUrl('/contacts');
@@ -111,7 +114,17 @@ export class ContactsComponent implements OnInit {
 
     init(){
         this.searchText = new FormControl();
-        this.assignedToUsers = this.userService.getUsers();
+        // get user logged in 
+        this.user$ = this.authService.me();
+        
+        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.user$]).pipe(
+            map(([users, user]) => {
+                if(!user.isAdmin){
+                    return [user];
+                }
+                return users;
+            })
+        );
 
         this.search$ = this.searchText.valueChanges.pipe(
             startWith(''),
@@ -121,10 +134,22 @@ export class ContactsComponent implements OnInit {
             switchMap((contactName) => contactName ? this.contactsService.searchContact(contactName) : of(null)),
             map(res => res && res['data'] && res['data']['contacts'])
         );
-
-        this.contacts$ = combineLatest([this.contactsService.getContacts(), this.filterSubject, this.search$]).pipe(
-            map(([contacts, { leadSrc, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
+        
+        this.contacts$ = combineLatest([this.contactsService.getContacts(), this.filterSubject, this.user$, this.search$]).pipe(
+            map(([contacts, { leadSrc, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, user, searchResult]) => {
                 const sourceData = searchResult ? searchResult : contacts;
+
+                if(!user.isAdmin){
+                    return sourceData.filter(d => {
+                        return (leadSrc ? d.leadSrc === leadSrc : true) && 
+                        (d.assignedTo === user.name) &&
+                        (createdTimeFrom ? new Date(this.datetimeService.dateFormat(d.createdTime)) >= createdTimeFrom : true) &&
+                        (createdTimeTo ? new Date(this.datetimeService.dateFormat(d.createdTime)) <= createdTimeTo : true) &&
+                        (updatedTimeFrom ? new Date(this.datetimeService.dateFormat(d.updatedTime)) >= updatedTimeFrom : true) &&
+                        (updatedTimeTo ? new Date(this.datetimeService.dateFormat(d.updatedTime)) <= updatedTimeTo : true);
+                    });
+                }
+
                 return sourceData.filter(d => {
                     return (leadSrc ? d.leadSrc === leadSrc : true) && 
                         (assignedTo ? d.assignedTo === assignedTo : true) &&

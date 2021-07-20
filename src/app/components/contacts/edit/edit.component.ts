@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Contact } from '../../../interfaces/contact';
-import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
-import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
+import { User } from '../../../interfaces/user';
+import { ContactsService } from '../../../services/contacts/contacts.service';
+import { UserManagementService } from '../../../services/user_management/user-management.service';
 import { LoadingService } from '../../../services/loading/loading.service';
 import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
     selector: 'app-edit-contact',
@@ -19,17 +20,16 @@ export class EditContactsComponent implements OnInit {
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     contactId : string;
     createdTime: string;
-    users : Object;
     submitted = false;
-
-    contact$ : Observable<Contact>;
+    assignedToUsers : Observable<User[]>;
     
     constructor(protected router: Router, 
                 private route: ActivatedRoute,
                 protected contactsService : ContactsService,
                 private userService : UserManagementService,
                 private loadingService: LoadingService,
-                private toastMessage: ToastMessageService){
+                private toastMessage: ToastMessageService,
+                private authService: AuthService){
         
         // get contact ID from contact page
         this.route.queryParams.subscribe((params) => {
@@ -37,15 +37,14 @@ export class EditContactsComponent implements OnInit {
         });
 
         this.contactFormInfo = this.contactsService.initContact();
-        // get list of users from database and display them to the Assigned field in the contactFormInfo
-        this.userService
-            .getUsers()
-            .subscribe((data) => {
-                this.users = data.map((value) => {
-                    return {userId: value._id,
-                            name: value.name};
-                });      
-            });
+        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.authService.me()]).pipe(
+            map(([users, user]) => {
+                if(!user.isAdmin){
+                    return [user];
+                }
+                return users;
+            })
+        );
     }
 
     ngOnInit(){

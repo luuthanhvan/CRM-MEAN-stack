@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SalesOrderService } from '../../../services/sales_order/sales-order.service'; // use sales order service
+import { Observable, combineLatest } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+import { Contact } from '../../../interfaces/contact';
+import { User } from '../../../interfaces/user';
+import { SalesOrderService } from '../../../services/sales_order/sales-order.service';
 import { ContactsService } from '../../../services/contacts/contacts.service';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
 import { LoadingService } from '../../../services/loading/loading.service';
 import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
-import { Contact } from '../../../interfaces/contact';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
     selector: 'app-edit-sales-order',
@@ -21,8 +23,8 @@ export class EditSalesOrderComponent implements OnInit {
     createdTime : string;
     users : Object;
     submitted = false;
-
     contacts$ : Observable<Contact[]>;
+    assignedToUsers : Observable<User[]>;
 
     constructor(private route: ActivatedRoute,
                 protected router: Router,
@@ -30,7 +32,8 @@ export class EditSalesOrderComponent implements OnInit {
                 private contactService : ContactsService,
                 private userService : UserManagementService,
                 private loadingService: LoadingService,
-                private toastMessage: ToastMessageService){
+                private toastMessage: ToastMessageService,
+                private authService : AuthService){
         
         this.route.queryParams.subscribe((params) => {
             this.saleOrderId = params['id'];
@@ -39,16 +42,15 @@ export class EditSalesOrderComponent implements OnInit {
         this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();
         // get list of contacts name from database and display them to the Contact name field in saleOrderForm
         this.contacts$ = this.contactService.getContacts();
-        
         // get list of users from database and display them to the Assigned field in saleOrderForm
-        this.userService
-            .getUsers()
-            .subscribe((data) => {
-                this.users = data.map((value) => {
-                    return {userId: value._id,
-                            name: value.name};
-                });
-            });
+        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.authService.me()]).pipe(
+            map(([users, user]) => {
+                if(!user.isAdmin){
+                    return [user];
+                }
+                return users;
+            })
+        );
     }
 
     ngOnInit(){

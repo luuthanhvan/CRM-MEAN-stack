@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+import { User } from '../../../interfaces/user';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
 import { LoadingService } from '../../../services/loading/loading.service';
 import { ToastMessageService } from '../../../services/toast_message/toast-message.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
     selector: 'app-add-contact',
@@ -18,29 +20,27 @@ export class AddContactComponent implements OnInit{
     contactFormInfo: FormGroup; // typescript variable declaration
     salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
-    users : Object;
     submitted = false;
-
-    add$ : Observable<void>;
+    assignedToUsers : Observable<User[]>;
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,
                 protected router : Router,
                 private loadingService: LoadingService,
-                private toastMessage: ToastMessageService){
+                private toastMessage: ToastMessageService,
+                private authService: AuthService){
     }
 
     ngOnInit(){
         this.contactFormInfo = this.contactsService.initContact();
-        // get list of users from database and display them to the Assigned field in the contactFormInfo
-        this.userService
-            .getUsers()
-            .subscribe((data) => {
-                this.users = data.map((value) => {
-                    return {userId: value._id,
-                            name: value.name};
-                });      
-            });
+        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.authService.me()]).pipe(
+            map(([users, user]) => {
+                if(!user.isAdmin){
+                    return [user];
+                }
+                return users;
+            })
+        );
     }
 
     get contactFormControl(){
