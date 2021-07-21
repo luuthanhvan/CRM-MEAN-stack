@@ -89,11 +89,11 @@
                 </mat-form-field>
             </mat-grid-tile>
 
-            <mat-grid-tile>
+            <mat-grid-tile *ngIf="assignedToUsers$ | async">
                 <mat-form-field appearance="outline">
                     <mat-label>Assigned to</mat-label>
                     <mat-select formControlName="assignedTo">
-                        <mat-option *ngFor="let user of assignedToUsers | async" [value]="user.name">{{user.name}}</mat-option>
+                        <mat-option *ngFor="let user of assignedToUsers$ | async" [value]="user.name">{{user.name}}</mat-option>
                     </mat-select>
 
                     <!-- assigned validation error -->

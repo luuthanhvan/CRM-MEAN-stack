@@ -56,10 +56,10 @@ export class SalesOrderComponent implements OnInit {
     contactName: FormControl;
     assignedTo : FormControl;
 
-    assignedToUsers : Observable<User[]>;
+    assignedToUsers$ : Observable<User[]>;
     salesOrders$ : Observable<SaleOrder[]>;
     search$ : Observable<SaleOrder[]>;
-    user$ : Observable<User>;
+    result$ : Observable<SaleOrder[]>;
     filterSubject : BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     checkArray : string[] = [];
@@ -108,15 +108,14 @@ export class SalesOrderComponent implements OnInit {
         this.searchText = new FormControl('');
         this.assignedTo = new FormControl('');
 
-        // get user logged in 
-        this.user$ = this.authService.me();
-        
-        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.user$]).pipe(
-            map(([users, user]) => {
-                if(!user.isAdmin){
-                    return [user];
+        this.assignedToUsers$ = this.authService.me().pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((user) => {
+                if((!user.isAdmin)){
+                    return of(null);
                 }
-                return users;
+                return this.userService.getUsers();
             })
         );
         
@@ -129,21 +128,15 @@ export class SalesOrderComponent implements OnInit {
             map(res => res && res['data'] && res['data'].salesOrder)
         );
 
-        this.salesOrders$ = combineLatest([this.salesOrderService.getSalesOrder(), this.filterSubject, this.user$, this.search$]).pipe(
-            map(([salesOrder, { status, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, user, searchResult]) => {
-                const sourceData = searchResult ? searchResult : salesOrder;
-                
-                if(!user.isAdmin){
-                    return sourceData.filter(d => {
-                        return (status ? d.status === status : true) &&
-                                (d.assignedTo === user.name) &&
-                                (createdTimeFrom ? new Date(this.datetimeService.dateFormat(d.createdTime)) >= createdTimeFrom : true) &&
-                                (createdTimeTo ? new Date(this.datetimeService.dateFormat(d.createdTime)) <= createdTimeTo : true) &&
-                                (updatedTimeFrom ? new Date(this.datetimeService.dateFormat(d.updatedTime)) >= updatedTimeFrom : true) &&
-                                (updatedTimeTo ? new Date(this.datetimeService.dateFormat(d.updatedTime)) <= updatedTimeTo : true);
-                    })
-                }
+        this.salesOrders$ = this.authService.me().pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((user) => this.salesOrderService.getSalesOrder(user.isAdmin, user.name))
+        );
 
+        this.result$ = combineLatest([this.salesOrders$, this.filterSubject, this.search$]).pipe(
+            map(([salesOrder, { status, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
+                const sourceData = searchResult ? searchResult : salesOrder;
                 return sourceData.filter(d => {
                     return (status ? d.status === status : true) &&
                             (assignedTo ? d.assignedTo === assignedTo : true) &&

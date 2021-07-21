@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, combineLatest } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, switchMap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from '../../../interfaces/user';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
@@ -21,7 +21,7 @@ export class AddContactComponent implements OnInit{
     salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     submitted = false;
-    assignedToUsers : Observable<User[]>;
+    assignedToUsers$ : Observable<User[]>;
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,
@@ -33,12 +33,15 @@ export class AddContactComponent implements OnInit{
 
     ngOnInit(){
         this.contactFormInfo = this.contactsService.initContact();
-        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.authService.me()]).pipe(
-            map(([users, user]) => {
+        this.assignedToUsers$ = this.authService.me().pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((user) => {
                 if(!user.isAdmin){
-                    return [user];
+                    this.contactFormInfo.controls.assignedTo.setValue(user.name);
+                    return of(null);
                 }
-                return users;
+                return this.userService.getUsers();
             })
         );
     }

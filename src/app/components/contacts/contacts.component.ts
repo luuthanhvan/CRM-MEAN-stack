@@ -48,7 +48,6 @@ export class ContactsComponent implements OnInit {
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     leadSrcFromDashboard : string;
     assignedFromDashboard : string;
-    assignedToUsers : Observable<User[]>;
     
     // leadSrc and assignedTo form controls will used for autofill when user click on contact chart or table
     // so it need to be globally assigned a value
@@ -62,9 +61,10 @@ export class ContactsComponent implements OnInit {
     isDisabled : boolean = true; // it used to show/hide the mass delete button
     submitted: boolean = false;
 
+    assignedToUsers$ : Observable<User[]>;
     contacts$ : Observable<Contact[]>;
+    result$ : Observable<Contact[]>;
     search$ : Observable<Contact[]>;
-    user$ : Observable<User>;
     filterSubject: BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
     constructor(private router: Router, 
@@ -114,18 +114,17 @@ export class ContactsComponent implements OnInit {
 
     init(){
         this.searchText = new FormControl();
-        // get user logged in 
-        this.user$ = this.authService.me();
-        
-        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.user$]).pipe(
-            map(([users, user]) => {
-                if(!user.isAdmin){
-                    return [user];
+        this.assignedToUsers$ = this.authService.me().pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((user) => {
+                if((!user.isAdmin)){
+                    return of(null);
                 }
-                return users;
+                return this.userService.getUsers();
             })
         );
-
+        
         this.search$ = this.searchText.valueChanges.pipe(
             startWith(''),
             tap((contactName) => { console.log(contactName) }),
@@ -134,22 +133,16 @@ export class ContactsComponent implements OnInit {
             switchMap((contactName) => contactName ? this.contactsService.searchContact(contactName) : of(null)),
             map(res => res && res['data'] && res['data']['contacts'])
         );
+
+        this.contacts$ = this.authService.me().pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((user) => this.contactsService.getContacts(user.isAdmin, user.name))
+        );
         
-        this.contacts$ = combineLatest([this.contactsService.getContacts(), this.filterSubject, this.user$, this.search$]).pipe(
-            map(([contacts, { leadSrc, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, user, searchResult]) => {
+        this.result$ = combineLatest([this.contacts$, this.filterSubject, this.search$]).pipe(
+            map(([contacts, { leadSrc, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
                 const sourceData = searchResult ? searchResult : contacts;
-
-                if(!user.isAdmin){
-                    return sourceData.filter(d => {
-                        return (leadSrc ? d.leadSrc === leadSrc : true) && 
-                        (d.assignedTo === user.name) &&
-                        (createdTimeFrom ? new Date(this.datetimeService.dateFormat(d.createdTime)) >= createdTimeFrom : true) &&
-                        (createdTimeTo ? new Date(this.datetimeService.dateFormat(d.createdTime)) <= createdTimeTo : true) &&
-                        (updatedTimeFrom ? new Date(this.datetimeService.dateFormat(d.updatedTime)) >= updatedTimeFrom : true) &&
-                        (updatedTimeTo ? new Date(this.datetimeService.dateFormat(d.updatedTime)) <= updatedTimeTo : true);
-                    });
-                }
-
                 return sourceData.filter(d => {
                     return (leadSrc ? d.leadSrc === leadSrc : true) && 
                         (assignedTo ? d.assignedTo === assignedTo : true) &&

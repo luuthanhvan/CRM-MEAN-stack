@@ -4,7 +4,7 @@ const router = express.Router();
 const contactsController = require('../controllers/ContactsController');
 
 router.post('/', contactsController.storeContact); // store a contact
-router.get('/', contactsController.getListOfContacts); // get list of contacts
+router.post('/list', contactsController.getListOfContacts); // get list of contacts
 router.get('/:id', contactsController.getContact); // get a contact by contact ID
 router.put('/:id', contactsController.updateContact); // update a contact by contact ID
 router.delete('/:id', contactsController.deleteContact); // delete a contact by contact ID

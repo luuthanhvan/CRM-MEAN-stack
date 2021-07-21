@@ -25,19 +25,33 @@ class ContactsController {
             }
         }, 1000);
     }
-    
-    // [GET] /contacts - function to get a list of contacts information
-    getListOfContacts(req, res){
-        try{
-            Contacts
-                .find({})
-                .then((contacts) => {
-                    if(contacts.length > 0)
-                        return apiResponse.successResponseWithData(res, 'Success', {contacts: mutipleMongooseToObject(contacts)});
-                    else
-                        return apiResponse.successResponseWithData(res, 'Success', {contacts:[]});
-                });
 
+    // [POST] /contacts/list - function to get a list of contacts information
+    getListOfContacts(req, res){
+        const isAdmin = req.body.isAdmin,
+            assignedTo = req.body.assignedTo;
+
+        try{
+            if(!isAdmin){
+                Contacts
+                    .find({assignedTo : assignedTo})
+                    .then((contacts) => {
+                        if(contacts.length > 0)
+                            return apiResponse.successResponseWithData(res, 'Success', {contacts: mutipleMongooseToObject(contacts)});
+                        else
+                            return apiResponse.successResponseWithData(res, 'Success', {contacts:[]});
+                    });
+            }
+            else {
+                Contacts
+                    .find({})
+                    .then((contacts) => {
+                        if(contacts.length > 0)
+                            return apiResponse.successResponseWithData(res, 'Success', {contacts: mutipleMongooseToObject(contacts)});
+                        else
+                            return apiResponse.successResponseWithData(res, 'Success', {contacts:[]});
+                    });
+            }
         }catch(err){
             return apiResponse.ErrorResponse(res, err);
         }

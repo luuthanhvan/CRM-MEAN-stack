@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, switchMap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from '../../../interfaces/user';
 import { ContactsService } from '../../../services/contacts/contacts.service';
 import { UserManagementService } from '../../../services/user_management/user-management.service';
@@ -21,7 +21,7 @@ export class EditContactsComponent implements OnInit {
     contactId : string;
     createdTime: string;
     submitted = false;
-    assignedToUsers : Observable<User[]>;
+    assignedToUsers$ : Observable<User[]>;
     
     constructor(protected router: Router, 
                 private route: ActivatedRoute,
@@ -37,12 +37,14 @@ export class EditContactsComponent implements OnInit {
         });
 
         this.contactFormInfo = this.contactsService.initContact();
-        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.authService.me()]).pipe(
-            map(([users, user]) => {
+        this.assignedToUsers$ = this.authService.me().pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((user) => {
                 if(!user.isAdmin){
-                    return [user];
+                    return of(null);
                 }
-                return users;
+                return this.userService.getUsers();
             })
         );
     }
@@ -78,7 +80,6 @@ export class EditContactsComponent implements OnInit {
         let contactInfo = form.value;
         contactInfo.createdTime = this.createdTime;
         contactInfo.updatedTime = new Date();
-        
         this.loadingService.showLoading();
         this.contactsService.updateContact(this.contactId, contactInfo).pipe(
             tap((res) => {

@@ -34,9 +34,9 @@ export class SalesOrderService {
 	}
   
 	// get list of sales order
-	getSalesOrder():Observable<SaleOrder[]>{
+	getSalesOrder(isAdmin: boolean = true, assignedTo : string = ''):Observable<SaleOrder[]>{
 		return this.httpClient
-					.get<SaleOrder[]>(this.SERVER_URL)
+					.post<SaleOrder[]>(`${this.SERVER_URL}/list`, {isAdmin: isAdmin, assignedTo: assignedTo})
 					.pipe(
 						map(res => res['data']['salesOrder']),
 						takeUntil(this.stop$),

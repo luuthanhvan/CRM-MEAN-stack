@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, combineLatest } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { Contact } from '../../../interfaces/contact';
 import { User } from '../../../interfaces/user';
 import { SalesOrderService } from '../../../services/sales_order/sales-order.service';
@@ -24,7 +24,7 @@ export class EditSalesOrderComponent implements OnInit {
     users : Object;
     submitted = false;
     contacts$ : Observable<Contact[]>;
-    assignedToUsers : Observable<User[]>;
+    assignedToUsers$ : Observable<User[]>;
 
     constructor(private route: ActivatedRoute,
                 protected router: Router,
@@ -43,12 +43,14 @@ export class EditSalesOrderComponent implements OnInit {
         // get list of contacts name from database and display them to the Contact name field in saleOrderForm
         this.contacts$ = this.contactService.getContacts();
         // get list of users from database and display them to the Assigned field in saleOrderForm
-        this.assignedToUsers = combineLatest([this.userService.getUsers(), this.authService.me()]).pipe(
-            map(([users, user]) => {
-                if(!user.isAdmin){
-                    return [user];
+        this.assignedToUsers$ = this.authService.me().pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap((user) => {
+                if((!user.isAdmin)){
+                    return of(null);
                 }
-                return users;
+                return this.userService.getUsers();
             })
         );
     }

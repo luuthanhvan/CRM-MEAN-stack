@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Contact } from '../../interfaces/contact';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
 
@@ -38,9 +38,9 @@ export class ContactsService {
 	}
 	
 	// fetch list of contacts
-	getContacts():Observable<Contact[]>{
+	getContacts(isAdmin: boolean = true, assignedTo : string = ''):Observable<Contact[]>{
 		return this.httpClient
-					.get<Contact[]>(this.SERVER_URL)
+					.post<Contact[]>(`${this.SERVER_URL}/list`, {isAdmin: isAdmin, assignedTo: assignedTo})
 					.pipe(
 						map(res => res['data'].contacts),
 						takeUntil(this.stop$),

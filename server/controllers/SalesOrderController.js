@@ -25,18 +25,31 @@ class SalesOrderController {
         }, 1000);
     }
 
-    // [GET] /sales_order - function to get a list of sales order information
+    // [POST] /sales_order/list - function to get a list of sales order information
     getListOfSalesOrders(req, res){
+        const isAdmin = req.body.isAdmin,
+            assignedTo = req.body.assignedTo;
         try{
-            SalesOrder
-                .find({})
-                .then((salesOrder) => {
-                    if(salesOrder.length > 0)
-                        return apiResponse.successResponseWithData(res, 'Success', {salesOrder: mutipleMongooseToObject(salesOrder)});
-                    else
-                        return apiResponses.successResponseWithData(res, 'Success', []);
-                });
-
+            if(!isAdmin){
+                SalesOrder
+                    .find({assignedTo : assignedTo})
+                    .then((salesOrder) => {
+                        if(salesOrder.length > 0)
+                            return apiResponse.successResponseWithData(res, 'Success', {salesOrder: mutipleMongooseToObject(salesOrder)});
+                        else
+                            return apiResponses.successResponseWithData(res, 'Success', []);
+                    });
+            }
+            else{
+                SalesOrder
+                    .find({})
+                    .then((salesOrder) => {
+                        if(salesOrder.length > 0)
+                            return apiResponse.successResponseWithData(res, 'Success', {salesOrder: mutipleMongooseToObject(salesOrder)});
+                        else
+                            return apiResponses.successResponseWithData(res, 'Success', []);
+                    });
+            }
         }catch(err){
             return apiResponse.ErrorResponse(res, err);
         }
