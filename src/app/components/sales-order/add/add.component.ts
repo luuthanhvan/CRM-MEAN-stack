@@ -24,13 +24,13 @@ export class AddSaleOrderComponent implements OnInit{
     contacts$ : Observable<Contact[]>;
     assignedToUsers$ : Observable<User[]>;
 
-    constructor(protected router : Router,
-                protected salesOrderService: SalesOrderService,
-                private contactService : ContactsService,
-                private userService : UserManagementService,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService,
-                private authService : AuthService){}
+    constructor(public router : Router,
+                public salesOrderService: SalesOrderService,
+                public contactService : ContactsService,
+                public userService : UserManagementService,
+                public loadingService: LoadingService,
+                public toastMessage: ToastMessageService,
+                public authService : AuthService){}
 
     ngOnInit(){
         this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();

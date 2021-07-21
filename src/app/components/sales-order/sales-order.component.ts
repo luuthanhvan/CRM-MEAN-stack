@@ -67,16 +67,16 @@ export class SalesOrderComponent implements OnInit {
     isDisabled : boolean = true; // it used to show/hide the mass delete button
     submitted: boolean = false;
 
-	constructor(private router: Router,
-				protected salesOrderService: SalesOrderService,
-				private formBuilder: FormBuilder,
+	constructor(public router: Router,
+                public salesOrderService: SalesOrderService,
+				public formBuilder: FormBuilder,
 				public dialog: MatDialog,
-                private route: ActivatedRoute,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService,
-                private userService : UserManagementService,
-                protected datetimeService : DatetimeService,
-                private authService : AuthService){
+                public route: ActivatedRoute,
+                public loadingService: LoadingService,
+                public toastMessage: ToastMessageService,
+                public userService : UserManagementService,
+                public datetimeService : DatetimeService,
+                public authService : AuthService){
          
         // clear params (status) before get all data
         this.router.navigateByUrl('/sales_order');

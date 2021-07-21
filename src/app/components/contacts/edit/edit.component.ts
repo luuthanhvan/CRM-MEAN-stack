@@ -23,13 +23,13 @@ export class EditContactsComponent implements OnInit {
     submitted = false;
     assignedToUsers$ : Observable<User[]>;
     
-    constructor(protected router: Router, 
-                private route: ActivatedRoute,
-                protected contactsService : ContactsService,
-                private userService : UserManagementService,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService,
-                private authService: AuthService){
+    constructor(public router: Router, 
+                public route: ActivatedRoute,
+                public contactsService : ContactsService,
+                public userService : UserManagementService,
+                public loadingService: LoadingService,
+                public toastMessage: ToastMessageService,
+                public authService: AuthService){
         
         // get contact ID from contact page
         this.route.queryParams.subscribe((params) => {

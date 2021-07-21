@@ -68,16 +68,16 @@ export class ContactsComponent implements OnInit {
     search$ : Observable<Contact[]>;
     filterSubject: BehaviorSubject<FilterCriteria> = new BehaviorSubject<FilterCriteria>({});
 
-    constructor(private router: Router, 
-                protected contactsService: ContactsService,
+    constructor(public router: Router, 
+                public contactsService: ContactsService,
                 public dialog: MatDialog,
-                private formBuilder : FormBuilder,
-                private route: ActivatedRoute,
-                private loadingService : LoadingService,
-                private toastMessage : ToastMessageService,
-                private userService : UserManagementService,
-                protected datetimeService: DatetimeService,
-                private authService : AuthService) {
+                public formBuilder : FormBuilder,
+                public route: ActivatedRoute,
+                public loadingService : LoadingService,
+                public toastMessage : ToastMessageService,
+                public userService : UserManagementService,
+                public datetimeService: DatetimeService,
+                public authService : AuthService) {
         
         // clear params (leadSrc or assignedTo) before get all data
         this.router.navigateByUrl('/contacts');

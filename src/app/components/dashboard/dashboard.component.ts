@@ -44,11 +44,11 @@ export class DashboardComponent implements OnInit {
 	@ViewChild('contactPaginator', {static: false}) contactPaginator : MatPaginator;
 	@ViewChild('saleOrderPaginator', {static: false}) saleOrderPaginator : MatPaginator;
 	
-	constructor(private contactsService : ContactsService,
-				private salesOrderService : SalesOrderService,
-				private router : Router,
-				private authService : AuthService,
-				protected datetimeService: DatetimeService) {
+	constructor(public contactsService : ContactsService,
+				public salesOrderService : SalesOrderService,
+				public router : Router,
+				public authService : AuthService,
+				public datetimeService: DatetimeService) {
 	}
 
 	ngOnInit() {

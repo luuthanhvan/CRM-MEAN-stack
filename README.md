@@ -119,5 +119,6 @@ npm install -g nodemon
 
 ```
     ng add @angular/material
+    ng add @angular/localize
     npm install chart.js@2.9.4 ng2-charts@2.4.2
 ```

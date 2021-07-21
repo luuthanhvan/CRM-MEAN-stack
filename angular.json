@@ -57,6 +57,14 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "vi": {
+              "aot": true,
+              "outputPath": "dist/CRM-app/",
+              "i18nFile": "i18n/messages_vi.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "vi",
+              "i18nMissingTranslation": "error"
             }
           }
         },
@@ -68,6 +76,9 @@
           "configurations": {
             "production": {
               "browserTarget": "CRM-app:build:production"
+            },
+            "vi" : {
+              "browserTarget": "CRM-app:build:vi"
             }
           }
         },

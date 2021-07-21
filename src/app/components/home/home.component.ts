@@ -18,10 +18,14 @@ export class HomeComponent implements OnInit{
 	currentUser : User;
 	isBrowserRefresh : boolean;
 	isAdminUser : boolean = false;
-
-	constructor(private authService : AuthService,
+	
+	languageList = [
+		{ code: 'en', label: 'English' },
+		{ code: 'vi', label: 'Tiếng việt' }
+	];
+	constructor(public authService : AuthService,
 				public dialog: MatDialog,
-				private router : Router){
+				public router : Router){
 	}
 	
 	ngOnInit(){
@@ -35,7 +39,6 @@ export class HomeComponent implements OnInit{
 				this.isAdminUser = this.currentUser.isAdmin;
 			});
 		}
-		
 	}
 
 	signout(){

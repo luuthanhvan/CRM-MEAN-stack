@@ -16,17 +16,16 @@ export class EditUserComponent implements OnInit{
     createdTime : string;
     submitted = false;
 
-    constructor(protected router: Router,
-                private route : ActivatedRoute,
-                private userService : UserManagementService,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService){
+    constructor(public router: Router,
+                public route : ActivatedRoute,
+                public userService : UserManagementService,
+                public loadingService: LoadingService,
+                public toastMessage: ToastMessageService){
         
         // get user ID from user management page
         this.route.queryParams.subscribe((params) => {
             this.userId = params['id'];
         });
-
         this.userFormInfo = this.userService.initUser();
     }
     
@@ -55,7 +54,7 @@ export class EditUserComponent implements OnInit{
         return this.userFormInfo.controls;
     }
 
-    onUpdate(form: FormControl){
+    onUpdate(form: FormGroup){
         this.submitted = true;
         let userInfo = form.value;
         userInfo.createdTime = this.createdTime;

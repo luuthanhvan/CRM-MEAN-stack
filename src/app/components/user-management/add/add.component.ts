@@ -14,10 +14,10 @@ export class AddUserComponent implements OnInit{
     userFormInfo: FormGroup; // typescript variable declaration
     submitted = false;
 
-    constructor(protected router: Router,
-                private userService : UserManagementService,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService){}
+    constructor(public router: Router,
+                public userService : UserManagementService,
+                public loadingService: LoadingService,
+                public toastMessage: ToastMessageService){}
 
     ngOnInit(){
         this.userFormInfo = this.userService.initUser();

@@ -14,10 +14,10 @@ export class LoginComponent implements OnInit {
 	submitted : boolean = false;
     errorMessage: string;
 
-	constructor(private formBuilder : FormBuilder,
-				private authService : AuthService,
-				private router : Router,
-				private toastMessage: ToastMessageService) {
+	constructor(public formBuilder : FormBuilder,
+				public authService : AuthService,
+				public router : Router,
+				public toastMessage: ToastMessageService) {
 	}
 
 	ngOnInit() {

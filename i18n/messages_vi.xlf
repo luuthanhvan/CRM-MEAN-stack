@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="vi" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="9b475bb63675494482effde989c7f1f18c232620" datatype="html">
+        <source>Contacts</source>
+        <target>Khách hàng</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/home/home.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4ef94deb1f5ae404883186a398121ebdc70ca14f" datatype="html">
+        <source>Lead source</source>
+        <target>Nguồn</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="43f40a9ea5bb0b3739a8cf64d600538609036525" datatype="html">
+        <source>Assigned to</source>
+        <target>Phụ trách</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="22bd1c86fde3b2e94d87813157fd907c0b241f2a" datatype="html">
+        <source>Created time</source>
+        <target>Ngày tạo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ad3e3f25e905c6dbab346c71c40514e5aff7403c" datatype="html">
+        <source>Updated time</source>
+        <target>Ngày cập nhật</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d5e0dbc9fd4651759df915cdc6ba26fe3f17475f" datatype="html">
+        <source>From</source>
+        <target>Từ ngày</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="63c9c3aa536dbd11120ae8feab62186c47838028" datatype="html">
+        <source>To</source>
+        <target>Đến ngày</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7a64c4e07d9b5cd40b5e56c9ad6f2d1e75dc758a" datatype="html">
+        <source>Customers information</source>
+        <target>Thông tin khách hàng</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="826b25211922a1b46436589233cb6f1a163d89b7" datatype="html">
+        <source>Delete</source>
+        <target>Xóa nhiều</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">98</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8074d44e3a5c9787851d3a28349aa4c278f91a05" datatype="html">
+        <source>Create new customer</source>
+        <target>Tạo mới</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="362326b044e4b36a0d7a83c661eb73f021d49d17" datatype="html">
+        <source>Contact name</source>
+        <target>Tên</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7ec96b23b3758c472d8d8d19deea840e4fec5ed1" datatype="html">
+        <source> Salutation </source>
+        <target>Danh xưng</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">126</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f2e4396fe01b89956013ab679bfec8ee43e4a534" datatype="html">
+        <source> Lead source </source>
+        <target>Nguồn</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">132</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0ffcd0df0399fa7fea993a8bd1b0cc55124e7613" datatype="html">
+        <source> Assigned to</source>
+        <target>Phụ trách</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8ea3ec2c9e0942797543c28bf4da48637aea2c6e" datatype="html">
+        <source>Created time</source>
+        <target>Ngày tạo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9873783a8d8e56945ac41bc715ed84663c2bcfed" datatype="html">
+        <source>Updated time</source>
+        <target>Ngày cập nhật</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="17e544cfae9ad62621c3ef4a12a4c4c2d0cbeac5" datatype="html">
+        <source>Modify</source>
+        <target>Chỉnh sửa</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="daa52b3eb35d393bd15ae121c96b502ef4011163" datatype="html">
+        <source>Delete</source>
+        <target>Xóa</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/contacts/contacts.component.html</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f65253954b66e929a8b4d5ecaf61f9129f8cec64" datatype="html">
+        <source>Dashboard</source>
+        <target>Bảng điều khiển</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/home/home.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="115eb05ff1ab155b17bd3590fa911909c8bfc3ea" datatype="html">
+        <source>Sales Order</source>
+        <target>Đơn hàng</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/home/home.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6ad31729632818476420bb0f698d617436263675" datatype="html">
+        <source>User Management</source>
+        <target>Nhân viên</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/home/home.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

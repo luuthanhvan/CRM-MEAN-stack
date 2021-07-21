@@ -26,14 +26,14 @@ export class EditSalesOrderComponent implements OnInit {
     contacts$ : Observable<Contact[]>;
     assignedToUsers$ : Observable<User[]>;
 
-    constructor(private route: ActivatedRoute,
-                protected router: Router,
-                protected salesOrderService : SalesOrderService,
-                private contactService : ContactsService,
-                private userService : UserManagementService,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService,
-                private authService : AuthService){
+    constructor(public route: ActivatedRoute,
+                public router: Router,
+                public salesOrderService : SalesOrderService,
+                public contactService : ContactsService,
+                public userService : UserManagementService,
+                public loadingService: LoadingService,
+                public toastMessage: ToastMessageService,
+                public authService : AuthService){
         
         this.route.queryParams.subscribe((params) => {
             this.saleOrderId = params['id'];

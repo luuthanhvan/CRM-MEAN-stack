@@ -23,12 +23,12 @@ export class AddContactComponent implements OnInit{
     submitted = false;
     assignedToUsers$ : Observable<User[]>;
 
-    constructor(protected contactsService : ContactsService,
-                private userService : UserManagementService,
-                protected router : Router,
-                private loadingService: LoadingService,
-                private toastMessage: ToastMessageService,
-                private authService: AuthService){
+    constructor(public contactsService : ContactsService,
+                public userService : UserManagementService,
+                public router : Router,
+                public loadingService: LoadingService,
+                public toastMessage: ToastMessageService,
+                public authService: AuthService){
     }
 
     ngOnInit(){

@@ -14,7 +14,7 @@ import {
   MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
   MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
   MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
-  MatSnackBarModule,
+  MatSnackBarModule, MatMenuModule,
 } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -42,7 +42,7 @@ const materials = [
   MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
   MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
   MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
-  MatSnackBarModule,
+  MatSnackBarModule, MatMenuModule,
 ];
 
 

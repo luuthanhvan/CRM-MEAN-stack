@@ -10,5 +10,5 @@ import { DatetimeService } from '../../../services/datetime/datetime.service';
 export class SalesOrderDetailsDialog {
     salesOrder$ : Observable<SaleOrder>;
 
-    constructor(protected datetimeService: DatetimeService){}
+    constructor(public datetimeService: DatetimeService){}
 }

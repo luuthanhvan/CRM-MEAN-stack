@@ -24,10 +24,10 @@ export class UserManagementComponent implements OnInit {
 	dataSource : User[] = [];
 	users$ : Observable<User[]>;
 
-	constructor(private router: Router,
-				private userService: UserManagementService,
+	constructor(public router: Router,
+				public userService: UserManagementService,
 				public dialog: MatDialog,
-				protected datetimeService: DatetimeService) {
+				public datetimeService: DatetimeService) {
 	}
 
 	ngOnInit() {

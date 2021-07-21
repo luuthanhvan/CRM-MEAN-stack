@@ -8,5 +8,5 @@ import { LoadingService } from '../../services/loading/loading.service';
   styleUrls: ['./progress-spinner.component.scss'],
 })
 export class ProgressSpinnerComponent {
-	constructor(protected loadingService: LoadingService) { }
+	constructor(public loadingService: LoadingService) { }
 }

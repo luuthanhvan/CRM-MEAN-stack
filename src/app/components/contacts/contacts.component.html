@@ -1,7 +1,7 @@
 <div class="contentContainer">
 	<div class="searchContainer">
 		<mat-grid-list cols="3" rowHeight="75px">
-			<mat-grid-tile [colspan]="2"><h1>Contacts</h1></mat-grid-tile>
+			<mat-grid-tile [colspan]="2"><h1 i18n>Contacts</h1></mat-grid-tile>
 			<form>
 				<mat-grid-tile>
 					<button mat-button (click)="applySelectFilter(searchText.value, 'contactName')"><mat-icon>search</mat-icon></button>
@@ -19,14 +19,14 @@
 		<h2>Filters</h2>
 		<div class="filters">
 			<mat-form-field appearance="outline" class="selectFilter">
-				<mat-label>Lead source</mat-label>
+				<mat-label i18n>Lead source</mat-label>
 				<mat-select [formControl]="leadSrc" (selectionChange)="applySelectFilter($event.value, 'leadSrc')">
 					<mat-option *ngFor="let src of leadSources" [value]="src"> {{src}} </mat-option>
 				</mat-select>
 			</mat-form-field>
 
 			<mat-form-field appearance="outline" class="selectFilter" *ngIf="assignedToUsers$ | async">
-				<mat-label>Assigned to</mat-label>
+				<mat-label i18n>Assigned to</mat-label>
 				<mat-select 
 						[formControl]="assignedTo" 
 						(selectionChange)="applySelectFilter($event.value, 'assignedTo')">
@@ -35,7 +35,7 @@
 			</mat-form-field>
 
 			<div class="dateFilter">
-				<p>Created time</p>
+				<p i18n>Created time</p>
 				<form [formGroup]="createdTimeForm" (ngSubmit)="applyDateFilter(createdTimeForm, 'createdTime')">
 					<mat-form-field appearance="outline">
 						<mat-label>From</mat-label>
@@ -60,10 +60,10 @@
 			</div>
 
 			<div class="dateFilter">
-				<p>Updated time</p>
+				<p i18n>Updated time</p>
 				<form [formGroup]="updatedTimeForm" (ngSubmit)="applyDateFilter(updatedTimeForm, 'updatedTime')">
 					<mat-form-field appearance="outline">
-						<mat-label>From</mat-label>
+						<mat-label i18n>From</mat-label>
 						<input matInput [matDatepicker]="updatedTimeFromPicker" formControlName="updatedTimeFrom">
 						<mat-datepicker-toggle matSuffix [for]="updatedTimeFromPicker"></mat-datepicker-toggle>
 						<mat-datepicker #updatedTimeFromPicker></mat-datepicker>
@@ -75,7 +75,7 @@
 					</mat-form-field>
 	
 					<mat-form-field appearance="outline">
-						<mat-label>To</mat-label>
+						<mat-label i18n>To</mat-label>
 						<input matInput [matDatepicker]="updatedTimeToPicker" formControlName="updatedTimeTo">
 						<mat-datepicker-toggle matSuffix [for]="updatedTimeToPicker"></mat-datepicker-toggle>
 						<mat-datepicker #updatedTimeToPicker></mat-datepicker>
@@ -90,17 +90,17 @@
   	<!-- List of contacts -->
   	<div class="list">
 		<div class="head">
-			<div class="title"><h2>Customers information</h2></div>
+			<div class="title"><h2 i18n>Customers information</h2></div>
 			<div class="btnRow">
 				<!-- Mass delete button -->
 				<button mat-button class="btnDelete" [disabled]="isDisabled" (click)="onMassDeleteBtnClicked()">
 					<mat-icon>delete</mat-icon>
-					<span>Delete</span>
+					<span i18n>Delete</span>
 				</button>
 
 				<button mat-button [routerLink]="['/contacts/add']" class="btnCreate">
 					<mat-icon>add</mat-icon>
-					<span>Create new customer</span>
+					<span i18n>Create new customer</span>
 				</button>
 			</div>		
 		</div>
@@ -117,49 +117,49 @@
 
 				<!-- Contact name Column -->
 				<ng-container matColumnDef="contactName">
-					<th mat-header-cell *matHeaderCellDef> Contact name </th>
+					<th mat-header-cell *matHeaderCellDef i18n> Contact name </th>
 					<td class="cell" mat-cell *matCellDef="let element" (click)="onClickedRow(element._id)"> {{element.contactName}} </td>
 				</ng-container>
 
 				<!-- Salutation Column -->
 				<ng-container matColumnDef="salutation">
-					<th mat-header-cell *matHeaderCellDef> Salutation </th>
+					<th mat-header-cell *matHeaderCellDef i18n> Salutation </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.salutation}} </td>
 				</ng-container>
 				
 				<!-- Lead source Column -->
 				<ng-container matColumnDef="leadSrc">
-					<th mat-header-cell *matHeaderCellDef> Lead source </th>
+					<th mat-header-cell *matHeaderCellDef i18n> Lead source </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.leadSrc}} </td>
 				</ng-container>
 
 				<!-- Assigned to Column -->
 				<ng-container matColumnDef="assignedTo">
-					<th mat-header-cell *matHeaderCellDef> Assigned to</th>
+					<th mat-header-cell *matHeaderCellDef i18n> Assigned to</th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
 				</ng-container>
 		
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
-					<th mat-header-cell *matHeaderCellDef> Created time </th>
+					<th mat-header-cell *matHeaderCellDef i18n> Created time </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.createdTime, 2)}} </td>
 				</ng-container>
 		
 				<!-- Updated time Column -->
 				<ng-container matColumnDef="updatedTime">
-					<th mat-header-cell *matHeaderCellDef> Updated time </th>
+					<th mat-header-cell *matHeaderCellDef i18n> Updated time </th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.updatedTime, 2)}} </td>
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->
 				<ng-container matColumnDef="modify">
-					<th mat-header-cell *matHeaderCellDef> Modify </th>
+					<th mat-header-cell *matHeaderCellDef i18n> Modify </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
 				</ng-container>
 
 				<!-- Delete contact infomation column -->
 				<ng-container matColumnDef="delete">
-					<th mat-header-cell *matHeaderCellDef> Delete </th>
+					<th mat-header-cell *matHeaderCellDef i18n> Delete </th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id, element.contactName)"><mat-icon>delete</mat-icon></button></td>
 				</ng-container>
 
