@@ -56,6 +56,7 @@ export class SalesOrderComponent implements OnInit {
     contactName: FormControl;
     assignedTo : FormControl;
 
+    user$ : Observable<User>;
     assignedToUsers$ : Observable<User[]>;
     salesOrders$ : Observable<SaleOrder[]>;
     search$ : Observable<SaleOrder[]>;
@@ -108,7 +109,10 @@ export class SalesOrderComponent implements OnInit {
         this.searchText = new FormControl('');
         this.assignedTo = new FormControl('');
 
-        this.assignedToUsers$ = this.authService.me().pipe(
+        // get current user logged information
+		this.user$ = this.authService.getUser();
+
+        this.assignedToUsers$ = this.user$.pipe(
             debounceTime(300),
             distinctUntilChanged(),
             switchMap((user) => {
@@ -118,7 +122,7 @@ export class SalesOrderComponent implements OnInit {
                 return this.userService.getUsers();
             })
         );
-        
+
         this.search$ = this.searchText.valueChanges.pipe(
             startWith(''),
             tap((contactName) => { console.log(contactName) }),
@@ -127,8 +131,8 @@ export class SalesOrderComponent implements OnInit {
             switchMap((contactName) => contactName ? this.salesOrderService.searchSaleOrder(contactName) : of(null)),
             map(res => res && res['data'] && res['data'].salesOrder)
         );
-
-        this.salesOrders$ = this.authService.me().pipe(
+            
+        this.salesOrders$ = this.user$.pipe(
             debounceTime(300),
             distinctUntilChanged(),
             switchMap((user) => this.salesOrderService.getSalesOrder(user.isAdmin, user.name))

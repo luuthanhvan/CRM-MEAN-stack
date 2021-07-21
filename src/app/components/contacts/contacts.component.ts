@@ -61,6 +61,7 @@ export class ContactsComponent implements OnInit {
     isDisabled : boolean = true; // it used to show/hide the mass delete button
     submitted: boolean = false;
 
+    user$ : Observable<User>;
     assignedToUsers$ : Observable<User[]>;
     contacts$ : Observable<Contact[]>;
     result$ : Observable<Contact[]>;
@@ -114,7 +115,11 @@ export class ContactsComponent implements OnInit {
 
     init(){
         this.searchText = new FormControl();
-        this.assignedToUsers$ = this.authService.me().pipe(
+
+        // get current user logged information
+		this.user$ = this.authService.getUser();
+
+        this.assignedToUsers$ = this.user$.pipe(
             debounceTime(300),
             distinctUntilChanged(),
             switchMap((user) => {
@@ -134,7 +139,7 @@ export class ContactsComponent implements OnInit {
             map(res => res && res['data'] && res['data']['contacts'])
         );
 
-        this.contacts$ = this.authService.me().pipe(
+        this.contacts$ = this.user$.pipe(
             debounceTime(300),
             distinctUntilChanged(),
             switchMap((user) => this.contactsService.getContacts(user.isAdmin, user.name))

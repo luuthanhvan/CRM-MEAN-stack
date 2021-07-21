@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { MatPaginator, MatTableDataSource } from "@angular/material";
 import { Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Contact } from '../../interfaces/contact';
-import { ContactsService } from '../../services/contacts/contacts.service';
-import { SaleOrder } from '../../interfaces/sale-order';
-import { SalesOrderService } from '../../services/sales_order/sales-order.service';
+import { tap, switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { User } from '../../interfaces/user';
+import { Contact } from '../../interfaces/contact';
+import { SaleOrder } from '../../interfaces/sale-order';
+import { ContactsService } from '../../services/contacts/contacts.service';
+import { SalesOrderService } from '../../services/sales_order/sales-order.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { DatetimeService } from '../../services/datetime/datetime.service';
 
@@ -38,12 +39,6 @@ export class DashboardComponent implements OnInit {
 
 	isShowDetail : boolean = false; // use for show/hide a sale order detail
 	saleOrderDetail : SaleOrder;
-
-	currentUser : User;
-	isAdminUser : boolean = true;
-
-	contacts$ : Observable<Contact[]>;
-	salesOrders$ : Observable<SaleOrder[]>;
 	user$ : Observable<User>;
 
 	@ViewChild('contactPaginator', {static: false}) contactPaginator : MatPaginator;
@@ -57,62 +52,70 @@ export class DashboardComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		// get list of contacts
-		this.contactsService
-			.getContacts()
-			.subscribe((data) => {
-
-				// count number of contacts based on the lead source and push it to the contactPieChartData
-				this.contactPieChartData = [];
-				for(let i = 0; i < this.contactPieChartLabels.length; i++){
-					let label = this.contactPieChartLabels[i];
-					let countLabel = 0;
-					for(let j = 0; j < data.length; j++){
-						if(data[j].leadSrc === label){
-							countLabel++;
-						}
-					}
-					this.contactPieChartData.push(countLabel);
-				}
-				
-				// get length of contacts information for length of Paginator
-				this.contactLength = data.length;
-				
-				// data source to display on the contact information table
-				this.contactDataSrc = data.map((value) => value);
-				this.contactData = new MatTableDataSource(this.contactDataSrc);
-				this.contactData.paginator = this.contactPaginator;
-			});
-
-		// get list of sales order
-		this.salesOrderService
-			.getSalesOrder()
-			.subscribe((data) => {
-
-				// count number of sales order based on the status and push it to the saleOrderPieChartData
-				this.saleOrderPieChartData = [];
-				for(let i = 0; i < this.saleOrderPieChartLabels.length; i++){
-					let label = this.saleOrderPieChartLabels[i];
-					let countLabel = 0;
-					for(let j = 0; j < data.length; j++){
-						if(data[j].status === label){
-							countLabel++;
-						}
-					}
-					this.saleOrderPieChartData.push(countLabel);
-				}
-
-				// get length of sales order information for length of Paginator
-				this.saleOrderLength = data.length;
-
-				// data source to display on the sale order information table
-				this.saleOrderDataSrc = data.map((value) => value);
-				this.saleOrderData = new MatTableDataSource(this.saleOrderDataSrc);
-				this.saleOrderData.paginator = this.saleOrderPaginator;
-			});
-		
 		// get current user logged information, we use getUser here
 		this.user$ = this.authService.getUser();
+
+		// get list of contacts
+		this.user$.pipe(
+			debounceTime(300),
+			distinctUntilChanged(),
+			switchMap((user) => this.contactsService.getContacts(user.isAdmin, user.name).pipe(
+				tap((data) => {
+
+					// count number of contacts based on the lead source and push it to the contactPieChartData
+					this.contactPieChartData = [];
+					for(let i = 0; i < this.contactPieChartLabels.length; i++){
+						let label = this.contactPieChartLabels[i];
+						let countLabel = 0;
+						for(let j = 0; j < data.length; j++){
+							if(data[j].leadSrc === label){
+								countLabel++;
+							}
+						}
+						this.contactPieChartData.push(countLabel);
+					}
+					
+					// get length of contacts information for length of Paginator
+					this.contactLength = data.length;
+					
+					// data source to display on the contact information table
+					this.contactDataSrc = data.map((value) => value);
+					this.contactData = new MatTableDataSource(this.contactDataSrc);
+					this.contactData.paginator = this.contactPaginator;
+				})
+			))
+		).subscribe();
+
+		// get list of sales order
+		this.user$.pipe(
+			debounceTime(300),
+			distinctUntilChanged(),
+			switchMap((user) => this.salesOrderService.getSalesOrder(user.isAdmin, user.name).pipe(
+				tap((data) => {
+
+					// count number of sales order based on the status and push it to the saleOrderPieChartData
+					this.saleOrderPieChartData = [];
+					for(let i = 0; i < this.saleOrderPieChartLabels.length; i++){
+						let label = this.saleOrderPieChartLabels[i];
+						let countLabel = 0;
+						for(let j = 0; j < data.length; j++){
+							if(data[j].status === label){
+								countLabel++;
+							}
+						}
+						this.saleOrderPieChartData.push(countLabel);
+					}
+	
+					// get length of sales order information for length of Paginator
+					this.saleOrderLength = data.length;
+	
+					// data source to display on the sale order information table
+					this.saleOrderDataSrc = data.map((value) => value);
+					this.saleOrderData = new MatTableDataSource(this.saleOrderDataSrc);
+					this.saleOrderData.paginator = this.saleOrderPaginator;
+				})
+			))
+		).subscribe();
 	}
 
 	// function to handle chart clicked event
@@ -165,9 +168,6 @@ export class DashboardComponent implements OnInit {
 	onShowDetail(saleOrder : SaleOrder){
 		this.isShowDetail = true;
 		this.saleOrderDetail = saleOrder
-		
-		// datetime format
-		// this.saleOrderDetail.createdTime = datetimeFormat(this.saleOrderDetail.createdTime);
 	}
 
 	onHideDetail(){

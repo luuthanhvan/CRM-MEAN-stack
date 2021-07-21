@@ -33,7 +33,7 @@ export class AddContactComponent implements OnInit{
 
     ngOnInit(){
         this.contactFormInfo = this.contactsService.initContact();
-        this.assignedToUsers$ = this.authService.me().pipe(
+        this.assignedToUsers$ = this.authService.getUser().pipe(
             debounceTime(300),
             distinctUntilChanged(),
             switchMap((user) => {

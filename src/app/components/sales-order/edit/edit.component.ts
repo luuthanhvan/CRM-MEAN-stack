@@ -43,7 +43,7 @@ export class EditSalesOrderComponent implements OnInit {
         // get list of contacts name from database and display them to the Contact name field in saleOrderForm
         this.contacts$ = this.contactService.getContacts();
         // get list of users from database and display them to the Assigned field in saleOrderForm
-        this.assignedToUsers$ = this.authService.me().pipe(
+        this.assignedToUsers$ = this.authService.getUser().pipe(
             debounceTime(300),
             distinctUntilChanged(),
             switchMap((user) => {
