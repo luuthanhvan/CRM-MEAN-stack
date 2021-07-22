@@ -16,7 +16,7 @@
 	
 	<!-- Filters -->
 	<div class="filtersContainter">
-		<h2>Filters</h2>
+		<h2 i18n>Filters</h2>
 		<div class="filters">
 			<mat-form-field appearance="outline" class="selectFilter">
 				<mat-label i18n>Lead source</mat-label>
@@ -55,7 +55,7 @@
 						<mat-datepicker-toggle matSuffix [for]="createdTimeToPicker"></mat-datepicker-toggle>
 						<mat-datepicker #createdTimeToPicker></mat-datepicker>
 					</mat-form-field>
-					<button mat-button type="submit" [disabled]="createdTimeForm.invalid">Apply</button>
+					<button mat-button type="submit" [disabled]="createdTimeForm.invalid" i18n>Apply</button>
 				</form>
 			</div>
 
@@ -80,11 +80,11 @@
 						<mat-datepicker-toggle matSuffix [for]="updatedTimeToPicker"></mat-datepicker-toggle>
 						<mat-datepicker #updatedTimeToPicker></mat-datepicker>
 					</mat-form-field>
-					<button mat-button type="submit" [disabled]="updatedTimeForm.invalid">Apply</button>
+					<button mat-button type="submit" [disabled]="updatedTimeForm.invalid" i18n>Apply</button>
 				</form>
 			</div>
 		</div>
-		<div class="btnCancel"><button mat-button (click)="reset()">Cancel</button></div>
+		<div class="btnCancel"><button mat-button (click)="reset()" i18n>Cancel</button></div>
 	</div> <!-- End div filters -->
 
   	<!-- List of contacts -->
@@ -117,49 +117,49 @@
 
 				<!-- Contact name Column -->
 				<ng-container matColumnDef="contactName">
-					<th mat-header-cell *matHeaderCellDef i18n> Contact name </th>
+					<th mat-header-cell *matHeaderCellDef i18n>Contact name</th>
 					<td class="cell" mat-cell *matCellDef="let element" (click)="onClickedRow(element._id)"> {{element.contactName}} </td>
 				</ng-container>
 
 				<!-- Salutation Column -->
 				<ng-container matColumnDef="salutation">
-					<th mat-header-cell *matHeaderCellDef i18n> Salutation </th>
+					<th mat-header-cell *matHeaderCellDef i18n>Salutation</th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.salutation}} </td>
 				</ng-container>
 				
 				<!-- Lead source Column -->
 				<ng-container matColumnDef="leadSrc">
-					<th mat-header-cell *matHeaderCellDef i18n> Lead source </th>
+					<th mat-header-cell *matHeaderCellDef i18n>Lead source</th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.leadSrc}} </td>
 				</ng-container>
 
 				<!-- Assigned to Column -->
 				<ng-container matColumnDef="assignedTo">
-					<th mat-header-cell *matHeaderCellDef i18n> Assigned to</th>
+					<th mat-header-cell *matHeaderCellDef i18n>Assigned to</th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{element.assignedTo}} </td>
 				</ng-container>
 		
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
-					<th mat-header-cell *matHeaderCellDef i18n> Created time </th>
+					<th mat-header-cell *matHeaderCellDef i18n>Created time</th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.createdTime, 2)}} </td>
 				</ng-container>
 		
 				<!-- Updated time Column -->
 				<ng-container matColumnDef="updatedTime">
-					<th mat-header-cell *matHeaderCellDef i18n> Updated time </th>
+					<th mat-header-cell *matHeaderCellDef i18n>Updated time</th>
 					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.updatedTime, 2)}} </td>
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->
 				<ng-container matColumnDef="modify">
-					<th mat-header-cell *matHeaderCellDef i18n> Modify </th>
+					<th mat-header-cell *matHeaderCellDef i18n>Modify</th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
 				</ng-container>
 
 				<!-- Delete contact infomation column -->
 				<ng-container matColumnDef="delete">
-					<th mat-header-cell *matHeaderCellDef i18n> Delete </th>
+					<th mat-header-cell *matHeaderCellDef i18n>Delete</th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="onDelete(element._id, element.contactName)"><mat-icon>delete</mat-icon></button></td>
 				</ng-container>
 

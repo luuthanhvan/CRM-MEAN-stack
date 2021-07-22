@@ -5,9 +5,9 @@
     <div>
 		<button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
 		<mat-menu #menu="matMenu">
-			<button mat-menu-item [matMenuTriggerFor]="language">Language</button>
-			<button mat-menu-item (click)="openDialog()">Change password</button>
-			<button mat-menu-item (click)="signout()">Sign-out</button>
+			<button mat-menu-item [matMenuTriggerFor]="language" i18n>Language</button>
+			<button mat-menu-item (click)="openDialog()" i18n>Change password</button>
+			<button mat-menu-item (click)="signout()" i18n>Sign-out</button>
 		</mat-menu>
 		<mat-menu #language="matMenu">
 			<div *ngFor="let lang of languageList">

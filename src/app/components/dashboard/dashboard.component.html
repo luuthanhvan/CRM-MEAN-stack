@@ -1,7 +1,7 @@
 <div class="contentContainer">
         <!-- Widget 1: Number of contacts by lead source -->
         <div class="contactChart">
-            <p>Contacts</p>
+            <p i18n>Contacts</p>
             <div style="display: block">
                 <canvas baseChart 
                     [data]="contactPieChartData" 
@@ -15,7 +15,7 @@
 
         <!-- Widget 2: Number of sales orders by status -->
         <div class="saleOrderChart">
-            <p>Sales order</p>
+            <p i18n>Sales order</p>
             <div style="display: block">
                 <canvas baseChart 
                     [data]="saleOrderPieChartData" 
@@ -32,22 +32,22 @@
             <div *ngIf="user && user.isAdmin">
                 <!-- Widget 3:  Contact information -->
                 <div class="contact">
-                    <p>Contact information</p>
+                    <p i18n>Contact information</p>
 
                     <table mat-table [dataSource]="contactData" class="mat-elevation-z8">
                         <ng-container matColumnDef="contactName">
-                            <th mat-header-cell *matHeaderCellDef> Contact name </th>
-                            <td class="cell" mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+                            <th mat-header-cell *matHeaderCellDef i18n>Contact name</th>
+                            <td class="cell" mat-cell *matCellDef="let element">{{element.contactName}}</td>
                         </ng-container>
 
                         <ng-container matColumnDef="assignedTo">
-                            <th mat-header-cell *matHeaderCellDef> Assigned </th>
-                            <td class="cell" mat-cell *matCellDef="let element" (click)="onClickedCell(element.assignedTo)"> {{element.assignedTo}} </td>
+                            <th mat-header-cell *matHeaderCellDef i18n>Assigned to</th>
+                            <td class="cell" mat-cell *matCellDef="let element" (click)="onClickedCell(element.assignedTo)">{{element.assignedTo}}</td>
                         </ng-container>
 
                         <ng-container matColumnDef="updatedTime">
-                            <th mat-header-cell *matHeaderCellDef> Updated time </th>
-                            <td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.updatedTime, 2)}} </td>
+                            <th mat-header-cell *matHeaderCellDef i18n>Updated time</th>
+                            <td class="cell" mat-cell *matCellDef="let element">{{datetimeService.datetimeFormat(element.updatedTime, 2)}}</td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
@@ -68,21 +68,21 @@
 
                 <ng-template #info>
                     <div class="saleOrder">
-                        <p>Sale order information</p>
+                        <p i18n>Sale order information</p>
                         <table mat-table [dataSource]="saleOrderData" class="mat-elevation-z8">
                             <ng-container matColumnDef="subject">
-                                <th mat-header-cell *matHeaderCellDef> Subject </th>
-                                <td class="cell" mat-cell *matCellDef="let element"> {{element.subject}} </td>
+                                <th mat-header-cell *matHeaderCellDef i18n>Subject</th>
+                                <td class="cell" mat-cell *matCellDef="let element">{{element.subject}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="total">
-                                <th mat-header-cell *matHeaderCellDef> Total </th>
-                                <td class="cell" mat-cell *matCellDef="let element"> {{element.total}} </td>
+                                <th mat-header-cell *matHeaderCellDef i18n>Total</th>
+                                <td class="cell" mat-cell *matCellDef="let element">{{element.total}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="updatedTime">
-                                <th mat-header-cell *matHeaderCellDef> Updated time </th>
-                                <td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.updatedTime, 2)}} </td>
+                                <th mat-header-cell *matHeaderCellDef i18n>Updated time</th>
+                                <td class="cell" mat-cell *matCellDef="let element">{{datetimeService.datetimeFormat(element.updatedTime, 2)}}</td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
@@ -104,39 +104,39 @@
                         <p>{{saleOrderDetail.subject}}</p>
                         <mat-grid-list cols="2" rowHeight="42px">
                             <!-- Subject row -->
-                            <mat-grid-tile>Subject</mat-grid-tile>
+                            <mat-grid-tile i18n>Subject</mat-grid-tile>
                             <mat-grid-tile>{{saleOrderDetail.subject}}</mat-grid-tile>
 
                             <!-- Contact name row -->
-                            <mat-grid-tile>Contact name</mat-grid-tile>
+                            <mat-grid-tile i18n>Contact name</mat-grid-tile>
                             <mat-grid-tile>{{saleOrderDetail.contactName}}</mat-grid-tile>
 
                             <!-- Status row -->
-                            <mat-grid-tile>Status</mat-grid-tile>
+                            <mat-grid-tile i18n>Status</mat-grid-tile>
                             <mat-grid-tile>{{saleOrderDetail.status}}</mat-grid-tile>
 
                             <!-- Total row -->
-                            <mat-grid-tile>Total</mat-grid-tile>
+                            <mat-grid-tile i18n>Total</mat-grid-tile>
                             <mat-grid-tile>{{saleOrderDetail.total}}</mat-grid-tile>
 
                             <!-- Assigned row -->
-                            <mat-grid-tile>Assigned to</mat-grid-tile>
+                            <mat-grid-tile i18n>Assigned to</mat-grid-tile>
                             <mat-grid-tile>{{saleOrderDetail.assignedTo}}</mat-grid-tile>
 
                             <!-- Description row -->
-                            <mat-grid-tile>Description</mat-grid-tile>
+                            <mat-grid-tile i18n>Description</mat-grid-tile>
                             <mat-grid-tile>{{saleOrderDetail.description}}</mat-grid-tile>
 
                             <!-- Created time row -->
-                            <mat-grid-tile>Created time</mat-grid-tile>
+                            <mat-grid-tile i18n>Created time</mat-grid-tile>
                             <mat-grid-tile>{{datetimeService.datetimeFormat(saleOrderDetail.createdTime, 2)}}</mat-grid-tile>
 
                             <!-- Updated time row -->
-                            <mat-grid-tile>Updated time</mat-grid-tile>
+                            <mat-grid-tile i18n>Updated time</mat-grid-tile>
                             <mat-grid-tile>{{datetimeService.datetimeFormat(saleOrderDetail.updatedTime, 2)}}</mat-grid-tile>
                         </mat-grid-list>
 
-                        <div id="btnBack"><button mat-button (click)="onHideDetail()">Back</button></div>
+                        <div id="btnBack"><button mat-button (click)="onHideDetail()" i18n>Back</button></div>
                     </div>
                 </ng-template>
             </div>
