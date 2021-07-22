@@ -52,11 +52,13 @@ npm --version # or npm -v
 ### Ubuntu 18.04
 - Open the terminal and run: `npm install`
 - Rename `.env_example` file to `.env`: `cp .env_example .env`
+- Build the Internationalization: `npm run build-locale`
 
 ### Windows
 - Open the terminal and run: `npm install`
 - Rename `.env_example` file to `.env`
 - Create a new folder named "data" in server directory for MongoDB data store directory. Then, run the command in your terminal: `mongod --dbpath [your_absolute_path_to_project/server/data]`. Example: `mongod --dbpath "D:\MEAN-stack\server\data"`
+- Build the Internationalization: `npm run build-locale`
 
 ## Running
 

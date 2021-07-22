@@ -8,6 +8,7 @@ import { UserManagementService } from '../../services/user_management/user-manag
 import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading/loading.service';
 import { ToastMessageService } from '../../services/toast_message/toast-message.service';
+import { languageList } from '../../app.component';
 
 @Component({
   selector: 'app-home',
@@ -19,10 +20,8 @@ export class HomeComponent implements OnInit{
 	isBrowserRefresh : boolean;
 	isAdminUser : boolean = false;
 	
-	languageList = [
-		{ code: 'en', label: 'English' },
-		{ code: 'vi', label: 'Tiếng việt' }
-	];
+	languageList = languageList;
+	
 	constructor(public authService : AuthService,
 				public dialog: MatDialog,
 				public router : Router){

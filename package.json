@@ -4,10 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
-    "extract": "ng xi18n --output-path=i18n",
-    "start:vi": "npm start -- --configuration=vi --port 4201",
-    "build:i18n": "npm run build -- --localize",
+    "build": "ng build",
+    "build-locale:en": "ng build --prod --i18n-locale en --i18n-format xlf --i18n-file i18n/messages_en.xlf --output-path=dist/en --baseHref /en/",
+    "build-locale:vi": "ng build --prod --i18n-locale vi --i18n-format xlf --i18n-file i18n/messages_vi.xlf --output-path=dist/vi --baseHref /vi/",
+    "build-locale": "npm run build-locale:en && npm run build-locale:vi",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
