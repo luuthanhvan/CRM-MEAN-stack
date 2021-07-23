@@ -28,10 +28,9 @@ class ContactsController {
 
     // [POST] /contacts/list - function to get a list of contacts information
     getListOfContacts(req, res){
-        const isAdmin = req.body.isAdmin,
-            assignedTo = req.body.assignedTo;
-
         try{
+            const isAdmin = req.isAdmin,
+                assignedTo = req.assignedTo;
             if(!isAdmin){
                 Contacts
                     .find({assignedTo : assignedTo})

@@ -56,35 +56,35 @@ export class DashboardComponent implements OnInit {
 		this.user$ = this.authService.getUser();
 
 		// get list of contacts
-		this.user$.pipe(
-			debounceTime(300),
-			distinctUntilChanged(),
-			switchMap((user) => this.contactsService.getContacts(user.isAdmin, user.name).pipe(
-				tap((data) => {
+		// this.user$.pipe(
+		// 	debounceTime(300),
+		// 	distinctUntilChanged(),
+		// 	switchMap((user) => this.contactsService.getContacts(user.isAdmin, user.name).pipe(
+		// 		tap((data) => {
 
-					// count number of contacts based on the lead source and push it to the contactPieChartData
-					this.contactPieChartData = [];
-					for(let i = 0; i < this.contactPieChartLabels.length; i++){
-						let label = this.contactPieChartLabels[i];
-						let countLabel = 0;
-						for(let j = 0; j < data.length; j++){
-							if(data[j].leadSrc === label){
-								countLabel++;
-							}
-						}
-						this.contactPieChartData.push(countLabel);
-					}
+		// 			// count number of contacts based on the lead source and push it to the contactPieChartData
+		// 			this.contactPieChartData = [];
+		// 			for(let i = 0; i < this.contactPieChartLabels.length; i++){
+		// 				let label = this.contactPieChartLabels[i];
+		// 				let countLabel = 0;
+		// 				for(let j = 0; j < data.length; j++){
+		// 					if(data[j].leadSrc === label){
+		// 						countLabel++;
+		// 					}
+		// 				}
+		// 				this.contactPieChartData.push(countLabel);
+		// 			}
 					
-					// get length of contacts information for length of Paginator
-					this.contactLength = data.length;
+		// 			// get length of contacts information for length of Paginator
+		// 			this.contactLength = data.length;
 					
-					// data source to display on the contact information table
-					this.contactDataSrc = data.map((value) => value);
-					this.contactData = new MatTableDataSource(this.contactDataSrc);
-					this.contactData.paginator = this.contactPaginator;
-				})
-			))
-		).subscribe();
+		// 			// data source to display on the contact information table
+		// 			this.contactDataSrc = data.map((value) => value);
+		// 			this.contactData = new MatTableDataSource(this.contactDataSrc);
+		// 			this.contactData.paginator = this.contactPaginator;
+		// 		})
+		// 	))
+		// ).subscribe();
 
 		// get list of sales order
 		this.user$.pipe(

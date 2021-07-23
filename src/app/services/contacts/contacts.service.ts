@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Contact } from '../../interfaces/contact';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
 
@@ -11,6 +11,7 @@ import { map, shareReplay, takeUntil } from 'rxjs/operators';
 export class ContactsService {
 	SERVER_URL: string = "http://localhost:4040/contacts";
 	private stop$ : Subject<void> = new Subject<void>();
+	noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
 	constructor(private httpClient: HttpClient,
 				private formBuilder: FormBuilder) { }
@@ -38,9 +39,9 @@ export class ContactsService {
 	}
 	
 	// fetch list of contacts
-	getContacts(isAdmin: boolean = true, assignedTo : string = ''):Observable<Contact[]>{
+	getContacts():Observable<Contact[]>{
 		return this.httpClient
-					.post<Contact[]>(`${this.SERVER_URL}/list`, {isAdmin: isAdmin, assignedTo: assignedTo})
+					.post<Contact[]>(this.SERVER_URL, this.noAuthHeader)
 					.pipe(
 						map(res => res['data'].contacts),
 						takeUntil(this.stop$),

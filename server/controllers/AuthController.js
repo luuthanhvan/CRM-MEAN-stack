@@ -37,6 +37,28 @@ class AuthController {
             return apiResponse.ErrorResponse(res, err);
         }
     }
+
+    verifyUser(req, res, next){
+        const userId = req._id;
+        console.log(userId);
+        try{
+            User
+                .findOne({_id: userId})
+                .then((user) => {
+                    console.log(user);
+                    if(user){
+                        req.isAdmin = user.isAdmin;
+                        req.assigedTo = user.assigedTo;
+                        next();
+                    }
+                    else{
+                        return apiResponse.notFoundResponse(res, 'User not found');
+                    }
+                })
+        } catch(err){
+            return apiResponse.ErrorResponse(res, err);
+        }
+    }
 }
 
 module.exports = new AuthController();

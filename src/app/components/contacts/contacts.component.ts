@@ -138,14 +138,8 @@ export class ContactsComponent implements OnInit {
             switchMap((contactName) => contactName ? this.contactsService.searchContact(contactName) : of(null)),
             map(res => res && res['data'] && res['data']['contacts'])
         );
-
-        this.contacts$ = this.user$.pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            switchMap((user) => this.contactsService.getContacts(user.isAdmin, user.name))
-        );
         
-        this.result$ = combineLatest([this.contacts$, this.filterSubject, this.search$]).pipe(
+        this.result$ = combineLatest([this.contactsService.getContacts(), this.filterSubject, this.search$]).pipe(
             map(([contacts, { leadSrc, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
                 const sourceData = searchResult ? searchResult : contacts;
                 return sourceData.filter(d => {
