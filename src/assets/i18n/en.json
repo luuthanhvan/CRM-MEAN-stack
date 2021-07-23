@@ -1,0 +1,65 @@
+{
+    "contacts": {
+        "salutation": "Salutation",
+        "organization": "Organization",
+        "dob": "Date of birth",
+        "address": "Address",
+        "leadSrc": "Lead source",
+        "tableTitle": "Customers information",
+        "createNewCustomer": "Create new customer",
+        "editCustomerInfo": "Edit customer information",
+        "contactDetails": "Contact details"
+    },
+    "salesOrder": {
+        "subject": "Subject",
+        "status": "Status",
+        "total": "Total",
+        "tableTitle": "Sales order information",
+        "createNewSalesOrder": "Create new sales order",
+        "editSalesOrderInfo": "Edit sales order information",
+        "salesOrderDetails": "Sales order details"
+    },
+    "userManagement": {
+        "username": "Username",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "admin": "Admin",
+        "active": "Active",
+        "tableTitle": "User information",
+        "createNewUser": "Create new user",
+        "editUserInfo": "Edit user information"
+    },
+    "action": {
+        "modify": "Modify",
+        "delete": "Delete",
+        "filters": "Filters",
+        "save": "Save",
+        "cancel": "Cancel",
+        "ok": "OK",
+        "apply": "Apply",
+        "back": "Back",
+        "create": "Create",
+        "changePassword": "Change password",
+        "signout": "Sign-out",
+        "language": "Language",
+        "search": "Enter contact name"
+    },
+    "date": {
+        "createdTime": "Created time",
+        "updatedTime": "Updated time",
+        "from": "From",
+        "to": "To"
+    },
+    "shared": {
+        "dashboard": "Dashboard",
+        "contacts": "Contacts",
+        "salesOrder": "Sales order",
+        "userManagement": "User management",
+        "email": "Email",
+        "name": "Name",
+        "phone": "Phone",
+        "assignedTo": "Assigned to",
+        "description": "Description",
+        "creator": "Creator"
+    }
+}

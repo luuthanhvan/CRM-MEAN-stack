@@ -2,12 +2,12 @@
     <!-- List of contacts -->
     <div class="list">
 		<div class="head">
-			<div class="title"><h2>User information</h2></div>
+			<div class="title"><h2>{{'userManagement.tableTitle' | translate}}</h2></div>
 			
 			<div class="btnRow">
 				<button mat-button [routerLink]="['/user_management/add']" class="btnCreate">
 					<mat-icon>add</mat-icon>
-					<span>Create new user</span>
+					<span>{{'userManagement.createNewUser' | translate}}</span>
 				</button>
 			</div>
 		</div>
@@ -16,49 +16,49 @@
 			<table mat-table [dataSource]="(users$ | async)" class="mat-elevation-z8">
 				<!-- name column -->
 				<ng-container matColumnDef="name">
-					<th mat-header-cell *matHeaderCellDef> Name </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.name}} </td>
+					<th mat-header-cell *matHeaderCellDef>{{'shared.name' | translate}}</th>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.name}}</td>
 				</ng-container>
 
 				<!-- username column -->
 				<ng-container matColumnDef="username">
-					<th mat-header-cell *matHeaderCellDef> Username </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.username}} </td>
+					<th mat-header-cell *matHeaderCellDef>{{'userManagement.username' | translate}}</th>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.username}}</td>
 				</ng-container>
 				
 				<!-- email column -->
 				<ng-container matColumnDef="email">
-					<th mat-header-cell *matHeaderCellDef> Email </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.email}} </td>
+					<th mat-header-cell *matHeaderCellDef>{{'shared.email' | translate}}</th>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.email}}</td>
 				</ng-container>
 				
 				<!-- Phone column -->
 				<ng-container matColumnDef="phone">
-					<th mat-header-cell *matHeaderCellDef> Phone </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.phone}} </td>
+					<th mat-header-cell *matHeaderCellDef>{{'shared.phone' | translate}}</th>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.phone}}</td>
 				</ng-container>
 
 				<!-- admin column -->
 				<ng-container matColumnDef="isAdmin">
-					<th mat-header-cell *matHeaderCellDef> Admin </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.isAdmin}} </td>
+					<th mat-header-cell *matHeaderCellDef>{{'userManagement.admin' | translate}}</th>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.isAdmin}}</td>
 				</ng-container>
 
 				<!-- active olumn -->
 				<ng-container matColumnDef="isActive">
-					<th mat-header-cell *matHeaderCellDef> Active/Deactive </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{element.isActive}} </td>
+					<th mat-header-cell *matHeaderCellDef>{{'userManagement.active' | translate}}</th>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.isActive}}</td>
 				</ng-container>
 			
 				<!-- Created time Column -->
 				<ng-container matColumnDef="createdTime">
-					<th mat-header-cell *matHeaderCellDef> Created time </th>
-					<td class="cell" mat-cell *matCellDef="let element"> {{datetimeService.datetimeFormat(element.createdTime, 2)}} </td>
+					<th mat-header-cell *matHeaderCellDef>{{'date.createdTime' | translate}}</th>
+					<td class="cell" mat-cell *matCellDef="let element">{{datetimeService.datetimeFormat(element.createdTime, 2)}}</td>
 				</ng-container>
 				
 				<!-- Modify contact infomation column -->
 				<ng-container matColumnDef="modify">
-					<th mat-header-cell *matHeaderCellDef> Modify </th>
+					<th mat-header-cell *matHeaderCellDef>{{'action.modify' | translate}}</th>
 					<td class="cell" mat-cell *matCellDef="let element"><button mat-button (click)="navigateToEdit(element._id)"><mat-icon>edit</mat-icon></button></td>
 				</ng-container>
 

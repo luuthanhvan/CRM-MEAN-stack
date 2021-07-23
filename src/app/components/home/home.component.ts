@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { User } from '../../interfaces/user';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { MustMatch } from '../../helpers/validation_functions';
 import { UserManagementService } from '../../services/user_management/user-management.service';
 import { Router } from '@angular/router';
@@ -21,7 +22,11 @@ export class HomeComponent implements OnInit{
 
 	constructor(private authService : AuthService,
 				public dialog: MatDialog,
-				private router : Router){
+				private router : Router,
+				public translate: TranslateService){
+		
+		translate.addLangs(['en', 'vi']); // translate.addLangs([]) tells the service which languages are available to use for translations.
+		translate.setDefaultLang('en'); // specify a fallback set of translations to use in case there are missing translations for the current language.
 	}
 	
 	ngOnInit(){
@@ -47,6 +52,10 @@ export class HomeComponent implements OnInit{
 		let dialogRef = this.dialog.open(HomeChangePasswordComponent);
 		dialogRef.afterClosed().subscribe();
     }
+
+	switchLanguage(language: string){
+		this.translate.use(language); // tells the service which is the current language to use for translations
+	}
 }
 
 @Component({

@@ -1,0 +1,65 @@
+{
+    "contacts": {
+        "salutation": "Danh xưng",
+        "organization": "Công ty",
+        "dob": "Ngày sinh",
+        "address": "Địa chỉ",
+        "leadSrc": "Nguồn",
+        "tableTitle": "Thông tin khách hàng",
+        "createNewCustomer": "Tạo mới thông tin khách hàng",
+        "editCustomerInfo": "Chỉnh sửa thông tin khách hàng",
+        "contactDetails": "Chi tiết thông tin khách hàng"
+    },
+    "salesOrder": {
+        "subject": "Nội dung",
+        "status": "Trạng thái",
+        "total": "Tổng cộng",
+        "tableTitle": "Thông tin đơn hàng",
+        "createNewSalesOrder": "Tạo mới đơn hàng",
+        "editSalesOrderInfo": "Chỉnh sửa đơn hàng",
+        "salesOrderDetails": "Chi tiết đơn hàng"
+    },
+    "userManagement": {
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "confirmPassword": "Nhập lại mật khẩu",
+        "admin": "Quản lý",
+        "active": "Hoạt động",
+        "tableTitle": "Thông tin nhân viên",
+        "createNewUser": "Tạo mới thông tin nhân viên",
+        "editUserInfo": "Chỉnh sửa thông tin nhân viên"
+    },
+    "action": {
+        "modify": "Chỉnh sửa",
+        "delete": "Xóa",
+        "filters": "Bộ lọc",
+        "save": "Lưu",
+        "cancel": "Hủy bỏ",
+        "ok": "OK",
+        "apply": "Áp dụng",
+        "back": "Trở về",
+        "create": "Tạo",
+        "changePassword": "Đổi mật khẩu",
+        "signout": "Đăng xuất",
+        "language": "Ngôn ngữ",
+        "search": "Nhập tên khách hàng"
+    },
+    "date": {
+        "createdTime": "Ngày tạo",
+        "updatedTime": "Ngày cập nhật",
+        "from": "Từ ngày",
+        "to": "Đến ngày"
+    },
+    "shared": {
+        "dashboard": "Bảng điều khiển",
+        "contacts": "Khách hàng",
+        "salesOrder": "Đơn hàng",
+        "userManagement": "Nhân viên",
+        "email": "Email",
+        "phone": "Điện thoại",
+        "name": "Tên",
+        "assignedTo": "Phụ trách",
+        "description": "Mô tả thêm",
+        "creator": "Tạo bởi"
+    }
+}

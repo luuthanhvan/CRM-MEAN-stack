@@ -5,16 +5,16 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /* ERROR: NullInjectorError: No provider for HttpClient when using HttpClient */
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // FIX: import HttpClientModule
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // FIX: import HttpClientModule
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { 
-  MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule,
-  MatDividerModule, MatFormFieldModule, MatDatepickerModule,
-  MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
-  MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
-  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
-  MatSnackBarModule,
+	MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule,
+	MatDividerModule, MatFormFieldModule, MatDatepickerModule,
+	MatTableModule, MatIconModule, MatGridListModule, MatSelectModule,
+	MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
+	MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
+	MatSnackBarModule, MatMenuModule,
 } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -23,6 +23,10 @@ import { MatNativeDateModule } from '@angular/material/core';
       NullInjectorError: No provider for ThemeService! */
 /* import ThemeService and put it in providers of NgModule */
 import { ChartsModule, ThemeService } from 'ng2-charts';
+
+// import ngx-translate and the http loader
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HomeComponent, HomeChangePasswordComponent, } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -38,48 +42,59 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ProgressSpinnerModule } from './components/progress-spinner/progress-spinner.module';
 
 const materials = [
-  MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
-  MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
-  MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
-  MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
-  MatSnackBarModule,
+	MatToolbarModule, MatSidenavModule, MatButtonModule, MatListModule, MatDividerModule,
+	MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatTableModule, MatIconModule,
+	MatGridListModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatProgressSpinnerModule,
+	MatPaginatorModule, MatSortModule, MatTabsModule, MatDialogModule, MatCheckboxModule,
+	MatSnackBarModule, MatMenuModule,
 ];
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
-    DashboardComponent,
-    SalesOrderComponent, SalesOrderConfirmationDialog, SalesOrderDetailsDialog,
-    UserManagementComponent,
-    LoginComponent, 
-    HomeComponent, HomeChangePasswordComponent,
-    
-  ],
-  entryComponents : [
-    AppComponent,
-    ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
-    DashboardComponent, 
-    SalesOrderComponent, SalesOrderConfirmationDialog, SalesOrderDetailsDialog,
-    UserManagementComponent,
-    LoginComponent, 
-    HomeComponent, HomeChangePasswordComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    FormsModule, ReactiveFormsModule,
-    ChartsModule,
-    materials,
-    ProgressSpinnerModule
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    ThemeService,
-  ],
-  bootstrap: [AppComponent]
+  	declarations: [
+		AppComponent,
+		ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
+		DashboardComponent,
+		SalesOrderComponent, SalesOrderConfirmationDialog, SalesOrderDetailsDialog,
+		UserManagementComponent,
+		LoginComponent, 
+		HomeComponent, HomeChangePasswordComponent,
+  	],
+	entryComponents : [
+		AppComponent,
+		ContactsComponent, ContactConfirmationDialog, ContactDetailsDialog,
+		DashboardComponent, 
+		SalesOrderComponent, SalesOrderConfirmationDialog, SalesOrderDetailsDialog,
+		UserManagementComponent,
+		LoginComponent, 
+		HomeComponent, HomeChangePasswordComponent,
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		BrowserAnimationsModule,
+		HttpClientModule,
+		FormsModule, ReactiveFormsModule,
+		ChartsModule,
+		ProgressSpinnerModule,
+		materials,
+		// ngx-translate and the loader module
+		TranslateModule.forRoot({
+			loader: {
+				provide: TranslateLoader,
+				useFactory: HttpLoaderFactory,
+				deps: [HttpClient],
+			}
+		}),
+	],
+	providers: [
+		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+		ThemeService,
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// required for AOT (ahead of time) compilation
+export function HttpLoaderFactory(http: HttpClient) : TranslateHttpLoader{
+	return new TranslateHttpLoader(http);
+}
