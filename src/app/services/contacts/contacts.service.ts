@@ -41,9 +41,9 @@ export class ContactsService {
 	// fetch list of contacts
 	getContacts():Observable<Contact[]>{
 		return this.httpClient
-					.post<Contact[]>(this.SERVER_URL, this.noAuthHeader)
+					.post<Contact[]>(`${this.SERVER_URL}/list`, this.noAuthHeader)
 					.pipe(
-						map(res => res['data'].contacts),
+						map(res => res['data']['contacts']),
 						takeUntil(this.stop$),
 						shareReplay()
 					);

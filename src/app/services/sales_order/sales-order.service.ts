@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil, shareReplay } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SaleOrder } from '../../interfaces/sale-order'; // import sale order interface
 
 @Injectable({
@@ -11,6 +11,7 @@ import { SaleOrder } from '../../interfaces/sale-order'; // import sale order in
 export class SalesOrderService {
 	SERVER_URL: string = "http://localhost:4040/sales_order";
 	private stop$ : Subject<void> = new Subject<void>();
+	noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
 	constructor(private formBuilder : FormBuilder,
 				private httpClient : HttpClient) { }
@@ -34,9 +35,9 @@ export class SalesOrderService {
 	}
   
 	// get list of sales order
-	getSalesOrder(isAdmin: boolean = true, assignedTo : string = ''):Observable<SaleOrder[]>{
+	getSalesOrder():Observable<SaleOrder[]>{
 		return this.httpClient
-					.post<SaleOrder[]>(`${this.SERVER_URL}/list`, {isAdmin: isAdmin, assignedTo: assignedTo})
+					.post<SaleOrder[]>(`${this.SERVER_URL}/list`, this.noAuthHeader)
 					.pipe(
 						map(res => res['data']['salesOrder']),
 						takeUntil(this.stop$),

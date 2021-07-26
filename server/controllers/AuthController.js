@@ -40,15 +40,13 @@ class AuthController {
 
     verifyUser(req, res, next){
         const userId = req._id;
-        console.log(userId);
         try{
             User
                 .findOne({_id: userId})
                 .then((user) => {
-                    console.log(user);
                     if(user){
                         req.isAdmin = user.isAdmin;
-                        req.assigedTo = user.assigedTo;
+                        req.name = user.name;
                         next();
                     }
                     else{

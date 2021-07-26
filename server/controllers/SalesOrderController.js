@@ -27,12 +27,12 @@ class SalesOrderController {
 
     // [POST] /sales_order/list - function to get a list of sales order information
     getListOfSalesOrders(req, res){
-        const isAdmin = req.body.isAdmin,
-            assignedTo = req.body.assignedTo;
         try{
+            const isAdmin = req.isAdmin,
+                name = req.name;
             if(!isAdmin){
                 SalesOrder
-                    .find({assignedTo : assignedTo})
+                    .find({assignedTo : name})
                     .then((salesOrder) => {
                         if(salesOrder.length > 0)
                             return apiResponse.successResponseWithData(res, 'Success', {salesOrder: mutipleMongooseToObject(salesOrder)});

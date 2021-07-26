@@ -131,14 +131,8 @@ export class SalesOrderComponent implements OnInit {
             switchMap((contactName) => contactName ? this.salesOrderService.searchSaleOrder(contactName) : of(null)),
             map(res => res && res['data'] && res['data'].salesOrder)
         );
-            
-        this.salesOrders$ = this.user$.pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            switchMap((user) => this.salesOrderService.getSalesOrder(user.isAdmin, user.name))
-        );
 
-        this.result$ = combineLatest([this.salesOrders$, this.filterSubject, this.search$]).pipe(
+        this.result$ = combineLatest([this.salesOrderService.getSalesOrder(), this.filterSubject, this.search$]).pipe(
             map(([salesOrder, { status, assignedTo, contactName, createdTimeFrom, createdTimeTo, updatedTimeFrom, updatedTimeTo }, searchResult]) => {
                 const sourceData = searchResult ? searchResult : salesOrder;
                 return sourceData.filter(d => {

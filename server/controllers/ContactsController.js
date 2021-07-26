@@ -1,5 +1,4 @@
 const Contacts = require('../models/Contacts');
-const User = require('../models/User');
 const  { mutipleMongooseToObject } = require('../helpers/mongoose');
 const apiResponse = require('../helpers/apiResponse');
 
@@ -30,10 +29,10 @@ class ContactsController {
     getListOfContacts(req, res){
         try{
             const isAdmin = req.isAdmin,
-                assignedTo = req.assignedTo;
+                name = req.name;
             if(!isAdmin){
                 Contacts
-                    .find({assignedTo : assignedTo})
+                    .find({assignedTo : name})
                     .then((contacts) => {
                         if(contacts.length > 0)
                             return apiResponse.successResponseWithData(res, 'Success', {contacts: mutipleMongooseToObject(contacts)});
