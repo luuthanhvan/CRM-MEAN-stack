@@ -11,7 +11,7 @@ import { ToastMessageService } from '../../../services/toast_message/toast-messa
     templateUrl: './add.component.html',
 })
 export class AddUserComponent implements OnInit{
-    userFormInfo: FormGroup; // typescript variable declaration
+    userFormInfo: FormGroup = this.userService.initUser();
     submitted = false;
 
     constructor(protected router: Router,
@@ -20,7 +20,15 @@ export class AddUserComponent implements OnInit{
                 private toastMessage: ToastMessageService){}
 
     ngOnInit(){
-        this.userFormInfo = this.userService.initUser();
+        // form draft save
+        const draft = window.localStorage.getItem("user");
+        if(draft){
+            this.userFormInfo.setValue(JSON.parse(draft));
+        }
+
+        this.userFormInfo.valueChanges.subscribe(data => {
+            window.localStorage.setItem("user", JSON.stringify(data));
+        });
     }
 
     get contactFormControl(){
@@ -31,6 +39,9 @@ export class AddUserComponent implements OnInit{
         this.submitted = true;
         let userInfo = form.value;
         userInfo.createdTime = new Date();
+
+        // clear local storage
+        window.localStorage.removeItem("user");
         
         this.loadingService.showLoading();
         this.userService

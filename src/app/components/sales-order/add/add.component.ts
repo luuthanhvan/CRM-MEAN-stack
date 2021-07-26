@@ -18,7 +18,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 })
 export class AddSaleOrderComponent implements OnInit{
     statusNames: string[] = ['Created', 'Approved', 'Delivered', 'Canceled'];
-    saleOrderFormInfo : FormGroup; // typescript variable declaration
+    saleOrderFormInfo : FormGroup = this.salesOrderService.initSaleOrder();
     users : Object;
     submitted = false;
     contacts$ : Observable<Contact[]>;
@@ -33,7 +33,16 @@ export class AddSaleOrderComponent implements OnInit{
                 private authService : AuthService){}
 
     ngOnInit(){
-        this.saleOrderFormInfo = this.salesOrderService.initSaleOrder();
+        // form draft save
+        const draft = window.localStorage.getItem("sales_order");
+        if(draft){
+            this.saleOrderFormInfo.setValue(JSON.parse(draft));
+        }
+
+        this.saleOrderFormInfo.valueChanges.subscribe(data => {
+            window.localStorage.setItem("sales_order", JSON.stringify(data));
+        });
+
         // get list of contacts name from database and display them to the Contact name field in saleOrderForm
         this.contacts$ = this.contactService.getContacts();
         // get list of users from database and display them to the Assigned field in saleOrderForm
@@ -60,6 +69,9 @@ export class AddSaleOrderComponent implements OnInit{
         let saleOrderInfo = form.value;
         saleOrderInfo.createdTime = new Date();
         saleOrderInfo.updatedTime = new Date();
+
+        // clear local storage
+        window.localStorage.removeItem("sales_order");
 
         this.loadingService.showLoading();
         this.salesOrderService

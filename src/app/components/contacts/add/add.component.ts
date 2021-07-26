@@ -17,7 +17,7 @@ import { AuthService } from '../../../services/auth/auth.service';
     encapsulation: ViewEncapsulation.None,
 })
 export class AddContactComponent implements OnInit{
-    contactFormInfo: FormGroup; // typescript variable declaration
+    contactFormInfo: FormGroup = this.contactsService.initContact();
     salutations : string[] =  ['None', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     submitted = false;
@@ -32,7 +32,16 @@ export class AddContactComponent implements OnInit{
     }
 
     ngOnInit(){
-        this.contactFormInfo = this.contactsService.initContact();
+        // form draft save
+        const draft = window.localStorage.getItem("contact");
+        if(draft){
+            this.contactFormInfo.setValue(JSON.parse(draft));
+        }
+
+        this.contactFormInfo.valueChanges.subscribe(data => {
+            window.localStorage.setItem("contact", JSON.stringify(data));
+        });
+
         this.assignedToUsers$ = this.authService.getUser().pipe(
             debounceTime(300),
             distinctUntilChanged(),
@@ -56,6 +65,9 @@ export class AddContactComponent implements OnInit{
         let contactInfo = form.value;
         contactInfo.createdTime = new Date();
         contactInfo.updatedTime = new Date();
+
+        // clear local storage
+        window.localStorage.removeItem("contact");
 
         this.loadingService.showLoading();
         this.contactsService.addContact(contactInfo).pipe(
