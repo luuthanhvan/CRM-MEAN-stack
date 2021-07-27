@@ -22,6 +22,7 @@ export class AddContactComponent implements OnInit{
     leadSources : string[] = ['Existing Customer', 'Partner', 'Conference', 'Website', 'Word of mouth', 'Other'];
     submitted = false;
     assignedToUsers$ : Observable<User[]>;
+    creator : string;
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,
@@ -45,6 +46,7 @@ export class AddContactComponent implements OnInit{
         this.assignedToUsers$ = this.authService.getUser().pipe(
             debounceTime(300),
             distinctUntilChanged(),
+            tap((user) => this.creator = user.name),
             switchMap((user) => {
                 if(!user.isAdmin){
                     this.contactFormInfo.controls.assignedTo.setValue(user.name);
@@ -65,6 +67,7 @@ export class AddContactComponent implements OnInit{
         let contactInfo = form.value;
         contactInfo.createdTime = new Date();
         contactInfo.updatedTime = new Date();
+        contactInfo.creator = this.creator;
 
         // clear local storage
         window.localStorage.removeItem("contact");

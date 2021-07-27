@@ -23,6 +23,7 @@ export class AddSaleOrderComponent implements OnInit{
     submitted = false;
     contacts$ : Observable<Contact[]>;
     assignedToUsers$ : Observable<User[]>;
+    creator: string;
 
     constructor(protected router : Router,
                 protected salesOrderService: SalesOrderService,
@@ -49,6 +50,7 @@ export class AddSaleOrderComponent implements OnInit{
         this.assignedToUsers$ = this.authService.getUser().pipe(
             debounceTime(300),
             distinctUntilChanged(),
+            tap((user) => this.creator = user.name),
             switchMap((user) => {
                 if((!user.isAdmin)){
                     this.saleOrderFormInfo.controls.assignedTo.setValue(user.name);
@@ -69,7 +71,8 @@ export class AddSaleOrderComponent implements OnInit{
         let saleOrderInfo = form.value;
         saleOrderInfo.createdTime = new Date();
         saleOrderInfo.updatedTime = new Date();
-
+        saleOrderInfo.creator = this.creator;
+        
         // clear local storage
         window.localStorage.removeItem("sales_order");
 

@@ -9,6 +9,7 @@ export interface Contact {
     dob: string;
     leadSrc: string;
     assignedTo: string;
+    creator: string;
     address: string;
     description: string;
     createdTime: string;

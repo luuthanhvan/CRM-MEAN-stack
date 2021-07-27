@@ -6,6 +6,7 @@ export interface SaleOrder {
     status: string,
     total: string,
     assignedTo: string,
+    creator: string,
     description: string,
     createdTime: string,
     updatedTime: string,
