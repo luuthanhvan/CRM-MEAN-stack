@@ -111,6 +111,11 @@ export class ContactsComponent implements OnInit {
             updatedTimeFrom : new FormControl(Validators.required),
             updatedTimeTo : new FormControl(Validators.required),
         }, { validators: DateRangeValidator('updatedTimeFrom', 'updatedTimeTo') });
+
+        const draft = window.localStorage.getItem('contact');
+        if(draft){
+            this.router.navigateByUrl('/contacts/add');
+        }
     }
 
     init(){

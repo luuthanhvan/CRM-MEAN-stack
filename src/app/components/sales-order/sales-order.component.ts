@@ -103,6 +103,11 @@ export class SalesOrderComponent implements OnInit {
             updatedTimeFrom : new FormControl(Validators.required),
             updatedTimeTo : new FormControl(Validators.required),
         }, { validators: DateRangeValidator('updatedTimeFrom', 'updatedTimeTo') });
+
+        const draft = window.localStorage.getItem('sales_order');
+        if(draft){
+            this.router.navigateByUrl('/sales_order/add');
+        }
 	}
 
     init(){
