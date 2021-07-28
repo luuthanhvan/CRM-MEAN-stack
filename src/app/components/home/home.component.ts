@@ -40,11 +40,12 @@ export class HomeComponent implements OnInit{
 				this.isAdminUser = this.currentUser.isAdmin;
 			});
 		}
-		
 	}
 
 	signout(){
 		this.authService.removeToken();
+		// clear all value from local storage
+		window.localStorage.clear();
 		this.router.navigateByUrl('/signin');
 	}
 

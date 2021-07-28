@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const  { mutipleMongooseToObject } = require('../helpers/mongoose');
 const apiResponse = require('../helpers/apiResponse');
+const _ = require('lodash');
 
 /* 
 UserController contains function handlers to handle request from User management page.
@@ -10,7 +11,7 @@ This model will interact with database to store or update data.
 
 class UserController {
     // [POST] /user_management - function to store a user
-    userStore(req, res){
+    storeUser(req, res){
         setTimeout(() => {
             try{
                 let userInfo = req.body;
@@ -28,30 +29,43 @@ class UserController {
         }, 1000);
     }
 
-    // [GET] /user_management - function to get list of user
-    userList(req, res){
+    // [POST] /user_management/list - function to get list of user
+    getListOfUsers(req, res){
         try{
-            User
-                .find({})
-                .then((users) => {
-                    if(users.length > 0)
-                        return apiResponse.successResponseWithData(res, 'Success', {users: mutipleMongooseToObject(users)});
-                    else
-                        return apiResponse.successResponseWithData(res, 'Success', {users:[]});
-                });
-
+            const isAdmin = req.isAdmin,
+                userId = req._id;
+            if(!isAdmin){
+                User
+                    .findOne({_id: userId})
+                    .then((data) => {
+                        let user = _.pick(data, ['_id', 'name', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime']);
+                        return apiResponse.successResponseWithData(res, 'Success', {user: user});
+                    });
+            }
+            else{
+                User
+                    .find({})
+                    .then((data) => {
+                        let users = [];
+                        for(let i = 0; i < data.length; i++){
+                            users.push(_.pick(data[i], ['_id', 'name', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime']));
+                        }
+                        return apiResponse.successResponseWithData(res, 'Success', {users: users});
+                    });
+            }
         }catch(err){
             return apiResponse.ErrorResponse(res, err);
         }
     }
 
     // [GET] /user_management/:id - function to get a user
-    userDetail(req, res){
+    getUser(req, res){
         let userId = req.params.id;
         try{
             User
                 .findOne({ _id: userId })
-                .then((user) => {
+                .then((data) => {
+                    let user = _.pick(data, ['_id', 'name', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime']);
                     return apiResponse.successResponseWithData(res, 'Success', { user: user });
                 });
         }catch(err){
@@ -60,7 +74,7 @@ class UserController {
     }
 
     // [PUT] /user_management/:id - function to update a user
-    userUpdate(req, res){
+    updateUser(req, res){
         setTimeout(() => {
             try{
                 let userId = req.params.id;

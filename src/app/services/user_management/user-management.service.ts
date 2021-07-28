@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
-import { map, shareReplay, takeUntil } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { map, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../../interfaces/user';
 // import custom validator to validate that password and confirm password fields match
 import { MustMatch } from '../../helpers/validation_functions';
@@ -13,6 +13,7 @@ import { MustMatch } from '../../helpers/validation_functions';
 export class UserManagementService {
 	SERVER_URL: string = "http://localhost:4040/user_management";
 	private stop$ : Subject<void> = new Subject<void>();
+	noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
   	constructor(private formBuilder : FormBuilder,
 				private httpClient : HttpClient) { }
@@ -42,9 +43,9 @@ export class UserManagementService {
 	// get list of users
 	getUsers():Observable<User[]>{
 		return this.httpClient
-					.get<User[]>(this.SERVER_URL)
+					.post<User[]>(`${this.SERVER_URL}/list`, this.noAuthHeader)
 					.pipe(
-						map(res => res['data']['users']),
+						map(res => res['data']['users'] || [res['data']['user']]),
 						takeUntil(this.stop$),
 						shareReplay()
 					);

@@ -19,12 +19,6 @@
 					<th mat-header-cell *matHeaderCellDef>{{'shared.name' | translate}}</th>
 					<td class="cell" mat-cell *matCellDef="let element">{{element.name}}</td>
 				</ng-container>
-
-				<!-- username column -->
-				<ng-container matColumnDef="username">
-					<th mat-header-cell *matHeaderCellDef>{{'userManagement.username' | translate}}</th>
-					<td class="cell" mat-cell *matCellDef="let element">{{element.username}}</td>
-				</ng-container>
 				
 				<!-- email column -->
 				<ng-container matColumnDef="email">

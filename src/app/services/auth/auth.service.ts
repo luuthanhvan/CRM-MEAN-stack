@@ -8,7 +8,7 @@ import { User } from '../../interfaces/user';
     providedIn: 'root'
 })
 export class AuthService {
-	SERVER_URL: string = "http://localhost:4040";
+	SERVER_URL: string = "http://localhost:4040/auth";
 	noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
 	private user$ = new BehaviorSubject<User | null>(null);
@@ -22,7 +22,7 @@ export class AuthService {
 
 	me() : Observable<User>{
 		return this.httpClient
-					.get<User>(`${this.SERVER_URL}/userProfile`)
+					.get<User>(this.SERVER_URL)
 					.pipe(
 						map(res => res['data'].user),
 						tap(res => this.user$.next(res))
@@ -60,13 +60,13 @@ export class AuthService {
 		}
 		else
 		  	return null;
-	  }
+	}
 	
-	  isLoggedIn() {
+	isLoggedIn() {
 		var userPayload = this.getUserPayload();
 		if (userPayload)
-		  	return userPayload.exp > Date.now() / 1000;
+			return userPayload.exp > Date.now() / 1000;
 		else
-		  	return false;
-	  }
+			return false;
+	}
 }

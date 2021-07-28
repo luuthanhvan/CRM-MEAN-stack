@@ -60,6 +60,7 @@ export class ContactsComponent implements OnInit {
     checkArray : string[] = [];
     isDisabled : boolean = true; // it used to show/hide the mass delete button
     submitted: boolean = false;
+    show : boolean = true;
 
     user$ : Observable<User>;
     assignedToUsers$ : Observable<User[]>;
@@ -111,7 +112,7 @@ export class ContactsComponent implements OnInit {
             updatedTimeFrom : new FormControl(Validators.required),
             updatedTimeTo : new FormControl(Validators.required),
         }, { validators: DateRangeValidator('updatedTimeFrom', 'updatedTimeTo') });
-
+        
         const draft = window.localStorage.getItem('contact');
         if(draft){
             this.router.navigateByUrl('/contacts/add');
@@ -121,17 +122,11 @@ export class ContactsComponent implements OnInit {
     init(){
         this.searchText = new FormControl();
 
-        // get current user logged information
-		this.user$ = this.authService.getUser();
-
-        this.assignedToUsers$ = this.user$.pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            switchMap((user) => {
-                if((!user.isAdmin)){
-                    return of(null);
+        this.assignedToUsers$ = this.userService.getUsers().pipe(
+            tap((data) => {
+                if(data.length == 1){
+                    this.show = false;
                 }
-                return this.userService.getUsers();
             })
         );
         

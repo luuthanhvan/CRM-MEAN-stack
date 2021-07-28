@@ -7,7 +7,7 @@ function route(app){
     app.use('/contacts', contactsRouter);
     app.use('/sales_order', salesOrderRouter);
     app.use('/user_management', userRouter);
-    app.use('/', authRouter);
+    app.use('/auth', authRouter);
 }
 
 module.exports = route;

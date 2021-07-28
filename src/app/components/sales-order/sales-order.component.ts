@@ -66,7 +66,8 @@ export class SalesOrderComponent implements OnInit {
     checkArray : string[] = [];
     isDisabled : boolean = true; // it used to show/hide the mass delete button
     submitted: boolean = false;
-
+    show: boolean = true;
+    
 	constructor(private router: Router,
 				protected salesOrderService: SalesOrderService,
 				private formBuilder: FormBuilder,
@@ -114,17 +115,11 @@ export class SalesOrderComponent implements OnInit {
         this.searchText = new FormControl('');
         this.assignedTo = new FormControl('');
 
-        // get current user logged information
-		this.user$ = this.authService.getUser();
-
-        this.assignedToUsers$ = this.user$.pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            switchMap((user) => {
-                if((!user.isAdmin)){
-                    return of(null);
+        this.assignedToUsers$ = this.userService.getUsers().pipe(
+            tap((data) => {
+                if(data.length == 1){
+                    this.show = false;
                 }
-                return this.userService.getUsers();
             })
         );
 

@@ -24,7 +24,7 @@
 				</mat-select>
 			</mat-form-field>
 			
-			<mat-form-field appearance="outline" class="selectFilter" *ngIf="assignedToUsers$ | async">
+			<mat-form-field appearance="outline" class="selectFilter" *ngIf="show">
 				<mat-label>{{'shared.assignedTo' | translate}}</mat-label>
 				<mat-select 
 						[formControl]="assignedTo"

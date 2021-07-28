@@ -34,7 +34,7 @@
                 <div class="contact">
                     <p>{{'contacts.tableTitle' | translate}}</p>
 
-                    <table mat-table [dataSource]="contactData" class="mat-elevation-z8">
+                    <table mat-table [dataSource]="contactData">
                         <ng-container matColumnDef="contactName">
                             <th mat-header-cell *matHeaderCellDef>{{'shared.name' | translate}}</th>
                             <td class="cell" mat-cell *matCellDef="let element">{{element.contactName}}</td>

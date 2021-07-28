@@ -89,7 +89,7 @@
                 </mat-form-field>
             </mat-grid-tile>
 
-            <mat-grid-tile *ngIf="assignedToUsers$ | async">
+            <mat-grid-tile *ngIf="show">
                 <mat-form-field appearance="outline">
                     <mat-label>Assigned to</mat-label>
                     <mat-select formControlName="assignedTo">

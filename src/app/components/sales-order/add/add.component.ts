@@ -24,7 +24,8 @@ export class AddSaleOrderComponent implements OnInit{
     contacts$ : Observable<Contact[]>;
     assignedToUsers$ : Observable<User[]>;
     creator: string;
-
+    show: boolean = true;
+    
     constructor(protected router : Router,
                 protected salesOrderService: SalesOrderService,
                 private contactService : ContactsService,
@@ -46,19 +47,20 @@ export class AddSaleOrderComponent implements OnInit{
 
         // get list of contacts name from database and display them to the Contact name field in saleOrderForm
         this.contacts$ = this.contactService.getContacts();
+        
         // get list of users from database and display them to the Assigned field in saleOrderForm
-        this.assignedToUsers$ = this.authService.getUser().pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            tap((user) => this.creator = user.name),
-            switchMap((user) => {
-                if((!user.isAdmin)){
-                    this.saleOrderFormInfo.controls.assignedTo.setValue(user.name);
-                    return of(null);
+        this.assignedToUsers$ = this.userService.getUsers().pipe(
+            tap((data) => {
+                if(data.length == 1){
+                    this.saleOrderFormInfo.controls.assignedTo.setValue(data[0].name);
+                    this.show = false;
                 }
-                return this.userService.getUsers();
             })
         );
+
+        this.authService.me().pipe(
+            tap((user) => this.creator = user.name)
+        ).subscribe();
     }
 
     get saleOrderFormControl(){

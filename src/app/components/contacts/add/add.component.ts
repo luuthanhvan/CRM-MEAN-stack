@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+      import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { tap, switchMap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Observable  } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { User } from '../../../interfaces/user';
 import { ContactsService } from '../../../services/contacts/contacts.service'; // use contacts service
 import { UserManagementService } from '../../../services/user_management/user-management.service'; // use user service
@@ -23,6 +23,7 @@ export class AddContactComponent implements OnInit{
     submitted = false;
     assignedToUsers$ : Observable<User[]>;
     creator : string;
+    show : boolean = true;
 
     constructor(protected contactsService : ContactsService,
                 private userService : UserManagementService,
@@ -43,18 +44,18 @@ export class AddContactComponent implements OnInit{
             window.localStorage.setItem("contact", JSON.stringify(data));
         });
 
-        this.assignedToUsers$ = this.authService.getUser().pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            tap((user) => this.creator = user.name),
-            switchMap((user) => {
-                if(!user.isAdmin){
-                    this.contactFormInfo.controls.assignedTo.setValue(user.name);
-                    return of(null);
+        this.assignedToUsers$ = this.userService.getUsers().pipe(
+            tap((data) => {
+                if(data.length == 1){
+                    this.contactFormInfo.controls.assignedTo.setValue(data[0].name);
+                    this.show = false;
                 }
-                return this.userService.getUsers();
             })
         );
+        
+        this.authService.me().pipe(
+            tap((user) => this.creator = user.name)
+        ).subscribe();
     }
 
     get contactFormControl(){
@@ -64,7 +65,7 @@ export class AddContactComponent implements OnInit{
     // function to handle upload contact information to server
     onSubmit(form: FormGroup){
         this.submitted = true;
-        let contactInfo = form.value;
+        const contactInfo = form.value;
         contactInfo.createdTime = new Date();
         contactInfo.updatedTime = new Date();
         contactInfo.creator = this.creator;

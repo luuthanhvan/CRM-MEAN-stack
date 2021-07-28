@@ -14,7 +14,6 @@ import { DatetimeService } from '../../services/datetime/datetime.service';
 export class UserManagementComponent implements OnInit {
 	displayedColumns: string[] = [
 		"name",
-		"username",
 		"email",
 		"isAdmin",
 		"isActive",
@@ -32,6 +31,11 @@ export class UserManagementComponent implements OnInit {
 
 	ngOnInit() {
 		this.users$ = this.userService.getUsers();
+		
+		const draft = window.localStorage.getItem('user');
+        if(draft){
+            this.router.navigateByUrl('/user_management/add');
+        }
 	}
 
 	// navigate to the edit sale order page
