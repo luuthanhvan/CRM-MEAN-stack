@@ -38,19 +38,14 @@ class UserController {
                 User
                     .findOne({_id: userId})
                     .then((data) => {
-                        let user = _.pick(data, ['_id', 'name', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime']);
-                        return apiResponse.successResponseWithData(res, 'Success', {user: user});
+                        return apiResponse.successResponseWithData(res, 'Success', {user: data});
                     });
             }
             else{
                 User
                     .find({})
                     .then((data) => {
-                        let users = [];
-                        for(let i = 0; i < data.length; i++){
-                            users.push(_.pick(data[i], ['_id', 'name', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime']));
-                        }
-                        return apiResponse.successResponseWithData(res, 'Success', {users: users});
+                        return apiResponse.successResponseWithData(res, 'Success', {users: data});
                     });
             }
         }catch(err){
@@ -65,8 +60,7 @@ class UserController {
             User
                 .findOne({ _id: userId })
                 .then((data) => {
-                    let user = _.pick(data, ['_id', 'name', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime']);
-                    return apiResponse.successResponseWithData(res, 'Success', { user: user });
+                    return apiResponse.successResponseWithData(res, 'Success', { user: data });
                 });
         }catch(err){
             return apiResponse.ErrorResponse(res, err);

@@ -35,13 +35,13 @@
 				<!-- admin column -->
 				<ng-container matColumnDef="isAdmin">
 					<th mat-header-cell *matHeaderCellDef>{{'userManagement.admin' | translate}}</th>
-					<td class="cell" mat-cell *matCellDef="let element">{{element.isAdmin}}</td>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.isAdmin ? 'Admin' : 'User'}}</td>
 				</ng-container>
 
 				<!-- active olumn -->
 				<ng-container matColumnDef="isActive">
 					<th mat-header-cell *matHeaderCellDef>{{'userManagement.active' | translate}}</th>
-					<td class="cell" mat-cell *matCellDef="let element">{{element.isActive}}</td>
+					<td class="cell" mat-cell *matCellDef="let element">{{element.isActive ? 'Enabled ': 'Disabled'}}</td>
 				</ng-container>
 			
 				<!-- Created time Column -->
