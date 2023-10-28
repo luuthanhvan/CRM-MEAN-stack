@@ -1,0 +1,117 @@
+<form [formGroup]="saleOrderFormInfo" (ngSubmit)="onSubmit(saleOrderFormInfo)">
+  <div class="formContainer">
+    <mat-grid-list cols="3" rowHeight="100px">
+      <mat-grid-tile [colspan]="3">
+        <h3>Create new sale order infomation</h3>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Contact name</mat-label>
+          <mat-select formControlName="contactName">
+            <mat-option
+              *ngFor="let contact of contacts$ | async"
+              [value]="contact.contactName"
+              >{{ contact.contactName }}</mat-option
+            >
+          </mat-select>
+
+          <!-- contact name validation error -->
+          <div *ngIf="saleOrderFormControl.contactName.touched || submitted">
+            <span *ngIf="saleOrderFormControl.contactName.errors?.required">
+              Contact name is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Subject</mat-label>
+          <input matInput formControlName="subject" />
+
+          <!-- subject validation error -->
+          <div *ngIf="saleOrderFormControl.subject.touched || submitted">
+            <span *ngIf="saleOrderFormControl.subject.errors?.required">
+              Subject is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let stt of statusNames" [value]="stt">{{
+              stt
+            }}</mat-option>
+          </mat-select>
+
+          <!-- status validation error -->
+          <div *ngIf="saleOrderFormControl.status.touched || submitted">
+            <span *ngIf="saleOrderFormControl.status.errors?.required">
+              Status is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Total</mat-label>
+          <input matInput formControlName="total" />
+
+          <!-- total validation error -->
+          <div *ngIf="saleOrderFormControl.total.touched || submitted">
+            <span *ngIf="saleOrderFormControl.total.errors?.required">
+              Total is required
+            </span>
+            <span *ngIf="saleOrderFormControl.total.errors?.pattern">
+              Total must be a number
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile *ngIf="show">
+        <mat-form-field appearance="outline">
+          <mat-label>Assigned to</mat-label>
+          <mat-select formControlName="assignedTo">
+            <mat-option
+              *ngFor="let user of assignedToUsers$ | async"
+              [value]="user.name"
+            >
+              {{ user.name }}
+            </mat-option>
+          </mat-select>
+
+          <!-- assigned to validation error -->
+          <div *ngIf="saleOrderFormControl.assignedTo.touched || submitted">
+            <span *ngIf="saleOrderFormControl.assignedTo.errors?.required">
+              Assigned is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" class="description">
+        <mat-form-field appearance="outline" class="description">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <section class="button-row">
+    <div>
+      <button mat-button type="submit" [disabled]="saleOrderFormInfo.invalid">
+        Create
+      </button>
+      <button mat-button (click)="router.navigate(['/sales_order'])">
+        Back
+      </button>
+    </div>
+  </section>
+</form>

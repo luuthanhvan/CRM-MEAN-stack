@@ -1,0 +1,57 @@
+.contentContainer {
+  margin: 0;
+  overflow: hidden;
+
+  .contactChart,
+  .saleOrderChart,
+  .contact,
+  .saleOrder {
+    width: 47%;
+    height: fit-content;
+    background-color: white;
+    margin: 16px;
+  }
+
+  .contactChart,
+  .contact {
+    float: left;
+  }
+
+  .saleOrderChart,
+  .saleOrder {
+    float: right;
+  }
+
+  .contactChart,
+  .saleOrderChart {
+    padding-bottom: 16px;
+    p {
+      margin-left: 16px;
+    }
+  }
+
+  .contact,
+  .saleOrder {
+    table,
+    mat-paginator,
+    p {
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    p,
+    mat-paginator {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+
+    mat-grid-tile {
+      font-size: 16px;
+    }
+
+    #btnBack {
+      width: 10%;
+      margin: 0 auto;
+    }
+  }
+}

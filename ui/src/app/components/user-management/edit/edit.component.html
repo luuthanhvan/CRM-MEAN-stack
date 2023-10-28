@@ -1,0 +1,124 @@
+<form [formGroup]="userFormInfo" (ngSubmit)="onUpdate(userFormInfo)">
+  <div class="formContainer">
+    <mat-grid-list cols="3" rowHeight="100px">
+      <mat-grid-tile [colspan]="3">
+        <h3>Edit user</h3>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+
+          <!-- name validation error -->
+          <div *ngIf="contactFormControl.name.touched || submitted">
+            <span *ngIf="contactFormControl.name.errors?.required">
+              Name is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" />
+
+          <!-- username validation error -->
+          <div *ngIf="contactFormControl.username.touched || submitted">
+            <span *ngIf="contactFormControl.username.errors?.required">
+              Username is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+
+          <!-- password validation error -->
+          <div *ngIf="contactFormControl.password.touched || submitted">
+            <span *ngIf="contactFormControl.password.errors?.required">
+              Password is required
+            </span>
+            <span *ngIf="contactFormControl.password.errors?.minlength">
+              Password must be at least 6 characters
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm password</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" />
+
+          <!-- confirm password validation error -->
+          <div *ngIf="contactFormControl.confirmPassword.touched || submitted">
+            <span *ngIf="contactFormControl.confirmPassword.errors?.required">
+              Confirm password is required
+            </span>
+            <span *ngIf="contactFormControl.confirmPassword.errors?.mustMatch">
+              Password and confirm password must match
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+
+          <!-- email validation error -->
+          <div *ngIf="contactFormControl.email.touched || submitted">
+            <span *ngIf="contactFormControl.email.errors?.required">
+              Email is required
+            </span>
+            <span *ngIf="contactFormControl.email.errors?.email">
+              Invalid email address
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="phone" />
+
+          <!-- phone validation error -->
+          <div *ngIf="contactFormControl.phone.touched || submitted">
+            <span *ngIf="contactFormControl.phone.errors?.required">
+              Phone is required
+            </span>
+            <span *ngIf="contactFormControl.phone.errors?.pattern">
+              Invalid phone number
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-checkbox formControlName="isAdmin">Admin</mat-checkbox>
+        <!-- <mat-checkbox formControlName="isActive">Active</mat-checkbox> -->
+        <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+      </mat-grid-tile>
+
+      ]
+    </mat-grid-list>
+  </div>
+
+  <section class="button-row">
+    <div>
+      <button mat-button type="submit" [disabled]="userFormInfo.invalid">
+        Save
+      </button>
+      <button mat-button (click)="router.navigate(['/user_management'])">
+        Back
+      </button>
+    </div>
+  </section>
+</form>

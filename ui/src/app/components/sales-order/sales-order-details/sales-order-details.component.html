@@ -1,0 +1,48 @@
+<div *ngIf="salesOrder$ | async as salesOrder">
+  <h2>{{ "salesOrder.salesOrderDetails" | translate }}</h2>
+  <mat-grid-list cols="2" rowHeight="50px">
+    <!-- subject row -->
+    <mat-grid-tile>{{ "salesOrder.subject" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ salesOrder.subject }}</mat-grid-tile>
+
+    <!-- contact name row -->
+    <mat-grid-tile>{{ "shared.name" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ salesOrder.contactName }}</mat-grid-tile>
+
+    <!-- status row -->
+    <mat-grid-tile>{{ "salesOrder.status" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ salesOrder.status }}</mat-grid-tile>
+
+    <!-- total row -->
+    <mat-grid-tile>{{ "salesOrder.total" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ salesOrder.total }}</mat-grid-tile>
+
+    <!-- assigned row -->
+    <mat-grid-tile>{{ "shared.assignedTo" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ salesOrder.assignedTo }}</mat-grid-tile>
+
+    <!-- creator row -->
+    <mat-grid-tile>{{ "shared.creator" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ salesOrder.creator }}</mat-grid-tile>
+
+    <!-- description row -->
+    <mat-grid-tile>{{ "shared.description" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ salesOrder.description }}</mat-grid-tile>
+
+    <!-- created time row -->
+    <mat-grid-tile>{{ "date.createdTime" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{
+      datetimeService.datetimeFormat(salesOrder.createdTime, 2)
+    }}</mat-grid-tile>
+
+    <!-- updated time row -->
+    <mat-grid-tile>{{ "date.updatedTime" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{
+      datetimeService.datetimeFormat(salesOrder.updatedTime, 2)
+    }}</mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>OK</button>
+  </mat-dialog-actions>
+</div>

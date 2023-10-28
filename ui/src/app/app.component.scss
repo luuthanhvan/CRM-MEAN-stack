@@ -1,0 +1,46 @@
+.navbar {
+  height: 48px;
+  margin: 0px auto;
+  background-color: #ffbf00;
+  div {
+    // align div to right
+    margin-left: auto;
+    margin-right: 0;
+    height: 100%;
+    display: flex;
+  }
+
+  button {
+    margin: auto 0;
+    font-size: 16px;
+    height: 100%;
+  }
+}
+
+mat-sidenav-container {
+  height: calc(100vh - 48px);
+  margin: 0 auto;
+}
+
+mat-sidenav {
+  width: 200px;
+  border-right: none;
+  background-color: #004c73;
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+mat-sidenav-content {
+  font-size: 2rem;
+  background-color: #eeeeee;
+}
+
+.menu-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}

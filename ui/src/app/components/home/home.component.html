@@ -1,0 +1,83 @@
+<app-progress-spinner></app-progress-spinner>
+
+<!-- Navigation bar -->
+<mat-toolbar class="navbar">
+  <div>
+    <button mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="language">
+        {{ "action.language" | translate }}
+      </button>
+      <button mat-menu-item (click)="openDialog()">
+        {{ "action.changePassword" | translate }}
+      </button>
+      <button mat-menu-item (click)="signout()">
+        {{ "action.signout" | translate }}
+      </button>
+    </mat-menu>
+    <mat-menu #language="matMenu">
+      <div *ngFor="let language of translate.getLangs()">
+        <button mat-menu-item (click)="switchLanguage(language)">
+          {{ language }}
+        </button>
+      </div>
+    </mat-menu>
+  </div>
+</mat-toolbar>
+
+<!-- Left sidebar menu -->
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened="true">
+    <button
+      mat-button
+      class="menu-button"
+      routerLink="/dashboard"
+      routerLinkActive="active"
+    >
+      {{ "shared.dashboard" | translate }}
+    </button>
+    <button
+      mat-button
+      class="menu-button"
+      routerLink="/contacts"
+      routerLinkActive="active"
+    >
+      {{ "shared.contacts" | translate }}
+    </button>
+    <button
+      mat-button
+      class="menu-button"
+      routerLink="/sales_order"
+      routerLinkActive="active"
+    >
+      {{ "shared.salesOrder" | translate }}
+    </button>
+
+    <div *ngIf="isAdminUser; then admin; else user"></div>
+
+    <ng-template #admin>
+      <button
+        mat-button
+        class="menu-button"
+        routerLink="/user_management"
+        routerLinkActive="active"
+      >
+        {{ "shared.userManagement" | translate }}
+      </button>
+    </ng-template>
+
+    <!-- user cannot see the user management menu -->
+    <ng-template #user>
+      <div></div>
+    </ng-template>
+  </mat-sidenav>
+
+  <!-- main content -->
+  <mat-sidenav-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
