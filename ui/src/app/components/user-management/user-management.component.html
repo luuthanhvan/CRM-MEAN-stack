@@ -1,0 +1,105 @@
+<div class="contentContainer">
+  <!-- List of contacts -->
+  <div class="list">
+    <div class="head">
+      <div class="title">
+        <h2>{{ "userManagement.tableTitle" | translate }}</h2>
+      </div>
+
+      <div class="btnRow">
+        <button
+          mat-button
+          [routerLink]="['/user_management/add']"
+          class="btnCreate"
+        >
+          <mat-icon>add</mat-icon>
+          <span>{{ "userManagement.createNewUser" | translate }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="info">
+      <table mat-table [dataSource]="users$ | async" class="mat-elevation-z8">
+        <!-- name column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "shared.name" | translate }}
+          </th>
+          <td class="cell" mat-cell *matCellDef="let element">
+            {{ element.name }}
+          </td>
+        </ng-container>
+
+        <!-- email column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "shared.email" | translate }}
+          </th>
+          <td class="cell" mat-cell *matCellDef="let element">
+            {{ element.email }}
+          </td>
+        </ng-container>
+
+        <!-- Phone column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "shared.phone" | translate }}
+          </th>
+          <td class="cell" mat-cell *matCellDef="let element">
+            {{ element.phone }}
+          </td>
+        </ng-container>
+
+        <!-- admin column -->
+        <ng-container matColumnDef="isAdmin">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "userManagement.admin" | translate }}
+          </th>
+          <td class="cell" mat-cell *matCellDef="let element">
+            {{ element.isAdmin ? "Admin" : "User" }}
+          </td>
+        </ng-container>
+
+        <!-- active olumn -->
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "userManagement.active" | translate }}
+          </th>
+          <td class="cell" mat-cell *matCellDef="let element">
+            {{ element.isActive ? "Enabled " : "Disabled" }}
+          </td>
+        </ng-container>
+
+        <!-- Created time Column -->
+        <ng-container matColumnDef="createdTime">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "date.createdTime" | translate }}
+          </th>
+          <td class="cell" mat-cell *matCellDef="let element">
+            {{ datetimeService.datetimeFormat(element.createdTime, 2) }}
+          </td>
+        </ng-container>
+
+        <!-- Modify contact infomation column -->
+        <ng-container matColumnDef="modify">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "action.modify" | translate }}
+          </th>
+          <td class="cell" mat-cell *matCellDef="let element">
+            <button mat-button (click)="navigateToEdit(element._id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          class="row"
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+        ></tr>
+      </table>
+    </div>
+  </div>
+  <!-- End div list of contacts -->
+</div>

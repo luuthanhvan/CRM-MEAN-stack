@@ -1,0 +1,152 @@
+<form [formGroup]="contactFormInfo" (ngSubmit)="onUpdate(contactFormInfo)">
+  <div class="formContainer">
+    <mat-grid-list cols="3" rowHeight="100px">
+      <mat-grid-tile [colspan]="3">
+        <h3>Edit contact infomation</h3>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Contact name</mat-label>
+          <input matInput formControlName="contactName" />
+
+          <!-- contact name validation error -->
+          <div *ngIf="contactFormControl.contactName.touched || submitted">
+            <span *ngIf="contactFormControl.contactName.errors?.required">
+              Contact name is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Salutation</mat-label>
+          <mat-select formControlName="salutation">
+            <mat-option *ngFor="let s of salutations" [value]="s">{{
+              s
+            }}</mat-option>
+          </mat-select>
+
+          <!-- salutation validation error -->
+          <div *ngIf="contactFormControl.salutation.touched || submitted">
+            <span *ngIf="contactFormControl.salutation.errors?.required">
+              Salutation is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile phone</mat-label>
+          <input matInput formControlName="mobilePhone" />
+
+          <!-- mobile phone validation error -->
+          <div *ngIf="contactFormControl.mobilePhone.touched || submitted">
+            <span *ngIf="contactFormControl.mobilePhone.errors?.required">
+              Mobile phone is required
+            </span>
+            <span *ngIf="contactFormControl.mobilePhone.errors?.pattern">
+              Invalid mobile phone number
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+
+          <!-- email validation error -->
+          <div *ngIf="contactFormControl.email.touched || submitted">
+            <span *ngIf="contactFormControl.email.errors?.email">
+              Invalid email address
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Organization</mat-label>
+          <input matInput formControlName="organization" />
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Lead source</mat-label>
+          <mat-select formControlName="leadSrc">
+            <mat-option *ngFor="let src of leadSources" [value]="src">{{
+              src
+            }}</mat-option>
+          </mat-select>
+
+          <!-- lead source validation error -->
+          <div *ngIf="contactFormControl.leadSrc.touched || submitted">
+            <span *ngIf="contactFormControl.leadSrc.errors?.required">
+              Lead source is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile *ngIf="assignedToUsers$ | async">
+        <mat-form-field appearance="outline">
+          <mat-label>Assigned to</mat-label>
+          <mat-select formControlName="assignedTo">
+            <mat-option
+              *ngFor="let user of assignedToUsers$ | async"
+              [value]="user.name"
+              >{{ user.name }}</mat-option
+            >
+          </mat-select>
+
+          <!-- assigned validation error -->
+          <div *ngIf="contactFormControl.assignedTo.touched || submitted">
+            <span *ngIf="contactFormControl.assignedTo.errors?.required">
+              Assigned is required
+            </span>
+          </div>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Date of birth</mat-label>
+          <input matInput [matDatepicker]="dobPicker" formControlName="dob" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dobPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dobPicker></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" class="address">
+        <mat-form-field appearance="outline" id="address">
+          <mat-label>Address</mat-label>
+          <textarea formControlName="address" matInput></textarea>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" class="description">
+        <mat-form-field appearance="outline" class="description">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <section class="button-row">
+    <div>
+      <button mat-button type="submit" [disabled]="contactFormInfo.invalid">
+        Save
+      </button>
+      <button mat-button (click)="router.navigate(['/contacts'])">Back</button>
+    </div>
+  </section>
+</form>

@@ -1,0 +1,64 @@
+<div *ngIf="contact$ | async as contact">
+  <h2>{{ "contacts.contactDetails" | translate }}</h2>
+  <mat-grid-list cols="2" rowHeight="50px">
+    <!-- contact name row -->
+    <mat-grid-tile>{{ "shared.name" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.contactName }}</mat-grid-tile>
+
+    <!-- salutation row -->
+    <mat-grid-tile>{{ "contacts.salutation" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.salutation }}</mat-grid-tile>
+
+    <!-- mobile phone row -->
+    <mat-grid-tile>{{ "shared.phone" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.mobilePhone }}</mat-grid-tile>
+
+    <!-- email row -->
+    <mat-grid-tile>{{ "shared.email" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.email }}</mat-grid-tile>
+
+    <!-- organization row -->
+    <mat-grid-tile>{{ "contacts.organization" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.organization }}</mat-grid-tile>
+
+    <!-- dob row -->
+    <mat-grid-tile>{{ "contacts.dob" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.dob }}</mat-grid-tile>
+
+    <!-- lead source row -->
+    <mat-grid-tile>{{ "contacts.leadSrc" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.leadSrc }}</mat-grid-tile>
+
+    <!-- assigned row -->
+    <mat-grid-tile>{{ "shared.assignedTo" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.assignedTo }}</mat-grid-tile>
+
+    <!-- creator row -->
+    <mat-grid-tile>{{ "shared.creator" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.creator }}</mat-grid-tile>
+
+    <!-- address row -->
+    <mat-grid-tile>{{ "contacts.address" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.address }}</mat-grid-tile>
+
+    <!-- description row -->
+    <mat-grid-tile>{{ "shared.description" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{ contact.description }}</mat-grid-tile>
+
+    <!-- created time row -->
+    <mat-grid-tile>{{ "date.createdTime" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{
+      datetimeService.datetimeFormat(contact.createdTime, 2)
+    }}</mat-grid-tile>
+
+    <!-- updated time row -->
+    <mat-grid-tile>{{ "date.updatedTime" | translate }}</mat-grid-tile>
+    <mat-grid-tile>{{
+      datetimeService.datetimeFormat(contact.updatedTime, 2)
+    }}</mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>{{ "action.ok" | translate }}</button>
+  </mat-dialog-actions>
+</div>

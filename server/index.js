@@ -1,30 +1,30 @@
-require('./config/passport');
+require("./config/passport");
 
-const express = require('express');
-const logger = require('morgan');
-const dotenv = require('dotenv');
-const cors = require('cors');
+const express = require("express");
+const logger = require("morgan");
+const dotenv = require("dotenv");
+const cors = require("cors");
 
-const passport = require('passport');
-const route = require('./routers');
-const db = require('./config/db_connection');
+const passport = require("passport");
+const route = require("./routers");
+const db = require("./config/db_connection");
 
 const app = express();
 
-dotenv.config({path: '../.env'});
+dotenv.config({ path: ".env" });
 
 // Database connection
 db.connect();
 
-if(process.env.NODE_ENV == 'development'){
-    app.use(logger('dev'));
+if (process.env.NODE_ENV == "development") {
+  app.use(logger("dev"));
 }
 
 // Parsing body request
 app.use(
-    express.urlencoded({
-        extended: true,
-    }),
+  express.urlencoded({
+    extended: true,
+  }),
 );
 app.use(express.json());
 
@@ -40,18 +40,21 @@ route(app);
 
 // error handler
 app.use((err, req, res, next) => {
-    if (err.name === 'ValidationError') {
-        var valErrors = [];
-        Object.keys(err.errors).forEach(key => valErrors.push(err.errors[key].message));
-        res.status(422).send(valErrors)
-    }
-    else{
-        console.log(err);
-    }
+  if (err.name === "ValidationError") {
+    var valErrors = [];
+    Object.keys(err.errors).forEach((key) =>
+      valErrors.push(err.errors[key].message),
+    );
+    res.status(422).send(valErrors);
+  } else {
+    console.log(err);
+  }
 });
 
-if(!module.parent){
-    app.listen(process.env.SERVER_PORT, process.env.HOSTNAME, () => {
-        console.info(`Server running at http://${process.env.HOSTNAME}:${process.env.SERVER_PORT}`)
-    });   
+if (!module.parent) {
+  app.listen(process.env.SERVER_PORT, process.env.HOSTNAME, () => {
+    console.info(
+      `Server running at http://${process.env.HOSTNAME}:${process.env.SERVER_PORT}`,
+    );
+  });
 }
