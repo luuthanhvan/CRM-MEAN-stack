@@ -1,51 +1,56 @@
-<div id="container">
-  <div class="signinContainter">
-    <form [formGroup]="signinForm" (ngSubmit)="onSubmit(signinForm)">
-      <div class="inputFieldContainer">
-        <div class="icon"><mat-icon>person</mat-icon></div>
-        <div class="inputField">
-          <mat-form-field>
-            <input matInput placeholder="Username" formControlName="username" />
+<div class="bg-image"></div>
+<div class="container">
+  <div class="signinFormContainter">
+    <h3>Login</h3>
+    <div class="signinForm">
+      <form [formGroup]="signinForm" (ngSubmit)="onSubmit(signinForm)">
+        <mat-form-field appearance="outline">
+          <mat-icon class="me-2" matPrefix>person</mat-icon>
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+        <!-- username validation error -->
+        <p *ngIf="signinFormControl.username.touched || submitted">
+          <span
+            class="errorText"
+            *ngIf="signinFormControl.username.errors?.required"
+          >
+            *Username is required
+          </span>
+        </p>
 
-            <!-- username validation error -->
-            <div *ngIf="signinFormControl.username.touched || submitted">
-              <span *ngIf="signinFormControl.username.errors?.required">
-                Username is required
-              </span>
-            </div>
-          </mat-form-field>
-        </div>
-      </div>
+        <mat-form-field appearance="outline">
+          <mat-icon class="me-2" matPrefix>lock</mat-icon>
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+        <!-- password validation error -->
+        <p *ngIf="signinFormControl.password.touched || submitted">
+          <span
+            class="errorText"
+            *ngIf="signinFormControl.password.errors?.required"
+          >
+            *Password is required
+          </span>
+          <span
+            class="errorText"
+            *ngIf="signinFormControl.password.errors?.minlength"
+          >
+            *Password must be at least 6 characters
+          </span>
+        </p>
 
-      <div class="inputFieldContainer">
-        <div class="icon"><mat-icon>lock</mat-icon></div>
-        <div class="inputField">
-          <mat-form-field>
-            <input
-              matInput
-              type="password"
-              placeholder="Password"
-              formControlName="password"
-            />
-
-            <!-- password validation error -->
-            <div *ngIf="signinFormControl.password.touched || submitted">
-              <span *ngIf="signinFormControl.password.errors?.required">
-                Password is required
-              </span>
-              <span *ngIf="signinFormControl.password.errors?.minlength">
-                Password must be at least 6 characters
-              </span>
-            </div>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <div id="btnSignin">
-        <button mat-button type="submit" [disabled]="signinForm.invalid">
-          Sign-in
+        <button
+          mat-button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="signinForm.invalid"
+        >
+          Login
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
+    <p class="footnote">Don't have an account? <span class="linkText">Register</span></p>
   </div>
 </div>

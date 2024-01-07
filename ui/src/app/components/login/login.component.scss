@@ -1,61 +1,54 @@
-#container {
+.bg-image {
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to bottom left, #4bb4f1, #10659e);
-  background-attachment: fixed;
+  background-image: url("/assets/images/background-login-page.jpg");
+  /* Center and scale the image nicely */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* Add the blur effect */
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}
 
-  .signinContainter {
-    background-color: white;
-    border-radius: 10px;
+.signinFormContainter {
+  background-color: #ffffff;
+  z-index: 2;
+  position: absolute;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+  border-radius: 5px;
+  width: 400px;
+  height: fit-content;
+  // horizontal align
+  margin: 0 auto;
+  // vertical align
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
-      rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+  h3 {
+    margin: 16px auto;
+    width: fit-content;
+  }
 
-    height: fit-content;
-
-    // horizontal align
-    width: 25%;
+  .signinForm form {
+    width: 80%;
     margin: 0 auto;
-
-    // vertical align
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    form {
-      padding-top: 16px;
-
-      .inputFieldContainer {
-        margin: 0 auto;
-        width: 80%;
-        display: flex;
-        .icon {
-          width: fit-content;
-          height: fit-content;
-          margin-top: 16px;
-          margin-bottom: 16px;
-          margin-right: 16px;
-        }
-
-        .inputField {
-          width: fit-content;
-        }
-      }
+    .mat-form-field {
+      width: 100%;
     }
-    #btnSignin {
-      width: 25%;
-      margin: 0 auto;
-      margin-bottom: 10px;
+    p {
+      margin-top: -16px;
     }
+    .mat-button {
+      width: 100%;
+    }
+  }
 
-    #errorMessage {
-      width: 70%;
-      margin: 0 auto;
-      p {
-        font-style: italic;
-        color: red;
-      }
-    }
+  .footnote {
+    width: fit-content;
+    margin: 16px auto;
   }
 }
