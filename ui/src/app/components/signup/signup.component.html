@@ -1,0 +1,146 @@
+<div class="bg-image"></div>
+<div class="container">
+  <div class="signupFormContainter">
+    <h3>Signup</h3>
+    <div class="signupForm">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit(signupForm)">
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-icon class="me-2" matPrefix>badge</mat-icon>
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+            <!-- name validation error -->
+            <p *ngIf="signupFormControl.name.touched || submitted">
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.name.errors?.required"
+              >
+                *Name is required
+              </span>
+            </p>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-icon class="me-2" matPrefix>account_circle</mat-icon>
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" />
+            </mat-form-field>
+            <!-- username validation error -->
+            <p *ngIf="signupFormControl.username.touched || submitted">
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.username.errors?.required"
+              >
+                *Username is required
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-icon class="me-2" matPrefix>lock</mat-icon>
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" />
+            </mat-form-field>
+            <!-- password validation error -->
+            <p *ngIf="signupFormControl.password.touched || submitted">
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.password.errors?.required"
+              >
+                *Password is required
+              </span>
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.password.errors?.minlength"
+              >
+                *Password must be at least 6 characters
+              </span>
+            </p>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-icon class="me-2" matPrefix>lock_reset</mat-icon>
+              <mat-label>Confirm password</mat-label>
+              <input
+                matInput
+                type="password"
+                formControlName="confirmPassword"
+              />
+            </mat-form-field>
+            <!-- confirm password validation error -->
+            <p *ngIf="signupFormControl.confirmPassword.touched || submitted">
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.confirmPassword.errors?.required"
+              >
+                *Confirm password is required
+              </span>
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.confirmPassword.errors?.minlength"
+              >
+                *Confirm password must be at least 6 characters
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-icon class="me-2" matPrefix>mail</mat-icon>
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" />
+            </mat-form-field>
+            <!-- email validation error -->
+            <p *ngIf="signupFormControl.email.touched || submitted">
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.email.errors?.required"
+              >
+                *Email is required
+              </span>
+            </p>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-icon class="me-2" matPrefix>call</mat-icon>
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="phone" />
+            </mat-form-field>
+            <!-- phone validation error -->
+            <p *ngIf="signupFormControl.phone.touched || submitted">
+              <span
+                class="errorText"
+                *ngIf="signupFormControl.phone.errors?.required"
+              >
+                *Phone is required
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <button
+          mat-button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="signupForm.invalid"
+        >
+          Signup
+        </button>
+      </form>
+    </div>
+    <p class="footnote">
+      Already have an account? 
+      <span class="linkText" routerLink="/signin" routerLinkActive="active">
+        Login
+      </span>
+    </p>
+  </div>
+</div>

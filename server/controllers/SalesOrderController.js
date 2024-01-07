@@ -36,7 +36,7 @@ class SalesOrderController {
             return apiResponse.successResponseWithData(res, "Success", {
               salesOrder: mutipleMongooseToObject(salesOrder),
             });
-          else return apiResponses.successResponseWithData(res, "Success", []);
+          else return apiResponse.successResponseWithData(res, "Success", []);
         });
       } else {
         SalesOrder.find({}).then((salesOrder) => {
@@ -44,7 +44,7 @@ class SalesOrderController {
             return apiResponse.successResponseWithData(res, "Success", {
               salesOrder: mutipleMongooseToObject(salesOrder),
             });
-          else return apiResponses.successResponseWithData(res, "Success", []);
+          else return apiResponse.successResponseWithData(res, "Success", []);
         });
       }
     } catch (err) {

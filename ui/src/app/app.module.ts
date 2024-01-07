@@ -62,6 +62,7 @@ import { SalesOrderDetailsDialog } from "./components/sales-order/sales-order-de
 import { UserManagementComponent } from "./components/user-management/user-management.component";
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
 import { ProgressSpinnerModule } from "./components/progress-spinner/progress-spinner.module";
+import { SignupComponent } from './components/signup/signup.component';
 
 const materials = [
   MatToolbarModule,
@@ -102,6 +103,7 @@ const materials = [
     LoginComponent,
     HomeComponent,
     HomeChangePasswordComponent,
+    SignupComponent,
   ],
   entryComponents: [
     AppComponent,

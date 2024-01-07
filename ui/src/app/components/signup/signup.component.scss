@@ -11,14 +11,14 @@
   -webkit-filter: blur(8px);
 }
 
-.loginFormContainter {
+.signupFormContainter {
   background-color: #ffffff;
   z-index: 2;
   position: absolute;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
     rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
   border-radius: 5px;
-  width: 400px;
+  width: 800px;
   height: fit-content;
   // horizontal align
   margin: 0 auto;
@@ -33,7 +33,7 @@
     width: fit-content;
   }
 
-  .loginForm form {
+  .signupForm form {
     width: 80%;
     margin: 0 auto;
     .mat-form-field {

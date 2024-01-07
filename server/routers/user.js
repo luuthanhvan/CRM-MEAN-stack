@@ -5,7 +5,7 @@ const authController = require("../controllers/AuthController");
 const jwtHelper = require("../config/jwtHelper");
 
 router.post("/", userController.storeUser); // add a user
-router.get("/create", userController.createNewUser); // create a user
+router.post("/create", userController.createNewUser); // create a user
 router.post(
   "/list",
   jwtHelper.verifyJwtToken,
