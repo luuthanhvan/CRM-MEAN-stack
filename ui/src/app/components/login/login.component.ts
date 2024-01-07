@@ -15,7 +15,7 @@ import { ToastMessageService } from "../../services/toast_message/toast-message.
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
-  signinForm: FormGroup;
+  loginForm: FormGroup;
   submitted: boolean = false;
   errorMessage: string;
 
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.signinForm = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: new FormControl("", [Validators.required]),
       password: new FormControl("", [
         Validators.required,
@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  get signinFormControl() {
-    return this.signinForm.controls;
+  get loginFormControl() {
+    return this.loginForm.controls;
   }
 
   onSubmit(form: FormGroup) {

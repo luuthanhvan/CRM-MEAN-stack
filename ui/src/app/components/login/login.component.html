@@ -1,19 +1,19 @@
 <div class="bg-image"></div>
 <div class="container">
-  <div class="signinFormContainter">
+  <div class="loginFormContainter">
     <h3>Login</h3>
-    <div class="signinForm">
-      <form [formGroup]="signinForm" (ngSubmit)="onSubmit(signinForm)">
+    <div class="loginForm">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
         <mat-form-field appearance="outline">
           <mat-icon class="me-2" matPrefix>person</mat-icon>
           <mat-label>Username</mat-label>
           <input matInput formControlName="username" />
         </mat-form-field>
         <!-- username validation error -->
-        <p *ngIf="signinFormControl.username.touched || submitted">
+        <p *ngIf="loginFormControl.username.touched || submitted">
           <span
             class="errorText"
-            *ngIf="signinFormControl.username.errors?.required"
+            *ngIf="loginFormControl.username.errors?.required"
           >
             *Username is required
           </span>
@@ -25,16 +25,16 @@
           <input matInput type="password" formControlName="password" />
         </mat-form-field>
         <!-- password validation error -->
-        <p *ngIf="signinFormControl.password.touched || submitted">
+        <p *ngIf="loginFormControl.password.touched || submitted">
           <span
             class="errorText"
-            *ngIf="signinFormControl.password.errors?.required"
+            *ngIf="loginFormControl.password.errors?.required"
           >
             *Password is required
           </span>
           <span
             class="errorText"
-            *ngIf="signinFormControl.password.errors?.minlength"
+            *ngIf="loginFormControl.password.errors?.minlength"
           >
             *Password must be at least 6 characters
           </span>
@@ -45,7 +45,7 @@
           mat-raised-button
           color="primary"
           type="submit"
-          [disabled]="signinForm.invalid"
+          [disabled]="loginForm.invalid"
         >
           Login
         </button>

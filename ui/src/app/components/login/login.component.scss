@@ -11,7 +11,7 @@
   -webkit-filter: blur(8px);
 }
 
-.signinFormContainter {
+.loginFormContainter {
   background-color: #ffffff;
   z-index: 2;
   position: absolute;
@@ -33,7 +33,7 @@
     width: fit-content;
   }
 
-  .signinForm form {
+  .loginForm form {
     width: 80%;
     margin: 0 auto;
     .mat-form-field {
