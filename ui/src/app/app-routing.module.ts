@@ -7,13 +7,17 @@ import { ContactsComponent } from "./components/contacts/contacts.component";
 import { SalesOrderComponent } from "./components/sales-order/sales-order.component";
 import { UserManagementComponent } from "./components/user-management/user-management.component";
 import { LoginComponent } from "./components/login/login.component";
-
+import { SignupComponent } from "./components/signup/signup.component";
 import { AuthGuard } from "./guards/auth.guard";
 
 const routes: Routes = [
   {
     path: "signin",
     component: LoginComponent,
+  },
+  {
+    path: "signup",
+    component: SignupComponent,
   },
   {
     path: "",
@@ -30,7 +34,6 @@ const routes: Routes = [
           import("./components/contacts/add/add.module").then(
             (m) => m.AddContactModule
           ),
-        // loadChildren: './components/contacts/add/add.module#AddContactModule',
       },
       {
         path: "contacts/edit",
@@ -38,7 +41,6 @@ const routes: Routes = [
           import("./components/contacts/edit/edit.module").then(
             (m) => m.EditContactModule
           ),
-        // loadChildren: './components/contacts/edit/edit.module#EditContactModule',
       },
       {
         path: "sales_order/add",
@@ -46,7 +48,6 @@ const routes: Routes = [
           import("./components/sales-order/add/add.module").then(
             (m) => m.AddSaleOrderModule
           ),
-        // loadChildren: './components/sales-order/add/add.module#AddSaleOrderModule',
       },
       {
         path: "sales_order/edit",
@@ -54,7 +55,6 @@ const routes: Routes = [
           import("./components/sales-order/edit/edit.module").then(
             (m) => m.EditSaleOrderModule
           ),
-        // loadChildren: './components/sales-order/edit/edit.module#EditSaleOrderModule',
       },
       {
         path: "user_management/add",
@@ -62,7 +62,6 @@ const routes: Routes = [
           import("./components/user-management/add/add.module").then(
             (m) => m.AddUserModule
           ),
-        // loadChildren: './components/user-management/add/add.module#AddUserModule',
       },
       {
         path: "user_management/edit",
@@ -70,7 +69,6 @@ const routes: Routes = [
           import("./components/user-management/edit/edit.module").then(
             (m) => m.EditUserModule
           ),
-        // loadChildren: './components/user-management/edit/edit.module#EditUserModule',
       },
       {
         path: "**",

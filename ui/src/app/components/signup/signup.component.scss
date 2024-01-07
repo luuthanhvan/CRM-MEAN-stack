@@ -1,0 +1,54 @@
+.bg-image {
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/images/background-login-page.jpg");
+  /* Center and scale the image nicely */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* Add the blur effect */
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}
+
+.signupFormContainter {
+  background-color: #ffffff;
+  z-index: 2;
+  position: absolute;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+  border-radius: 5px;
+  width: 800px;
+  height: fit-content;
+  // horizontal align
+  margin: 0 auto;
+  // vertical align
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  h3 {
+    margin: 16px auto;
+    width: fit-content;
+  }
+
+  .signupForm form {
+    width: 80%;
+    margin: 0 auto;
+    .mat-form-field {
+      width: 100%;
+    }
+    p {
+      margin-top: -16px;
+    }
+    .mat-button {
+      width: 100%;
+    }
+  }
+
+  .footnote {
+    width: fit-content;
+    margin: 16px auto;
+  }
+}

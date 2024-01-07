@@ -5,7 +5,7 @@
     <div class="loginForm">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
         <mat-form-field appearance="outline">
-          <mat-icon class="me-2" matPrefix>person</mat-icon>
+          <mat-icon class="me-2" matPrefix>account_circle</mat-icon>
           <mat-label>Username</mat-label>
           <input matInput formControlName="username" />
         </mat-form-field>
@@ -51,6 +51,11 @@
         </button>
       </form>
     </div>
-    <p class="footnote">Don't have an account? <span class="linkText">Register</span></p>
+    <p class="footnote">
+      Don't have an account?
+      <span class="linkText" routerLink="/signup" routerLinkActive="active">
+        Signup
+      </span>
+    </p>
   </div>
 </div>

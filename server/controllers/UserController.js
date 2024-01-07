@@ -12,23 +12,12 @@ class UserController {
   // [POST] /user_management/create - function to create a new user
   createNewUser(req, res) {
     try {
-      const userInfo = {
-        isAdmin: true,
-        isActive: true,
-        name: "Admin",
-        username: "admin",
-        password: "123456",
-        email: "admin@gmail.com",
-        phone: "0123456789",
-      };
-      const user = new User(userInfo);
+      const user = new User(req.body);
       user.save().then(() => {
-        console.log("Create user successfully");
-        return res.status(200).send("Create user successfully!");
+        return apiResponse.successResponse(res, "Create user successfully");
       });
     } catch (err) {
-      console.log("ERROR: ", err);
-      return res.status(500).send("Oop! Something wrong!");
+      return apiResponse.ErrorResponse(res, err);
     }
   }
 

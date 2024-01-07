@@ -49,6 +49,11 @@ export class UserManagementService {
     return this.httpClient.post<void>(this.SERVER_URL, userInfo);
   }
 
+  // create new user
+  createUser(userInfo): Observable<void> {
+    return this.httpClient.post<void>(`${this.SERVER_URL}/create`, userInfo);
+  }
+
   // get list of users
   getUsers(): Observable<User[]> {
     return this.httpClient
