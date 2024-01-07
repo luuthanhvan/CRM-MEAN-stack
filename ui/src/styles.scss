@@ -2,6 +2,7 @@
 
 /* Could not find Angular Material core them. Most Material components may not work as expected */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css"; // <- import
+@import '../node_modules/bootstrap/scss/bootstrap';
 
 $redColor: #c22727;
 $greenColor: #107d47;
