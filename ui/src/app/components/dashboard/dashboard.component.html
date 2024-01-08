@@ -72,11 +72,7 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
-          <tr
-            class="row"
-            mat-row
-            *matRowDef="let row; columns: contactDisplayedCols"
-          ></tr>
+          <tr mat-row *matRowDef="let row; columns: contactDisplayedCols"></tr>
         </table>
 
         <mat-paginator
@@ -129,7 +125,6 @@
 
             <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
             <tr
-              class="row"
               mat-row
               *matRowDef="let row; columns: saleOrderDisplayedCols"
               (click)="onShowDetail(row)"

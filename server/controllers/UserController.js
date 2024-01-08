@@ -43,13 +43,13 @@ class UserController {
       const isAdmin = req.isAdmin,
         userId = req._id;
       if (!isAdmin) {
-        User.findOne({ _id: userId }).then((data) => {
+        User.findOne({ _id: userId }, "-username -password").then((data) => {
           return apiResponse.successResponseWithData(res, "Success", {
             user: data,
           });
         });
       } else {
-        User.find({}).then((data) => {
+        User.find({}, "-username -password").then((data) => {
           return apiResponse.successResponseWithData(res, "Success", {
             users: data,
           });
