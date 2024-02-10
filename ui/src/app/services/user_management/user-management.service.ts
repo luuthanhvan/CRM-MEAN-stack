@@ -6,12 +6,13 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { User } from "../../interfaces/user";
 // import custom validator to validate that password and confirm password fields match
 import { MustMatch } from "../../helpers/validation_functions";
+import * as environment  from "../../../assets/environment.json";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserManagementService {
-  SERVER_URL: string = "http://localhost:4040/user_management";
+  SERVER_URL: string = environment.baseUrl + "/user_management";
   private stop$: Subject<void> = new Subject<void>();
   noAuthHeader = { headers: new HttpHeaders({ NoAuth: "True" }) };
 

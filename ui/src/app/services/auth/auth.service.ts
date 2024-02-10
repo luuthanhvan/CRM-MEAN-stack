@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 import { map, tap, catchError } from "rxjs/operators";
 import { User } from "../../interfaces/user";
+import * as environment  from "../../../assets/environment.json";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  SERVER_URL: string = "http://localhost:4040/auth";
+  SERVER_URL: string = environment.baseUrl + "/auth";
   noAuthHeader = { headers: new HttpHeaders({ NoAuth: "True" }) };
 
   private user$ = new BehaviorSubject<User | null>(null);

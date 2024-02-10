@@ -4,12 +4,13 @@ import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { map, shareReplay, takeUntil } from "rxjs/operators";
+import * as environment  from "../../../assets/environment.json";
 
 @Injectable({
   providedIn: "root",
 })
 export class ContactsService {
-  SERVER_URL: string = "http://localhost:4040/contacts";
+  SERVER_URL: string = environment.baseUrl + "/contacts";
   private stop$: Subject<void> = new Subject<void>();
   noAuthHeader = { headers: new HttpHeaders({ NoAuth: "True" }) };
 

@@ -1,9 +1,10 @@
 const mg = require("mongoose");
-const url = "mongodb://localhost:27017/CRM_DB";
+const dotenv = require("dotenv");
+dotenv.config({ path: "../.env" });
 
 async function connect() {
   try {
-    await mg.connect(url, {
+    await mg.connect(process.env.MONGOOSE_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

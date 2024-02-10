@@ -4,12 +4,13 @@ import { Observable, Subject } from "rxjs";
 import { map, takeUntil, shareReplay } from "rxjs/operators";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { SaleOrder } from "../../interfaces/sale-order"; // import sale order interface
+import * as environment  from "../../../assets/environment.json";
 
 @Injectable({
   providedIn: "root",
 })
 export class SalesOrderService {
-  SERVER_URL: string = "http://localhost:4040/sales_order";
+  SERVER_URL: string = environment.baseUrl + "/sales_order";
   private stop$: Subject<void> = new Subject<void>();
   noAuthHeader = { headers: new HttpHeaders({ NoAuth: "True" }) };
 
