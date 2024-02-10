@@ -1,6 +1,6 @@
 const Contacts = require("../models/Contacts");
-const { mutipleMongooseToObject } = require("../helpers/mongoose");
-const apiResponse = require("../helpers/apiResponse");
+const { mutipleMongooseToObject } = require("../ultils/mongoose");
+const apiResponse = require("../ultils/apiResponse");
 
 /* 
 ContactsController contains function handlers to handle request from Contacts page.

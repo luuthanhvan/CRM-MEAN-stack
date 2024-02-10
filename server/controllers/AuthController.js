@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const apiResponse = require("../helpers/apiResponse");
+const apiResponse = require("../ultils/apiResponse");
 const passport = require("passport");
 const _ = require("lodash");
 

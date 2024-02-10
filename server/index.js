@@ -7,7 +7,7 @@ const cors = require("cors");
 
 const passport = require("passport");
 const route = require("./routers");
-const db = require("./config/db_connection");
+const db = require("./config/dbConnection");
 
 const app = express();
 

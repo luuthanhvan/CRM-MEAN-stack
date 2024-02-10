@@ -1,0 +1,29 @@
+[
+  {
+    "isAdmin": true,
+    "isActive": true,
+    "name": "Admin",
+    "username": "admin",
+    "password": "123456",
+    "email": "admin@gmail.com",
+    "phone": "0123456789"
+  },
+  {
+    "isAdmin": true,
+    "isActive": true,
+    "name": "User 1",
+    "username": "user1",
+    "password": "123456",
+    "email": "user1@gmail.com",
+    "phone": "0129398433"
+  },
+  {
+    "isAdmin": false,
+    "isActive": false,
+    "name": "User 2",
+    "username": "user2",
+    "password": "123456",
+    "email": "user2@gmail.com",
+    "phone": "0129398433"
+  }
+]
