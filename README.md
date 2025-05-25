@@ -8,7 +8,6 @@ So first of all you need to install the necessary libraries and run the code sep
 Find the installation instructions file in ```docs``` directory.
 
 ### Server
-* First, rename the file ```.env_example``` to ```.env``` (in ```server``` directory) <br />
 * Open another termial and run these following commands
 ```
 1. cd server
@@ -32,7 +31,7 @@ Open a termial and run these following commands line by line
 ```
 
 ## Customization
-Just in case you want to change the running port of server, you need to
+Just in case you want to run the server in different port, you just need to
 1. Change the ```SERVER_PORT``` in ```server/.env``` file.
 2. Change the same port number of the ```baseUrl``` in ```ui/src/assets/environment.json```<br />
 
