@@ -2,6 +2,9 @@
 
 <!-- Navigation bar -->
 <mat-toolbar class="navbar">
+  <div class="logo d-flex align-items-center justify-content-center">
+    <mat-icon svgIcon="crm"></mat-icon>
+  </div>
   <div>
     <button mat-button [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
@@ -32,27 +35,30 @@
   <mat-sidenav mode="side" opened="true">
     <button
       mat-button
-      class="menu-button"
+      class="menu-button w-100 py-1"
       routerLink="/dashboard"
       routerLinkActive="active"
     >
-      {{ "shared.dashboard" | translate }}
+      <mat-icon>dashboard</mat-icon>
+      <span>{{ "shared.dashboard" | translate }}</span>
     </button>
     <button
       mat-button
-      class="menu-button"
+      class="menu-button w-100 py-1"
       routerLink="/contacts"
       routerLinkActive="active"
     >
-      {{ "shared.contacts" | translate }}
+      <mat-icon>contact_page</mat-icon>
+      <span>{{ "shared.contacts" | translate }}</span>
     </button>
     <button
       mat-button
-      class="menu-button"
+      class="menu-button w-100 py-1"
       routerLink="/sales_order"
       routerLinkActive="active"
     >
-      {{ "shared.salesOrder" | translate }}
+      <mat-icon>real_estate_agent</mat-icon>
+      <span>{{ "shared.salesOrder" | translate }}</span>
     </button>
 
     <div *ngIf="isAdminUser; then admin; else user"></div>
@@ -60,11 +66,12 @@
     <ng-template #admin>
       <button
         mat-button
-        class="menu-button"
+        class="menu-button w-100 py-1"
         routerLink="/user_management"
         routerLinkActive="active"
       >
-        {{ "shared.userManagement" | translate }}
+        <mat-icon>manage_accounts</mat-icon>
+        <span>{{ "shared.userManagement" | translate }}</span>
       </button>
     </ng-template>
 
