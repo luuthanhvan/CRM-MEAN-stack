@@ -1,114 +1,117 @@
-<form [formGroup]="saleOrderFormInfo" (ngSubmit)="onUpdate(saleOrderFormInfo)">
-  <div class="formContainer">
-    <mat-grid-list cols="3" rowHeight="100px">
-      <mat-grid-tile [colspan]="3">
-        <h3>Edit sale order infomation</h3>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Contact name</mat-label>
-          <mat-select formControlName="contactName">
-            <mat-option
-              *ngFor="let contact of contacts$ | async"
-              [value]="contact.contactName"
-              >{{ contact.contactName }}</mat-option
+<div id="sales-order-form-edit-wrapper">
+  <div class="row mx-4 my-4">
+    <mat-card class="sales-order-form-edit-card col-12">
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Edit sales order</h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form
+          class="mx-2 my-4"
+          [formGroup]="saleOrderFormInfo"
+          (ngSubmit)="onUpdate(saleOrderFormInfo)"
+        >
+          <div class="row">
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Contact name</mat-label>
+              <mat-select formControlName="contactName">
+                <mat-option
+                  *ngFor="let contact of contacts$ | async"
+                  [value]="contact.contactName"
+                  >{{ contact.contactName }}</mat-option
+                >
+              </mat-select>
+              <div
+                *ngIf="saleOrderFormControl.contactName.touched || submitted"
+              >
+                <span *ngIf="saleOrderFormControl.contactName.errors?.required">
+                  Contact name is required
+                </span>
+              </div>
+            </mat-form-field>
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Subject</mat-label>
+              <input matInput formControlName="subject" />
+              <div *ngIf="saleOrderFormControl.subject.touched || submitted">
+                <span *ngIf="saleOrderFormControl.subject.errors?.required">
+                  Subject is required
+                </span>
+              </div>
+            </mat-form-field>
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option *ngFor="let stt of statusNames" [value]="stt">{{
+                  stt
+                }}</mat-option>
+              </mat-select>
+              <div *ngIf="saleOrderFormControl.status.touched || submitted">
+                <span *ngIf="saleOrderFormControl.status.errors?.required">
+                  Status is required
+                </span>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="row my-3">
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Total</mat-label>
+              <input matInput formControlName="total" />
+              <div *ngIf="saleOrderFormControl.total.touched || submitted">
+                <span *ngIf="saleOrderFormControl.total.errors?.required">
+                  Total is required
+                </span>
+              </div>
+            </mat-form-field>
+            <mat-form-field
+              class="col-4"
+              appearance="outline"
+              *ngIf="assignedToUsers$ | async"
             >
-          </mat-select>
-
-          <!-- contact name validation error -->
-          <div *ngIf="saleOrderFormControl.contactName.touched || submitted">
-            <span *ngIf="saleOrderFormControl.contactName.errors?.required">
-              Contact name is required
-            </span>
+              <mat-label>Assigned to</mat-label>
+              <mat-select formControlName="assignedTo">
+                <mat-option
+                  *ngFor="let user of assignedToUsers$ | async"
+                  [value]="user.name"
+                >
+                  {{ user.name }}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="saleOrderFormControl.assignedTo.touched || submitted">
+                <span *ngIf="saleOrderFormControl.assignedTo.errors?.required">
+                  Assigned is required
+                </span>
+              </div>
+            </mat-form-field>
           </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Subject</mat-label>
-          <input matInput formControlName="subject" />
-
-          <!-- subject validation error -->
-          <div *ngIf="saleOrderFormControl.subject.touched || submitted">
-            <span *ngIf="saleOrderFormControl.subject.errors?.required">
-              Subject is required
-            </span>
+          <div class="row my-3">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Desscription</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
           </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="status">
-            <mat-option *ngFor="let stt of statusNames" [value]="stt">{{
-              stt
-            }}</mat-option>
-          </mat-select>
-
-          <!-- status validation error -->
-          <div *ngIf="saleOrderFormControl.status.touched || submitted">
-            <span *ngIf="saleOrderFormControl.status.errors?.required">
-              Status is required
-            </span>
-          </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Total</mat-label>
-          <input matInput formControlName="total" />
-
-          <!-- total validation error -->
-          <div *ngIf="saleOrderFormControl.total.touched || submitted">
-            <span *ngIf="saleOrderFormControl.total.errors?.required">
-              Total is required
-            </span>
-          </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile *ngIf="assignedToUsers$ | async">
-        <mat-form-field appearance="outline">
-          <mat-label>Assigned to</mat-label>
-          <mat-select formControlName="assignedTo">
-            <mat-option
-              *ngFor="let user of assignedToUsers$ | async"
-              [value]="user.name"
+          <div class="mt-4 d-flex gap-2 justify-content-center">
+            <button
+              class="mt-3"
+              mat-button
+              type="submit"
+              [disabled]="saleOrderFormInfo.invalid"
+              [ngClass]="
+                saleOrderFormInfo.invalid ? 'btn-disabled' : 'btn-primary'
+              "
             >
-              {{ user.name }}
-            </mat-option>
-          </mat-select>
-
-          <!-- assigned to validation error -->
-          <div *ngIf="saleOrderFormControl.assignedTo.touched || submitted">
-            <span *ngIf="saleOrderFormControl.assignedTo.errors?.required">
-              Assigned is required
-            </span>
+              Save
+            </button>
+            <button
+              class="btn-grey mt-3"
+              mat-button
+              (click)="router.navigate(['/sales_order'])"
+            >
+              Back
+            </button>
           </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="3" class="description">
-        <mat-form-field appearance="outline">
-          <mat-label>Desscription</mat-label>
-          <textarea matInput formControlName="description"></textarea>
-        </mat-form-field>
-      </mat-grid-tile>
-    </mat-grid-list>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
-
-  <section class="button-row">
-    <div>
-      <button mat-button type="submit" [disabled]="saleOrderFormInfo.invalid">
-        Save
-      </button>
-      <button mat-button (click)="router.navigate(['/sales_order'])">
-        Back
-      </button>
-    </div>
-  </section>
-</form>
+</div>

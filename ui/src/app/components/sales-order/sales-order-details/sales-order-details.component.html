@@ -1,48 +1,79 @@
-<div *ngIf="salesOrder$ | async as salesOrder">
-  <h2>{{ "salesOrder.salesOrderDetails" | translate }}</h2>
-  <mat-grid-list cols="2" rowHeight="50px">
-    <!-- subject row -->
-    <mat-grid-tile>{{ "salesOrder.subject" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ salesOrder.subject }}</mat-grid-tile>
+<div
+  class="sales-order-details-dialog-wrapper"
+  *ngIf="salesOrder$ | async as salesOrder"
+>
+  <h3>{{ "salesOrder.salesOrderDetails" | translate }}</h3>
 
-    <!-- contact name row -->
-    <mat-grid-tile>{{ "shared.name" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ salesOrder.contactName }}</mat-grid-tile>
+  <ul class="list-group">
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "salesOrder.subject" | translate }}</span>
+      <span class="text-grey">{{ salesOrder.subject }}</span>
+    </li>
 
-    <!-- status row -->
-    <mat-grid-tile>{{ "salesOrder.status" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ salesOrder.status }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.name" | translate }}</span>
+      <span class="text-grey">{{ salesOrder.contactName }}</span>
+    </li>
 
-    <!-- total row -->
-    <mat-grid-tile>{{ "salesOrder.total" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ salesOrder.total }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "salesOrder.status" | translate }}</span>
+      <span class="text-grey">{{ salesOrder.status }}</span>
+    </li>
 
-    <!-- assigned row -->
-    <mat-grid-tile>{{ "shared.assignedTo" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ salesOrder.assignedTo }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "salesOrder.total" | translate }}</span>
+      <span class="text-grey">{{ salesOrder.total }}</span>
+    </li>
 
-    <!-- creator row -->
-    <mat-grid-tile>{{ "shared.creator" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ salesOrder.creator }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.assignedTo" | translate }}</span>
+      <span class="text-grey">{{ salesOrder.assignedTo }}</span>
+    </li>
 
-    <!-- description row -->
-    <mat-grid-tile>{{ "shared.description" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ salesOrder.description }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.creator" | translate }}</span>
+      <span class="text-grey">{{ salesOrder.creator }}</span>
+    </li>
 
-    <!-- created time row -->
-    <mat-grid-tile>{{ "date.createdTime" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{
-      datetimeService.datetimeFormat(salesOrder.createdTime, 2)
-    }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.description" | translate }}</span>
+      <span class="text-grey">{{ salesOrder.description }}</span>
+    </li>
 
-    <!-- updated time row -->
-    <mat-grid-tile>{{ "date.updatedTime" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{
-      datetimeService.datetimeFormat(salesOrder.updatedTime, 2)
-    }}</mat-grid-tile>
-  </mat-grid-list>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "date.createdTime" | translate }}</span>
+      <span class="text-grey">
+        {{ datetimeService.datetimeFormat(salesOrder.createdTime, 2) }}
+      </span>
+    </li>
+
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "date.updatedTime" | translate }}</span>
+      <span class="text-grey">
+        {{ datetimeService.datetimeFormat(salesOrder.updatedTime, 2) }}
+      </span>
+    </li>
+  </ul>
 
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>OK</button>
+    <button mat-button mat-dialog-close>{{ "action.ok" | translate }}</button>
   </mat-dialog-actions>
 </div>
