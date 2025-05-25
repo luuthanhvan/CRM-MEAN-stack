@@ -5,7 +5,7 @@
     "dob": "Date of birth",
     "address": "Address",
     "leadSrc": "Lead source",
-    "tableTitle": "Customers information",
+    "tableTitle": "List of Customer",
     "createNewCustomer": "Create new customer",
     "editCustomerInfo": "Edit customer information",
     "contactDetails": "Contact details"

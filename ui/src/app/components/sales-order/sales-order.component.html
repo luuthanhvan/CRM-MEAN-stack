@@ -192,7 +192,7 @@
         <!-- Checkbox column -->
         <ng-container matColumnDef="check">
           <th mat-header-cell *matHeaderCellDef></th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             <input
               type="checkbox"
               [value]="element._id"
@@ -207,7 +207,7 @@
             {{ "salesOrder.subject" | translate }}
           </th>
           <td
-            class="cell"
+            class="text-center"
             mat-cell
             *matCellDef="let element"
             (click)="onClickedRow(element._id)"
@@ -221,7 +221,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "shared.name" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.contactName }}
           </td>
         </ng-container>
@@ -231,7 +231,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "salesOrder.status" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.status }}
           </td>
         </ng-container>
@@ -241,7 +241,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "salesOrder.total" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.total }}
           </td>
         </ng-container>
@@ -251,7 +251,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "shared.assignedTo" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.assignedTo }}
           </td>
         </ng-container>
@@ -261,7 +261,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "date.createdTime" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ datetimeService.datetimeFormat(element.createdTime, 2) }}
           </td>
         </ng-container>
@@ -271,7 +271,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "date.updatedTime" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ datetimeService.datetimeFormat(element.updatedTime, 2) }}
           </td>
         </ng-container>
@@ -281,7 +281,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "action.modify" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             <button mat-button (click)="navigateToEdit(element._id)">
               <mat-icon>edit</mat-icon>
             </button>
@@ -293,7 +293,7 @@
           <th mat-header-cell *matHeaderCellDef>
             {{ "action.delete" | translate }}
           </th>
-          <td class="cell" mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             <button mat-button (click)="onDelete(element._id, element.subject)">
               <mat-icon>delete</mat-icon>
             </button>

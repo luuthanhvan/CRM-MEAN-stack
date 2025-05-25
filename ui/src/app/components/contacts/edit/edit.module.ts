@@ -8,6 +8,7 @@ import {
   MatDatepickerModule,
   MatButtonModule,
   MatGridListModule,
+  MatCardModule,
 } from "@angular/material";
 import { MatInputModule } from "@angular/material/input"; // import this to render form exactly
 import { MatNativeDateModule } from "@angular/material/core"; // require when using MatDatepickerModule
@@ -23,6 +24,7 @@ const materials = [
   MatNativeDateModule,
   MatButtonModule,
   MatGridListModule,
+  MatCardModule,
 ];
 
 @NgModule({

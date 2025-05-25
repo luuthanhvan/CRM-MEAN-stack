@@ -70,20 +70,20 @@
           <div class="mb-2">
             <table mat-table [dataSource]="contactData" class="w-100">
               <ng-container matColumnDef="contactName">
-                <th mat-header-cell *matHeaderCellDef>
+                <th class="text-left ps-4" mat-header-cell *matHeaderCellDef>
                   {{ "shared.name" | translate }}
                 </th>
-                <td class="cell" mat-cell *matCellDef="let element">
+                <td class="text-left ps-4" mat-cell *matCellDef="let element">
                   {{ element.contactName }}
                 </td>
               </ng-container>
   
               <ng-container matColumnDef="assignedTo">
-                <th mat-header-cell *matHeaderCellDef>
+                <th class="text-center" mat-header-cell *matHeaderCellDef>
                   {{ "shared.assignedTo" | translate }}
                 </th>
                 <td
-                  class="cell"
+                  class="text-center"
                   mat-cell
                   *matCellDef="let element"
                   (click)="onClickedCell(element.assignedTo)"
@@ -93,10 +93,10 @@
               </ng-container>
   
               <ng-container matColumnDef="updatedTime">
-                <th mat-header-cell *matHeaderCellDef>
+                <th class="text-center" mat-header-cell *matHeaderCellDef>
                   {{ "date.updatedTime" | translate }}
                 </th>
-                <td class="cell" mat-cell *matCellDef="let element">
+                <td class="text-center" mat-cell *matCellDef="let element">
                   {{ datetimeService.datetimeFormat(element.updatedTime, 2) }}
                 </td>
               </ng-container>
@@ -139,28 +139,28 @@
             <div class="mb-2">
               <table mat-table [dataSource]="saleOrderData" class="w-100">
                 <ng-container matColumnDef="subject">
-                  <th mat-header-cell *matHeaderCellDef>
+                  <th class="text-left ps-4" mat-header-cell *matHeaderCellDef>
                     {{ "salesOrder.subject" | translate }}
                   </th>
-                  <td class="cell" mat-cell *matCellDef="let element">
+                  <td class="text-left ps-4 pointer" mat-cell *matCellDef="let element">
                     {{ element.subject }}
                   </td>
                 </ng-container>
   
                 <ng-container matColumnDef="total">
-                  <th mat-header-cell *matHeaderCellDef>
+                  <th class="text-center" mat-header-cell *matHeaderCellDef>
                     {{ "salesOrder.total" | translate }}
                   </th>
-                  <td class="cell" mat-cell *matCellDef="let element">
+                  <td class="text-center pointer" mat-cell *matCellDef="let element">
                     {{ element.total }}
                   </td>
                 </ng-container>
   
                 <ng-container matColumnDef="updatedTime">
-                  <th mat-header-cell *matHeaderCellDef>
+                  <th class="text-center" mat-header-cell *matHeaderCellDef>
                     {{ "date.updatedTime" | translate }}
                   </th>
-                  <td class="cell" mat-cell *matCellDef="let element">
+                  <td class="text-center pointer" mat-cell *matCellDef="let element">
                     {{ datetimeService.datetimeFormat(element.updatedTime, 2) }}
                   </td>
                 </ng-container>
@@ -198,43 +198,43 @@
             <ul class="list-group list-group-flush">
               <!-- Subject row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "salesOrder.subject" | translate }}</span>
-                <span>{{ saleOrderDetail.subject }}</span>
+                <span class="text-bold">{{ "salesOrder.subject" | translate }}</span>
+                <span class="text-grey">{{ saleOrderDetail.subject }}</span>
               </li>
               <!-- Contact name row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "shared.name" | translate }}</span>
-                <span>{{ saleOrderDetail.contactName }}</span>
+                <span class="text-bold">{{ "shared.name" | translate }}</span>
+                <span class="text-grey">{{ saleOrderDetail.contactName }}</span>
               </li>
               <!-- Status row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "salesOrder.status" | translate }}</span>
-                <span>{{ saleOrderDetail.status }}</span>
+                <span class="text-bold">{{ "salesOrder.status" | translate }}</span>
+                <span class="text-grey">{{ saleOrderDetail.status }}</span>
               </li>
               <!-- Total row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "salesOrder.total" | translate }}</span>
-                <span>{{ saleOrderDetail.total }}</span>
+                <span class="text-bold">{{ "salesOrder.total" | translate }}</span>
+                <span class="text-grey">{{ saleOrderDetail.total }}</span>
               </li>
               <!-- Assigned row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "shared.assignedTo" | translate }}</span>
-                <span>{{ saleOrderDetail.assignedTo }}</span>
+                <span class="text-bold">{{ "shared.assignedTo" | translate }}</span>
+                <span class="text-grey">{{ saleOrderDetail.assignedTo }}</span>
               </li>
               <!-- Description row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "shared.description" | translate }}</span>
-                <span>{{ saleOrderDetail.description }}</span>
+                <span class="text-bold">{{ "shared.description" | translate }}</span>
+                <span class="text-grey">{{ saleOrderDetail.description }}</span>
               </li>
               <!-- Created time row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "date.createdTime" | translate }}</span>
-                <span>{{ datetimeService.datetimeFormat(saleOrderDetail.createdTime, 2) }}</span>
+                <span class="text-bold">{{ "date.createdTime" | translate }}</span>
+                <span class="text-grey">{{ datetimeService.datetimeFormat(saleOrderDetail.createdTime, 2) }}</span>
               </li>
               <!-- Updated time row -->
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ "date.updatedTime" | translate }}</span>
-                <span>{{ datetimeService.datetimeFormat(saleOrderDetail.updatedTime, 2) }}</span>
+                <span class="text-bold">{{ "date.updatedTime" | translate }}</span>
+                <span class="text-grey">{{ datetimeService.datetimeFormat(saleOrderDetail.updatedTime, 2) }}</span>
               </li>
             </ul>
           </mat-card-content>

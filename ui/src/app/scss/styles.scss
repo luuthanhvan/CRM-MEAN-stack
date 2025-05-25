@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 /* Could not find Angular Material core them. Most Material components may not work as expected */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css"; // <- import
-@import './variables';
-@import './font.scss';
-@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import "./variables";
+@import "./font.scss";
+@import "../../../node_modules/bootstrap/scss/bootstrap";
 
 * {
   box-sizing: border-box;
@@ -19,38 +19,39 @@ Document can be found at https://atlassian.design/foundations/typography
 */
 body {
   margin: 0;
-  font-family: 'Atlassian Sans', sans-serif;
+  font-family: "Atlassian Sans", sans-serif;
 }
 h1 {
   font-size: 56px;
   font-weight: 800;
   line-height: 56px;
-  font-family: 'Atlassian Sans';
+  font-family: "Atlassian Sans";
 }
 h2 {
   font-size: 32px;
   font-weight: 700;
   line-height: 48px;
-  font-family: 'Atlassian Sans';
+  font-family: "Atlassian Sans";
 }
 h3 {
   font-size: 20px;
   font-weight: 500;
-  font-family: 'Atlassian Sans';
+  font-family: "Atlassian Sans";
 }
 h4 {
   font-size: 18px;
   font-weight: 400;
-  font-family: 'Atlassian Sans';
+  font-family: "Atlassian Sans";
 }
 h6 {
   font-size: 14px;
   font-weight: 300;
-  font-family: 'Atlassian Sans';
+  font-family: "Atlassian Sans";
 }
-p, span {
+p,
+span {
   font-size: 14px;
-  font-family: 'Atlassian Sans';
+  font-family: "Atlassian Sans";
 }
 
 /* Expansion Panel custom stylings */
@@ -68,7 +69,7 @@ p, span {
     .mat-expansion-panel-body {
       padding: 0;
     }
-  }  
+  }
 }
 
 /* Card custom stylings */
@@ -97,9 +98,124 @@ p, span {
   }
 }
 
-.row,
-.cell {
+/* Table custom stylings */
+.mat-table {
+  width: 100%;
+  border-radius: 10px !important;
+  .mat-header-row .mat-header-cell {
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Atlassian Sans";
+    color: $black80;
+    border-right: 1px solid $mat-table-border-color;
+  }
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  th.mat-header-cell:last-of-type,
+  td.mat-cell:last-of-type {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .mat-row .mat-cell {
+    font-size: 14px;
+    font-family: "Atlassian Sans";
+    border-right: 1px solid $mat-table-border-color;
+  }
+}
+
+/* Form custome stylings */
+.mat-form-field {
+  font-size: 14px;
+  height: 56px;
+}
+
+/* Define standard colors */
+.btn-primary {
+  background-color: $primary;
+  color: $light;
+}
+.btn-secondary {
+  background-color: $secondary;
+  color: $light;
+}
+.btn-tertiary {
+  background-color: $tertiary;
+  color: $dark;
+}
+.btn-grey {
+  background-color: $light;
+  color: $dark;
+}
+.btn-success {
+  background-color: $success;
+  color: $pure-white;
+}
+.btn-danger {
+  background-color: $danger;
+  color: $pure-white;
+}
+.btn-warning {
+  background-color: $warning;
+  color: $dark;
+}
+.btn-info {
+  background-color: $info;
+  color: $pure-white;
+}
+.btn-disabled {
+  background-color: $black20;
+  color: $dark;
+}
+.bg-success {
+  background-color: $success;
+}
+.bg-danger {
+  background-color: $danger;
+}
+.bg-warning {
+  background-color: $warning;
+}
+.bg-info {
+  background-color: $info;
+}
+.bg-disabled {
+  background-color: $black20;
+}
+.text-danger {
+  color: $danger;
+}
+.text-warning {
+  color: $warning;
+}
+.text-white {
+  color: $pure-white;
+}
+.text-black {
+  color: $dark;
+}
+.text-info {
+  color: $info;
+}
+.text-grey {
+  color: $grey-text;
+}
+.pointer {
   cursor: pointer;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-bold {
+  font-weight: 600;
 }
 
 .customDialog {
@@ -119,29 +235,4 @@ mat-progress-spinner {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-}
-
-.success {
-  background: green;
-  color: white;
-}
-
-.failed {
-  background: red;
-  color: white;
-}
-
-.massDeleteBtn {
-  margin-left: 16px;
-}
-
-.errorText {
-  font-style: italic;
-  color: red;
-  font-size: 14px;
-}
-
-.linkText {
-  color: #0288D1;
-  cursor: pointer;
 }

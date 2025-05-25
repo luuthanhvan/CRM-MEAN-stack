@@ -1,62 +1,98 @@
-<div *ngIf="contact$ | async as contact">
-  <h2>{{ "contacts.contactDetails" | translate }}</h2>
-  <mat-grid-list cols="2" rowHeight="50px">
-    <!-- contact name row -->
-    <mat-grid-tile>{{ "shared.name" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.contactName }}</mat-grid-tile>
+<div class="contact-details-dialog-wrapper" *ngIf="contact$ | async as contact">
+  <h3>{{ "contacts.contactDetails" | translate }}</h3>
 
-    <!-- salutation row -->
-    <mat-grid-tile>{{ "contacts.salutation" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.salutation }}</mat-grid-tile>
+  <ul class="list-group">
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.name" | translate }}</span>
+      <span class="text-grey">{{ contact.contactName }}</span>
+    </li>
 
-    <!-- mobile phone row -->
-    <mat-grid-tile>{{ "shared.phone" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.mobilePhone }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "contacts.salutation" | translate }}</span>
+      <span class="text-grey">{{ contact.salutation }}</span>
+    </li>
 
-    <!-- email row -->
-    <mat-grid-tile>{{ "shared.email" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.email }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.phone" | translate }}</span>
+      <span class="text-grey">{{ contact.mobilePhone }}</span>
+    </li>
 
-    <!-- organization row -->
-    <mat-grid-tile>{{ "contacts.organization" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.organization }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.email" | translate }}</span>
+      <span class="text-grey">{{ contact.email }}</span>
+    </li>
 
-    <!-- dob row -->
-    <mat-grid-tile>{{ "contacts.dob" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.dob }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "contacts.organization" | translate }}</span>
+      <span class="text-grey">{{ contact.organization }}</span>
+    </li>
 
-    <!-- lead source row -->
-    <mat-grid-tile>{{ "contacts.leadSrc" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.leadSrc }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "contacts.dob" | translate }}</span>
+      <span class="text-grey">{{ contact.dob }}</span>
+    </li>
 
-    <!-- assigned row -->
-    <mat-grid-tile>{{ "shared.assignedTo" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.assignedTo }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "contacts.leadSrc" | translate }}</span>
+      <span class="text-grey">{{ contact.leadSrc }}</span>
+    </li>
 
-    <!-- creator row -->
-    <mat-grid-tile>{{ "shared.creator" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.creator }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.assignedTo" | translate }}</span>
+      <span class="text-grey">{{ contact.assignedTo }}</span>
+    </li>
 
-    <!-- address row -->
-    <mat-grid-tile>{{ "contacts.address" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.address }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.creator" | translate }}</span>
+      <span class="text-grey">{{ contact.assignedTo }}</span>
+    </li>
 
-    <!-- description row -->
-    <mat-grid-tile>{{ "shared.description" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{ contact.description }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "contacts.address" | translate }}</span>
+      <span class="text-grey">{{ contact.address }}</span>
+    </li>
 
-    <!-- created time row -->
-    <mat-grid-tile>{{ "date.createdTime" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{
-      datetimeService.datetimeFormat(contact.createdTime, 2)
-    }}</mat-grid-tile>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "shared.description" | translate }}</span>
+      <span class="text-grey">{{ contact.description }}</span>
+    </li>
 
-    <!-- updated time row -->
-    <mat-grid-tile>{{ "date.updatedTime" | translate }}</mat-grid-tile>
-    <mat-grid-tile>{{
-      datetimeService.datetimeFormat(contact.updatedTime, 2)
-    }}</mat-grid-tile>
-  </mat-grid-list>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "date.createdTime" | translate }}</span>
+      <span class="text-grey">{{ datetimeService.datetimeFormat(contact.createdTime, 2) }}</span>
+    </li>
+
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span class="text-bold">{{ "date.updatedTime" | translate }}</span>
+      <span class="text-grey">{{ datetimeService.datetimeFormat(contact.updatedTime, 2) }}</span>
+    </li>
+  </ul>
 
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>{{ "action.ok" | translate }}</button>
