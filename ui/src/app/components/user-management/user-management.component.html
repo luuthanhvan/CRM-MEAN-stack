@@ -1,93 +1,96 @@
-<div class="contentContainer">
-  <!-- List of contacts -->
-  <div class="list">
-    <div class="head">
-      <div class="title">
-        <h2>{{ "userManagement.tableTitle" | translate }}</h2>
-      </div>
-
-      <div class="btnRow">
+<div id="user-wrapper">
+  <div class="row mx-4 my-2">
+    <div>
+      <h2 class="float-start" id="user-heading">
+        {{ "userManagement.tableTitle" | translate }}
+      </h2>
+    </div>
+    <div class="col-12">
+      <h3 class="float-start my-1">List of Users</h3>
+      <div
+        id="user-button-row"
+        class="float-end d-flex align-items-center gap-2"
+      >
         <button
           mat-button
           [routerLink]="['/user_management/add']"
-          class="btnCreate"
+          class="btn-primary"
         >
           <mat-icon>add</mat-icon>
           <span>{{ "userManagement.createNewUser" | translate }}</span>
         </button>
       </div>
     </div>
-
-    <div class="info">
-      <table mat-table [dataSource]="users$ | async" class="mat-elevation-z8">
+    <div class="col-12 my-3 user-list">
+      <table id="list-of-users" mat-table [dataSource]="users$ | async" class="mat-elevation-z8">
         <!-- name column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>
+          <th class="text-left ps-4" mat-header-cell *matHeaderCellDef>
             {{ "shared.name" | translate }}
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td class="text-left ps-4" mat-cell *matCellDef="let element">
             {{ element.name }}
           </td>
         </ng-container>
 
         <!-- email column -->
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef>
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
             {{ "shared.email" | translate }}
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.email }}
           </td>
         </ng-container>
 
         <!-- Phone column -->
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
             {{ "shared.phone" | translate }}
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.phone }}
           </td>
         </ng-container>
 
         <!-- admin column -->
         <ng-container matColumnDef="isAdmin">
-          <th mat-header-cell *matHeaderCellDef>
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
             {{ "userManagement.admin" | translate }}
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.isAdmin ? "Admin" : "User" }}
           </td>
         </ng-container>
 
         <!-- active olumn -->
         <ng-container matColumnDef="isActive">
-          <th mat-header-cell *matHeaderCellDef>
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
             {{ "userManagement.active" | translate }}
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.isActive ? "Enabled " : "Disabled" }}
           </td>
         </ng-container>
 
         <!-- Created time Column -->
         <ng-container matColumnDef="createdTime">
-          <th mat-header-cell *matHeaderCellDef>
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
             {{ "date.createdTime" | translate }}
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             {{ datetimeService.datetimeFormat(element.createdTime, 2) }}
           </td>
         </ng-container>
 
         <!-- Modify contact infomation column -->
         <ng-container matColumnDef="modify">
-          <th mat-header-cell *matHeaderCellDef>
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
             {{ "action.modify" | translate }}
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td class="text-center" mat-cell *matCellDef="let element">
             <button mat-button (click)="navigateToEdit(element._id)">
-              <mat-icon>edit</mat-icon>
+              <mat-icon class="text-warning pointer">edit</mat-icon>
             </button>
           </td>
         </ng-container>
@@ -97,5 +100,4 @@
       </table>
     </div>
   </div>
-  <!-- End div list of contacts -->
 </div>

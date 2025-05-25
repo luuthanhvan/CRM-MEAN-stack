@@ -1,124 +1,125 @@
-<form [formGroup]="userFormInfo" (ngSubmit)="onSubmit(userFormInfo)">
-  <div class="formContainer">
-    <mat-grid-list cols="3" rowHeight="100px">
-      <mat-grid-tile [colspan]="3">
-        <h3>Create new user</h3>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="name" />
-
-          <!-- name validation error -->
-          <div *ngIf="contactFormControl.name.touched || submitted">
-            <span *ngIf="contactFormControl.name.errors?.required">
-              Name is required
-            </span>
+<div id="user-form-add-wrapper">
+  <div class="row mx-4 my-4">
+    <mat-card class="user-form-add-card col-12">
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Create new user</h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form
+          class="mx-3 my-4"
+          [formGroup]="userFormInfo"
+          (ngSubmit)="onSubmit(userFormInfo)"
+        >
+          <div class="row">
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="name" />
+              <div *ngIf="contactFormControl.name.touched || submitted">
+                <span *ngIf="contactFormControl.name.errors?.required">
+                  Name is required
+                </span>
+              </div>
+            </mat-form-field>
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" />
+              <div *ngIf="contactFormControl.username.touched || submitted">
+                <span *ngIf="contactFormControl.username.errors?.required">
+                  Username is required
+                </span>
+              </div>
+            </mat-form-field>
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" />
+              <div *ngIf="contactFormControl.password.touched || submitted">
+                <span *ngIf="contactFormControl.password.errors?.required">
+                  Password is required
+                </span>
+                <span *ngIf="contactFormControl.password.errors?.minlength">
+                  Password must be at least 6 characters
+                </span>
+              </div>
+            </mat-form-field>
           </div>
-        </mat-form-field>
-      </mat-grid-tile>
+          <div class="row my-3">
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Confirm password</mat-label>
+              <input
+                matInput
+                type="password"
+                formControlName="confirmPassword"
+              />
+              <div
+                *ngIf="contactFormControl.confirmPassword.touched || submitted"
+              >
+                <span
+                  *ngIf="contactFormControl.confirmPassword.errors?.required"
+                >
+                  Confirm password is required
+                </span>
+                <span
+                  *ngIf="contactFormControl.confirmPassword.errors?.mustMatch"
+                >
+                  Password and confirm password must match
+                </span>
+              </div>
+            </mat-form-field>
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" />
 
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" />
+              <!-- email validation error -->
+              <div *ngIf="contactFormControl.email.touched || submitted">
+                <span *ngIf="contactFormControl.email.errors?.required">
+                  Email is required
+                </span>
+                <span *ngIf="contactFormControl.email.errors?.email">
+                  Invalid email address
+                </span>
+              </div>
+            </mat-form-field>
+            <mat-form-field class="col-4" appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="phone" />
 
-          <!-- username validation error -->
-          <div *ngIf="contactFormControl.username.touched || submitted">
-            <span *ngIf="contactFormControl.username.errors?.required">
-              Username is required
-            </span>
+              <!-- phone validation error -->
+              <div *ngIf="contactFormControl.phone.touched || submitted">
+                <span *ngIf="contactFormControl.phone.errors?.required">
+                  Phone is required
+                </span>
+                <span *ngIf="contactFormControl.phone.errors?.pattern">
+                  Invalid phone number
+                </span>
+              </div>
+            </mat-form-field>
           </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" />
-
-          <!-- password validation error -->
-          <div *ngIf="contactFormControl.password.touched || submitted">
-            <span *ngIf="contactFormControl.password.errors?.required">
-              Password is required
-            </span>
-            <span *ngIf="contactFormControl.password.errors?.minlength">
-              Password must be at least 6 characters
-            </span>
+          <div class="row my-3">
+            <mat-checkbox class="col-2" formControlName="isAdmin">Admin</mat-checkbox>
+            <mat-slide-toggle class="col-2" formControlName="isActive">Active</mat-slide-toggle>
           </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Confirm password</mat-label>
-          <input matInput type="password" formControlName="confirmPassword" />
-
-          <!-- confirm password validation error -->
-          <div *ngIf="contactFormControl.confirmPassword.touched || submitted">
-            <span *ngIf="contactFormControl.confirmPassword.errors?.required">
-              Confirm password is required
-            </span>
-            <span *ngIf="contactFormControl.confirmPassword.errors?.mustMatch">
-              Password and confirm password must match
-            </span>
+          <div class="mt-4 d-flex gap-2 justify-content-center">
+            <button
+              class="mt-3"
+              mat-button
+              type="submit"
+              [disabled]="userFormInfo.invalid"
+              [ngClass]="userFormInfo.invalid ? 'btn-disabled' : 'btn-primary'"
+            >
+              Create
+            </button>
+            <button
+              class="btn-grey mt-3"
+              mat-button
+              (click)="router.navigate(['/user_management'])"
+            >
+              Back
+            </button>
           </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" />
-
-          <!-- email validation error -->
-          <div *ngIf="contactFormControl.email.touched || submitted">
-            <span *ngIf="contactFormControl.email.errors?.required">
-              Email is required
-            </span>
-            <span *ngIf="contactFormControl.email.errors?.email">
-              Invalid email address
-            </span>
-          </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Phone</mat-label>
-          <input matInput formControlName="phone" />
-
-          <!-- phone validation error -->
-          <div *ngIf="contactFormControl.phone.touched || submitted">
-            <span *ngIf="contactFormControl.phone.errors?.required">
-              Phone is required
-            </span>
-            <span *ngIf="contactFormControl.phone.errors?.pattern">
-              Invalid phone number
-            </span>
-          </div>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-checkbox formControlName="isAdmin">Admin</mat-checkbox>
-        <!-- <mat-checkbox formControlName="isActive">Active</mat-checkbox> -->
-        <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
-      </mat-grid-tile>
-
-      ]
-    </mat-grid-list>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
-
-  <section class="button-row">
-    <div>
-      <button mat-button type="submit" [disabled]="userFormInfo.invalid">
-        Create
-      </button>
-      <button mat-button (click)="router.navigate(['/user_management'])">
-        Back
-      </button>
-    </div>
-  </section>
-</form>
+</div>

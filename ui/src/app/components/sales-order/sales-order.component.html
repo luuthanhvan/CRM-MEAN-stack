@@ -206,7 +206,7 @@
     </div>
     <div class="col-12 my-3">
       <h3 class="float-start my-1">
-        {{ "salesOrder.tableTitle" | translate }}
+        List of Sales order
       </h3>
       <div
         id="sales-order-button-row"
@@ -232,7 +232,7 @@
       </div>
     </div>
     <div class="col-12 my-3 sales-order-list">
-      <table mat-table [dataSource]="result$ | async" class="mat-elevation-z8">
+      <table id="list-of-sales-order" mat-table [dataSource]="result$ | async" class="mat-elevation-z8">
         <!-- Checkbox column -->
         <ng-container matColumnDef="check">
           <th mat-header-cell *matHeaderCellDef></th>
