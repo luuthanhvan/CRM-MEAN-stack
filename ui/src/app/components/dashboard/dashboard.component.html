@@ -1,199 +1,249 @@
-<div class="contentContainer">
-  <!-- Widget 1: Number of contacts by lead source -->
-  <div class="contactChart">
-    <p>{{ "shared.contacts" | translate }}</p>
-    <div style="display: block">
-      <canvas
-        baseChart
-        [data]="contactPieChartData"
-        [labels]="contactPieChartLabels"
-        [chartType]="contactPieChartType"
-        (chartHover)="chartHovered($event, 'contacts')"
-        (chartClick)="chartClicked($event, 'contacts')"
+<div id="dashboard-wrapper">
+  <div class="row mx-4 my-2">
+    <h2 id="dashboard-heading">{{ "shared.dashboard" | translate }}</h2>
+    <!-- Widget 1: Number of contacts by lead source -->
+    <mat-accordion class="col-sm-12 col-md-6 my-2 contacts-accordion">
+      <mat-expansion-panel
+        [expanded]="contactPanelOpenState"
+        (opened)="onOpenPanel('contact')"
+        (closed)="onOpenPanel('contact')"
       >
-      </canvas>
-    </div>
-  </div>
-
-  <!-- Widget 2: Number of sales orders by status -->
-  <div class="saleOrderChart">
-    <p>{{ "shared.salesOrder" | translate }}</p>
-    <div style="display: block">
-      <canvas
-        baseChart
-        [data]="saleOrderPieChartData"
-        [labels]="saleOrderPieChartLabels"
-        [chartType]="saleOrderPieChartType"
-        (chartHover)="chartHovered($event, 'salesOrder')"
-        (chartClick)="chartClicked($event, 'salesOrder')"
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>{{ "shared.contacts" | translate }}</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="my-4">
+          <canvas
+            baseChart
+            [data]="contactPieChartData"
+            [labels]="contactPieChartLabels"
+            [chartType]="contactPieChartType"
+            (chartHover)="chartHovered($event, 'contacts')"
+            (chartClick)="chartClicked($event, 'contacts')"
+          ></canvas>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  
+    <!-- Widget 2: Number of sales orders by status -->
+    <mat-accordion class="col-sm-12 col-md-6 my-2 sales-order-accordion">
+      <mat-expansion-panel
+        [expanded]="salesOrderPanelOpenState"
+        (opened)="onOpenPanel('salesOrder')"
+        (closed)="onOpenPanel('salesOrder')"
       >
-      </canvas>
-    </div>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>{{ "shared.salesOrder" | translate }}</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="my-4">
+          <canvas
+            baseChart
+            [data]="saleOrderPieChartData"
+            [labels]="saleOrderPieChartLabels"
+            [chartType]="saleOrderPieChartType"
+            (chartHover)="chartHovered($event, 'salesOrder')"
+            (chartClick)="chartClicked($event, 'salesOrder')"
+          ></canvas>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 
   <!-- Only admin user can see the widget 3 and 4 -->
-  <div *ngIf="user$ | async as user">
-    <div *ngIf="user && user.isAdmin">
-      <!-- Widget 3:  Contact information -->
-      <div class="contact">
-        <p>{{ "contacts.tableTitle" | translate }}</p>
-
-        <table mat-table [dataSource]="contactData" class="mat-elevation-z8">
-          <ng-container matColumnDef="contactName">
-            <th mat-header-cell *matHeaderCellDef>
-              {{ "shared.name" | translate }}
-            </th>
-            <td class="cell" mat-cell *matCellDef="let element">
-              {{ element.contactName }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="assignedTo">
-            <th mat-header-cell *matHeaderCellDef>
-              {{ "shared.assignedTo" | translate }}
-            </th>
-            <td
-              class="cell"
-              mat-cell
-              *matCellDef="let element"
-              (click)="onClickedCell(element.assignedTo)"
-            >
-              {{ element.assignedTo }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="updatedTime">
-            <th mat-header-cell *matHeaderCellDef>
-              {{ "date.updatedTime" | translate }}
-            </th>
-            <td class="cell" mat-cell *matCellDef="let element">
-              {{ datetimeService.datetimeFormat(element.updatedTime, 2) }}
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
-          <tr mat-row *matRowDef="let row; columns: contactDisplayedCols"></tr>
-        </table>
-
-        <mat-paginator
-          #contactPaginator
-          [length]="contactLength"
-          [pageSize]="5"
-          [pageSizeOptions]="[3, 5, 10]"
-          showFirstLastButtons
+  <div class="row mx-4 my-2" *ngIf="user$ | async as user">
+    <!-- Widget 3:  Contact information -->
+    <div class="col-sm-12 col-md-6 my-2" *ngIf="user && user.isAdmin">
+      <mat-accordion class="contacts-list-accordion">
+        <mat-expansion-panel
+          [expanded]="contactTablePanelOpenState"
+          (opened)="onOpenPanel('contactTable')"
+          (closed)="onOpenPanel('contactTable')"
         >
-        </mat-paginator>
-      </div>
-
-      <!-- Widget 4:  Sales order information -->
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3>{{ "contacts.tableTitle" | translate }}</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="mb-2">
+            <table mat-table [dataSource]="contactData" class="w-100">
+              <ng-container matColumnDef="contactName">
+                <th mat-header-cell *matHeaderCellDef>
+                  {{ "shared.name" | translate }}
+                </th>
+                <td class="cell" mat-cell *matCellDef="let element">
+                  {{ element.contactName }}
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="assignedTo">
+                <th mat-header-cell *matHeaderCellDef>
+                  {{ "shared.assignedTo" | translate }}
+                </th>
+                <td
+                  class="cell"
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="onClickedCell(element.assignedTo)"
+                >
+                  {{ element.assignedTo }}
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="updatedTime">
+                <th mat-header-cell *matHeaderCellDef>
+                  {{ "date.updatedTime" | translate }}
+                </th>
+                <td class="cell" mat-cell *matCellDef="let element">
+                  {{ datetimeService.datetimeFormat(element.updatedTime, 2) }}
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="contactDisplayedCols"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: contactDisplayedCols"
+              ></tr>
+            </table>
+  
+            <mat-paginator
+              #contactPaginator
+              [length]="contactLength"
+              [pageSize]="5"
+              [pageSizeOptions]="[3, 5, 10]"
+              showFirstLastButtons
+            >
+            </mat-paginator>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  
+    <!-- Widget 4:  Sales order information -->
+    <div class="col-sm-12 col-md-6 my-2" *ngIf="user && user.isAdmin">
       <div *ngIf="isShowDetail; then detail; else info"></div>
-
       <ng-template #info>
-        <div class="saleOrder">
-          <p>{{ "salesOrder.tableTitle" | translate }}</p>
-          <table
-            mat-table
-            [dataSource]="saleOrderData"
-            class="mat-elevation-z8"
+        <mat-accordion class="sales-order-list-accordion">
+          <mat-expansion-panel
+            [expanded]="salesOrderTablePanelOpenState"
+            (opened)="onOpenPanel('salesOrderTable')"
+            (closed)="onOpenPanel('salesOrderTable')"
           >
-            <ng-container matColumnDef="subject">
-              <th mat-header-cell *matHeaderCellDef>
-                {{ "salesOrder.subject" | translate }}
-              </th>
-              <td class="cell" mat-cell *matCellDef="let element">
-                {{ element.subject }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="total">
-              <th mat-header-cell *matHeaderCellDef>
-                {{ "salesOrder.total" | translate }}
-              </th>
-              <td class="cell" mat-cell *matCellDef="let element">
-                {{ element.total }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="updatedTime">
-              <th mat-header-cell *matHeaderCellDef>
-                {{ "date.updatedTime" | translate }}
-              </th>
-              <td class="cell" mat-cell *matCellDef="let element">
-                {{ datetimeService.datetimeFormat(element.updatedTime, 2) }}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="saleOrderDisplayedCols"></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: saleOrderDisplayedCols"
-              (click)="onShowDetail(row)"
-            ></tr>
-          </table>
-
-          <mat-paginator
-            #saleOrderPaginator
-            [length]="saleOrderLength"
-            [pageSize]="5"
-            [pageSizeOptions]="[3, 5, 10]"
-            showFirstLastButtons
-          >
-          </mat-paginator>
-        </div>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h3>{{ "salesOrder.tableTitle" | translate }}</h3>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="mb-2">
+              <table mat-table [dataSource]="saleOrderData" class="w-100">
+                <ng-container matColumnDef="subject">
+                  <th mat-header-cell *matHeaderCellDef>
+                    {{ "salesOrder.subject" | translate }}
+                  </th>
+                  <td class="cell" mat-cell *matCellDef="let element">
+                    {{ element.subject }}
+                  </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="total">
+                  <th mat-header-cell *matHeaderCellDef>
+                    {{ "salesOrder.total" | translate }}
+                  </th>
+                  <td class="cell" mat-cell *matCellDef="let element">
+                    {{ element.total }}
+                  </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="updatedTime">
+                  <th mat-header-cell *matHeaderCellDef>
+                    {{ "date.updatedTime" | translate }}
+                  </th>
+                  <td class="cell" mat-cell *matCellDef="let element">
+                    {{ datetimeService.datetimeFormat(element.updatedTime, 2) }}
+                  </td>
+                </ng-container>
+  
+                <tr
+                  mat-header-row
+                  *matHeaderRowDef="saleOrderDisplayedCols"
+                ></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: saleOrderDisplayedCols"
+                  (click)="onShowDetail(row)"
+                ></tr>
+              </table>
+            </div>
+            <mat-paginator
+              #saleOrderPaginator
+              [length]="saleOrderLength"
+              [pageSize]="5"
+              [pageSizeOptions]="[3, 5, 10]"
+              showFirstLastButtons
+            ></mat-paginator>
+          </mat-expansion-panel>
+        </mat-accordion>
       </ng-template>
-
       <!-- Sale order detail -->
       <ng-template #detail>
-        <div class="saleOrder">
-          <p>{{ saleOrderDetail.subject }}</p>
-          <mat-grid-list cols="2" rowHeight="42px">
-            <!-- Subject row -->
-            <mat-grid-tile>{{
-              "salesOrder.subject" | translate
-            }}</mat-grid-tile>
-            <mat-grid-tile>{{ saleOrderDetail.subject }}</mat-grid-tile>
-
-            <!-- Contact name row -->
-            <mat-grid-tile>{{ "shared.name" | translate }}</mat-grid-tile>
-            <mat-grid-tile>{{ saleOrderDetail.contactName }}</mat-grid-tile>
-
-            <!-- Status row -->
-            <mat-grid-tile>{{ "salesOrder.status" | translate }}</mat-grid-tile>
-            <mat-grid-tile>{{ saleOrderDetail.status }}</mat-grid-tile>
-
-            <!-- Total row -->
-            <mat-grid-tile>{{ "salesOrder.total" | translate }}</mat-grid-tile>
-            <mat-grid-tile>{{ saleOrderDetail.total }}</mat-grid-tile>
-
-            <!-- Assigned row -->
-            <mat-grid-tile>{{ "shared.assignedTo" | translate }}</mat-grid-tile>
-            <mat-grid-tile>{{ saleOrderDetail.assignedTo }}</mat-grid-tile>
-
-            <!-- Description row -->
-            <mat-grid-tile>{{
-              "shared.description" | translate
-            }}</mat-grid-tile>
-            <mat-grid-tile>{{ saleOrderDetail.description }}</mat-grid-tile>
-
-            <!-- Created time row -->
-            <mat-grid-tile>{{ "date.createdTime" | translate }}</mat-grid-tile>
-            <mat-grid-tile>{{
-              datetimeService.datetimeFormat(saleOrderDetail.createdTime, 2)
-            }}</mat-grid-tile>
-
-            <!-- Updated time row -->
-            <mat-grid-tile>{{ "date.updatedTime" | translate }}</mat-grid-tile>
-            <mat-grid-tile>{{
-              datetimeService.datetimeFormat(saleOrderDetail.updatedTime, 2)
-            }}</mat-grid-tile>
-          </mat-grid-list>
-
-          <div id="btnBack">
+        <mat-card class="sales-order-details-card">
+          <mat-card-header>
+            <mat-card-title>
+              <h3>Sales order <b>{{ saleOrderDetail.subject }}</b> details</h3>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul class="list-group list-group-flush">
+              <!-- Subject row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "salesOrder.subject" | translate }}</span>
+                <span>{{ saleOrderDetail.subject }}</span>
+              </li>
+              <!-- Contact name row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "shared.name" | translate }}</span>
+                <span>{{ saleOrderDetail.contactName }}</span>
+              </li>
+              <!-- Status row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "salesOrder.status" | translate }}</span>
+                <span>{{ saleOrderDetail.status }}</span>
+              </li>
+              <!-- Total row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "salesOrder.total" | translate }}</span>
+                <span>{{ saleOrderDetail.total }}</span>
+              </li>
+              <!-- Assigned row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "shared.assignedTo" | translate }}</span>
+                <span>{{ saleOrderDetail.assignedTo }}</span>
+              </li>
+              <!-- Description row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "shared.description" | translate }}</span>
+                <span>{{ saleOrderDetail.description }}</span>
+              </li>
+              <!-- Created time row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "date.createdTime" | translate }}</span>
+                <span>{{ datetimeService.datetimeFormat(saleOrderDetail.createdTime, 2) }}</span>
+              </li>
+              <!-- Updated time row -->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ "date.updatedTime" | translate }}</span>
+                <span>{{ datetimeService.datetimeFormat(saleOrderDetail.updatedTime, 2) }}</span>
+              </li>
+            </ul>
+          </mat-card-content>
+          <mat-card-actions>
             <button mat-button (click)="onHideDetail()">
               {{ "action.back" | translate }}
             </button>
-          </div>
-        </div>
+          </mat-card-actions>
+        </mat-card>
       </ng-template>
     </div>
   </div>

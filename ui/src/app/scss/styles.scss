@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-
 /* Could not find Angular Material core them. Most Material components may not work as expected */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css"; // <- import
 @import './variables';
@@ -29,21 +28,24 @@ h1 {
   font-family: 'Atlassian Sans';
 }
 h2 {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 48px;
   font-family: 'Atlassian Sans';
 }
 h3 {
+  font-size: 20px;
   font-weight: 500;
   font-family: 'Atlassian Sans';
 }
 h4 {
+  font-size: 18px;
   font-weight: 400;
   font-family: 'Atlassian Sans';
 }
 h6 {
-  font-weight: 200;
+  font-size: 14px;
+  font-weight: 300;
   font-family: 'Atlassian Sans';
 }
 p, span {
@@ -51,134 +53,53 @@ p, span {
   font-family: 'Atlassian Sans';
 }
 
-.contentContainer {
-  margin: 16px;
-  .searchContainer {
-    h1 {
-      position: absolute;
-      left: 16px;
-    }
-    margin-bottom: 16px;
-
-    mat-form-field {
-      font-size: 14px;
-      width: 330px;
-    }
-  }
-
-  .filtersContainter,
-  .list {
-    margin: 0 16px 16px 16px;
-
-    h2 {
-      margin-left: 16px;
-    }
-  }
-
-  .filtersContainter {
-    font-size: 12px;
-    background-color: white;
-    overflow: hidden;
-
-    .filters {
-      width: 50%;
-      margin: 0 auto;
-
-      .selectFilter {
-        width: 100%;
-        margin-top: 16px;
-      }
-    }
-
-    .btnCancel {
-      width: 100px;
-      margin: 0 auto;
-
-      button {
-        width: 100%;
-      }
-    }
-  }
-
-  .list {
-    background-color: white;
-    overflow: hidden;
-
-    .head {
-      .title,
-      .btnRow {
-        width: fit-content;
-        height: fit-content;
-      }
-
-      .title {
-        float: left;
-      }
-
-      .btnRow {
+/* Expansion Panel custom stylings */
+.mat-expansion-panel {
+  .mat-expansion-panel-header {
+    height: 48px !important;
+    .mat-expansion-panel-header-title {
+      h3 {
         margin-top: 8px;
-        margin-right: 16px;
-        float: right;
-        color: white;
-
-        .btnCreate {
-          margin-left: 5px;
-          background-color: green;
-        }
-
-        .btnDelete {
-          background-color: red;
-        }
-      }
-    }
-
-    .info {
-      margin: 16px;
-
-      table {
-        width: 100%;
       }
     }
   }
+  .mat-expansion-panel-content {
+    border-top: 1px solid $black20;
+    .mat-expansion-panel-body {
+      padding: 0;
+    }
+  }  
 }
 
-.formContainer {
-  font-size: 16px;
-
-  h3 {
-    font-size: 20px;
-  }
-
-  mat-form-field {
-    width: 300px;
-  }
-
-  .description,
-  .address {
-    mat-form-field {
-      width: 80%;
-      margin-top: 16px;
+/* Card custom stylings */
+.mat-card {
+  padding: 0 !important;
+  .mat-card-header {
+    height: 48px;
+    .mat-card-header-text {
+      .mat-card-title {
+        margin-top: 12px;
+      }
     }
   }
-}
-
-.button-row {
-  display: table;
-  margin: 0 auto;
-
-  button {
-    font-size: 16px;
+  .mat-card-content {
+    border-top: 1px solid $black20;
+    border-bottom: 1px solid $black20;
+    margin-bottom: 0;
+  }
+  .mat-card-actions {
+    height: 48px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
 .row,
 .cell {
   cursor: pointer;
-}
-
-.row:hover {
-  background-color: lavender;
-  border-color: lavender;
 }
 
 .customDialog {

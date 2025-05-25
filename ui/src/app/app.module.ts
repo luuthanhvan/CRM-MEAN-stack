@@ -34,6 +34,8 @@ import {
   MatCheckboxModule,
   MatSnackBarModule,
   MatMenuModule,
+  MatExpansionModule,
+  MatCardModule,
 } from "@angular/material";
 import { MatNativeDateModule } from "@angular/material/core";
 
@@ -87,6 +89,8 @@ const materials = [
   MatCheckboxModule,
   MatSnackBarModule,
   MatMenuModule,
+  MatExpansionModule,
+  MatCardModule,
 ];
 
 @NgModule({

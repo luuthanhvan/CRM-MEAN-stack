@@ -22,6 +22,9 @@ import { DatetimeService } from "../../services/datetime/datetime.service";
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild("contactPaginator", { static: false }) contactPaginator: MatPaginator;
+  @ViewChild("saleOrderPaginator", { static: false }) saleOrderPaginator: MatPaginator;
+
   // Pie chart for contact
   contactPieChartLabels: string[] = [
     "Existing Customer",
@@ -58,10 +61,10 @@ export class DashboardComponent implements OnInit {
   saleOrderDetail: SaleOrder;
   user$: Observable<User>;
 
-  @ViewChild("contactPaginator", { static: false })
-  contactPaginator: MatPaginator;
-  @ViewChild("saleOrderPaginator", { static: false })
-  saleOrderPaginator: MatPaginator;
+  contactPanelOpenState = true;
+  contactTablePanelOpenState = true;
+  salesOrderPanelOpenState = true;
+  salesOrderTablePanelOpenState = true;
 
   constructor(
     private contactsService: ContactsService,
@@ -186,5 +189,35 @@ export class DashboardComponent implements OnInit {
 
   onHideDetail() {
     this.isShowDetail = false;
+  }
+
+  onOpenPanel(type: string) {
+    switch(type) {
+      case 'contact': {
+        this.contactPanelOpenState = true;
+      }
+      case 'salesOrder': {
+        this.salesOrderPanelOpenState = true;
+      }
+      case 'contactTable':
+        this.contactTablePanelOpenState = true;
+      case 'salesOrderTable':
+        this.salesOrderTablePanelOpenState = true;
+    }
+  }
+
+  onClosePanel(type: string) {
+    switch(type) {
+      case 'contact': {
+        this.contactPanelOpenState = false;
+      }
+      case 'salesOrder': {
+        this.salesOrderPanelOpenState = false;
+      }
+      case 'contactTable':
+        this.contactTablePanelOpenState = false;
+      case 'salesOrderTable':
+        this.salesOrderTablePanelOpenState = false;
+    }
   }
 }
